@@ -1,0 +1,16 @@
+{
+  "accentColor": "#d99292",
+  "cssTheme": "Minimal",
+  "baseFontSize": 18,
+  "theme": "obsidian",
+  "enabledCssSnippets": [
+    "asd",
+    "lettereaccentate",
+    "image centering",
+    "Folders and files appearance"
+  ],
+  "interfaceFontFamily": "Helvetica",
+  "textFontFamily": "Helvetica",
+  "monospaceFontFamily": "Helvetica",
+  "nativeMenus": false
+}

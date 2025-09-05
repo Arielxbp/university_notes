@@ -1,0 +1,17 @@
+nome
+hanno
+metodo
+metodi
+overriding
+RICORDA
+Metodi
+parsed
+DISCARD
+CARD
+set
+settimana
+Classe
+Classes
+getOrDefault
+valore
+RigidBody

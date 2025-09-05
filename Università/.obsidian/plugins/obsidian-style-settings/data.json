@@ -1,0 +1,12 @@
+{
+  "blue-topaz-theme@@color-scheme-options": "color-scheme-options-chocolate-topaz",
+  "blue-topaz-theme@@fancy-hr": "fancy-hr-no-icon",
+  "blue-topaz-theme@@accent-strong@@light": "#B66914",
+  "minimal-style@@code-comment@@dark": "#6678BC",
+  "minimal-style@@code-background@@dark": "#181818",
+  "minimal-style@@h1-l": true,
+  "minimal-style@@h1-weight": 600,
+  "minimal-style@@h1-size": "1.725em",
+  "minimal-advanced@@styled-scrollbars": false,
+  "minimal-style@@bold-color@@dark": "#F06464"
+}

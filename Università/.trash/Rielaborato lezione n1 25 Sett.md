@@ -1,0 +1,1 @@
+![[Spiegazione lezione^1 2509_230925_235623.pdf]]

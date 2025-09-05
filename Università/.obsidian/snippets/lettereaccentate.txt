@@ -1,0 +1,11 @@
+{ trigger: "e'", replacement: "é", options: "tA"},
+
+{ trigger: "e\", replacement: "è", options: "tA"},
+
+{ trigger: "o\", replacement: "ò", options: "tA"},
+
+{ trigger: "u\", replacement: "ù" , options: "tA"},
+
+{ trigger: "a\", replacement: "à" , options: "tA"},
+
+{ trigger: "i\", replacement: "ì", options: "tA"},
