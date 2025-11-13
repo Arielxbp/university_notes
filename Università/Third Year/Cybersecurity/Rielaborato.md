@@ -649,5 +649,64 @@ Eg. a movie theater can use ABAC to enforce allowed access to movies based on th
 
 # Malware
 
+A malware is a program that is inserted into a system, with the intent of __compromising__ the confidentiality, integrity, or availability of the system's data, application or operating system. (Otherwise to annoy or disrupt the system's user)
 
-aaaaaa
+Malwares can be classified based on their properties like:
+- How it spreads to reach the desired targets.
+- What actions or payloads it performs once a target is reached.
+
+## Types of Malware
+
+So we can have:
+- __Viruses__, malware that need a __host__ program to function.
+	- Viruses can and will replicate themselves.
+- __Worms__, __trojans__ and __bots__, are malwares that are independent, so self-contained programs.
+	- Worms can and will replicate themselves.
+	- Trojans do not replicate themselves.
+	- Bots do not replicate themselves.
+
+## Propagation Mechanisms
+
+Malwares can propagate by:
+- Infecting already existing content that is then sent to other systems to spread.
+- Exploiting software vulnerabilities using worms or drive-by-downloads to allow the malware to replicate.
+	- Drive-by-download is an attack tthat uses code on a compromised website that exploits a browser vulnerability to attack when the site is viewed.
+- Social engineering attacks that successfully convince users to install trojans or to respond to phishing attacks.
+
+## Payloads of Malware
+
+All malware possess some __payload__, these define what a malware is supposed to do. These actions performed by malware once inside a target system can be:
+- __Corruption__ of the system or of its data.
+- Turn the system into a zombie __agent__ of attack as part of a __botnet__.
+- __Theft__ of sensible information by __keylogging__ the system. (Capturing keystrokes)
+Also, generally all types of malware will try to __hide__ itself and its presence on the system.
+
+## Attack Kits
+
+Initially malware development and deployment required high technical skills.
+General tools used for development are called __attack kits__. These are software that provide assist in creating malware.
+
+## Attack Sources
+
+Initially attackers developed malwares only to demonstrate their technical competence.
+
+Now instead attackers are:
+- Politically motivated attackers.
+- Criminals.
+- Organized crime.
+- Organizations that sell their services to __companies__ and even __nations__.
+- National government agencies.
+
+## Advanced Persisten Threats (APTs)
+
+These threats applies persistent application of a wide variety of intrucion technologies and malware to selected targets, like political figures or businesses.
+Typically these are sponsored by governments and by criminal organizations.
+
+They differ from other types of malware and attacks by their __careful__ target selection and __stealthy__ intrusion efforts over __extended periods__ (Persistent).
+
+Eg. Stuxnet was an APT.
+
+Generally these used techniques that varies from:
+- Social engineering.
+- Spear-phishing emails.
+- Drive-by-downloads from websites likely used from the target.

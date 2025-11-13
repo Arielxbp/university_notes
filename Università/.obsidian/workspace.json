@@ -78,7 +78,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 309.5
+    "width": 309.5,
+    "collapsed": true
   },
   "right": {
     "id": "784d05b417c81a18",
@@ -122,21 +123,6 @@
             }
           },
           {
-            "id": "60ae923123a8e07c",
-            "type": "leaf",
-            "state": {
-              "type": "tag",
-              "state": {
-                "sortOrder": "frequency",
-                "useHierarchy": true,
-                "showSearch": false,
-                "searchQuery": ""
-              },
-              "icon": "lucide-tags",
-              "title": "Tags"
-            }
-          },
-          {
             "id": "786dc64738975ae9",
             "type": "leaf",
             "state": {
@@ -162,7 +148,7 @@
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
@@ -180,7 +166,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "187352c5be0c72f6",
+  "active": "d3ef8502bce84042",
   "lastOpenFiles": [
     "Third Year/Embedded & Multicore programming/Lesson 9 - OpenMP.md",
     "Third Year/Embedded & Multicore programming/Lesson 8 - Amdahl's law.md",
