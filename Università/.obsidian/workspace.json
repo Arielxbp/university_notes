@@ -78,8 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 309.5,
-    "collapsed": true
+    "width": 309.5
   },
   "right": {
     "id": "784d05b417c81a18",
@@ -181,7 +180,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "d3ef8502bce84042",
+  "active": "187352c5be0c72f6",
   "lastOpenFiles": [
     "Third Year/Embedded & Multicore programming/Lesson 9 - OpenMP.md",
     "Third Year/Embedded & Multicore programming/Lesson 8 - Amdahl's law.md",
