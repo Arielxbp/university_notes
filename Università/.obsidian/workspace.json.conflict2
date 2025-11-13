@@ -1,0 +1,219 @@
+{
+  "main": {
+    "id": "8c0413655d5338db",
+    "type": "split",
+    "children": [
+      {
+        "id": "1817b95294a37c9b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f2a4a03c21a06114",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Third Year/IUM/Lesson 2 - Interfaces.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Lesson 2 - Interfaces"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "9c559508ea706480",
+    "type": "split",
+    "children": [
+      {
+        "id": "449e9babd30f8ea7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f3095fee41c26ded",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "bf29da5dc1dfe35a",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "df92a7a45b20a15a",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 309.5,
+    "collapsed": true
+  },
+  "right": {
+    "id": "784d05b417c81a18",
+    "type": "split",
+    "children": [
+      {
+        "id": "4d2a2c8527d31076",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3d6f06d65e1bbc38",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Other/Cpp or Godot Projects Brainstorming.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Cpp or Godot Projects Brainstorming"
+            }
+          },
+          {
+            "id": "c96369adfdcd0ca7",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Other/Cpp or Godot Projects Brainstorming.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Cpp or Godot Projects Brainstorming"
+            }
+          },
+          {
+            "id": "60ae923123a8e07c",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "786dc64738975ae9",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Other/Cpp or Godot Projects Brainstorming.md"
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Cpp or Godot Projects Brainstorming"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "bases:Create new base": false,
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": true,
+      "daily-notes:Open today's daily note": true,
+      "templates:Insert template": true,
+      "command-palette:Open command palette": true
+    }
+  },
+  "active": "f2a4a03c21a06114",
+  "lastOpenFiles": [
+    "Second Year/Sistemi operativi 2/C.md",
+    "Second Year/Sistemi operativi 2/Linux.md",
+    "Second Year/Sistemi operativi 2/Rielaborato/Sistemi operativi 2.md",
+    "Third Year/IUM/Lesson 2 - Interfaces.md",
+    "Third Year/IUM/Lesson 1 - Introduction.md",
+    "Third Year/Embedded & Multicore programming/Lesson 1 - Introduction.md",
+    "Third Year/Ing Software/Lesson 1 - Introduction.md",
+    "Third Year/Web programming/Lesson 2 - Git.md",
+    "Third Year/Ing Software",
+    "Third Year/Web programming/Lesson 1 - Introduction.md",
+    "Third Year/Cybersecurity/Lesson 1 - Introduction.md",
+    "Third Year/IUM",
+    "Third Year/Cybersecurity",
+    "Second Year/Reti/Appunti/Lezione 17 - Ancora livello di rete.md",
+    "Second Year/Reti/Appunti/Lezione 5 - Protocollo DNS.md",
+    "Other/Uma rerolls.md",
+    "Third Year/Embedded & Multicore programming",
+    "Third Year/Web programming",
+    "Third Year",
+    "Other/Summer projects.md",
+    "Other/PC software setup.md",
+    "Other/Image resize syntax.md",
+    "Other/Synchro combo.md",
+    "Second Year/Prep Sessione invernale.md",
+    "Godot/Godot Projects.md",
+    "Other/Html colors.md",
+    "Godot/Godot.md",
+    "Other/Pasted image 20250730194451.png",
+    "Other/Pasted image 20250730194449.png",
+    "Other/Pasted image 20250730194446.png",
+    "Other/New pc cost.md",
+    "Second Year/Basi di Dati 1.md",
+    "Second Year/Untitled",
+    "Second Year/Progettazione di Algoritmi/Untitled.md",
+    "Second Year/Progettazione di Algoritmi/Grafi.md",
+    "C++/C++ things.md",
+    "Second Year",
+    "Note images/Pasted image 20240401003035.png",
+    "Note images/Pasted image 20240331172354.png",
+    "Note images/Memory allocation.gif",
+    "First Year",
+    "Second Year/Sistemi operativi 1/Domande Chiuse",
+    "Pasted image 20240713210126.png",
+    "brrgr6D.png",
+    "Pasted image 20240713210325.png",
+    "Pasted image 20240713210651.png",
+    "Metodologie di programmazione/Untitled.canvas",
+    "Untitled.canvas"
+  ]
+}
