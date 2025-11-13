@@ -67,4 +67,3 @@ The set of threads in OpenMP is called a __team__:
 - The children are the threads that are started by the parent.
 
 The master thread executes the parallel code too, not only the children.
-

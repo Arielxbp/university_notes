@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Third Year/Embedded & Multicore programming/Lesson 9 - OpenMP.md",
+                "file": "Third Year/Cybersecurity/Rielaborato.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Lesson 9 - OpenMP"
+              "title": "Rielaborato"
             }
           }
         ]
@@ -78,7 +78,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 309.5
+    "width": 309.5,
+    "collapsed": true
   },
   "right": {
     "id": "784d05b417c81a18",
@@ -94,7 +95,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Other/Cpp or Godot Projects Brainstorming.md",
+                "file": "Third Year/Embedded & Multicore programming/Lesson 9 - OpenMP.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +105,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Cpp or Godot Projects Brainstorming"
+              "title": "Backlinks for Lesson 9 - OpenMP"
             }
           },
           {
@@ -113,12 +114,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Other/Cpp or Godot Projects Brainstorming.md",
+                "file": "Third Year/Embedded & Multicore programming/Lesson 9 - OpenMP.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from Cpp or Godot Projects Brainstorming"
+              "title": "Outgoing links from Lesson 9 - OpenMP"
             }
           },
           {
@@ -128,7 +129,9 @@
               "type": "tag",
               "state": {
                 "sortOrder": "frequency",
-                "useHierarchy": true
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-tags",
               "title": "Tags"
@@ -140,18 +143,31 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Other/Cpp or Godot Projects Brainstorming.md"
+                "file": "Third Year/Cybersecurity/Rielaborato.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Cpp or Godot Projects Brainstorming"
+              "title": "Outline of Rielaborato"
+            }
+          },
+          {
+            "id": "187352c5be0c72f6",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
             }
           }
-        ]
+        ],
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -161,23 +177,24 @@
       "canvas:Create new canvas": true,
       "daily-notes:Open today's daily note": true,
       "templates:Insert template": true,
-      "command-palette:Open command palette": true
+      "command-palette:Open command palette": true,
+      "obsidian-git:Open Git source control": false
     }
   },
   "active": "d3ef8502bce84042",
   "lastOpenFiles": [
+    "Third Year/Embedded & Multicore programming/Lesson 9 - OpenMP.md",
+    "Third Year/Embedded & Multicore programming/Lesson 8 - Amdahl's law.md",
     "Third Year/Cybersecurity/Rielaborato.md",
     "Third Year/Cybersecurity/Appunti/Lesson 25_11_12.md",
     "Third Year/Cybersecurity/Appunti/Lesson 1 - Introduction 1.md",
     "Third Year/Cybersecurity/Appunti/Lesson 1 - Introduction.md",
     "Third Year/Cybersecurity/Appunti/Untitled.md",
-    "Third Year/Embedded & Multicore programming/Lesson 9 - OpenMP.md",
     "Third Year/Cybersecurity/Appunti/Lesson 25_11_06.md",
     "Third Year/Cybersecurity/Appunti/Lesson 4 - ..md",
     "Third Year/Cybersecurity/Appunti/Lesson 3 - Security properties and Threats 1.md",
     "Third Year/Cybersecurity/Appunti/Lesson 3 - Security properties and Threats.md",
     "Third Year/Embedded & Multicore programming/Lesson 7 - Collective Communication (Cont'd).md",
-    "Third Year/Embedded & Multicore programming/Lesson 8 - Amdahl's law.md",
     "Third Year/Ing Software/Lesson 23_10 - a.md",
     "Third Year/Embedded & Multicore programming/Lesson 6 - Parallel Design Patterns.md",
     "Third Year/Web programming/Lesson X - API Best Practices.md",

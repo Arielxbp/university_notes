@@ -464,6 +464,17 @@ Smart cards contain an entire microprocessor with:
 
 They are powered by a compatible reader that sends signals that charge for a little bit the microprocessor so that it can send back the information stored inside the memory.
 
+### Electronic Identity Cards (eIDs)
+
+These are smart cards that have been __verified__ by the government as valid and authentic.
+
+There are various different types of functions for an eID, most of these are or have optional features:
+- `ePass`, used for __offline verification__ of __biometric__ identity, reserved for government access. (CIE)
+	- Its __mandatory__ to have this function.
+- `eID`, used for __identification__.
+- `eSign`, used for creating electronic __signatures__.
+
+
 ## Biometrics
 
 Biometric refers to any measure used to uniquely identify a person based on biological or physiological traits.
@@ -485,6 +496,35 @@ So the dilemma is in how low should the decision threshold be:
 - A value too high will increase the robustness of the biometric system, resulting in an increased security, but will inevitably lead to lower matches, even if its the genuine user trying to authenticate.
 
 ![|500](https://i.imgur.com/1KxnqPe.png)
+
+### Operations of a Biometric Authentication System
+
+There are $3$ operations that a biometric authentication system needs to provide:
+- Enrollment.
+- Verification.
+- Identification.
+
+#### Enrollment
+
+Each individual who is to be included in the database of authorized users must first be __enrolled__ in the system.
+
+This is done by inserting an identifier (name), password or pin, and binding these information with some type of biometric characteristic of the user.
+
+The biometric data obtained then gets digitalized into a set of number, and it will be the user's __template__.
+
+This template is maintained together with the identifier and the pin inside the system.
+
+#### Verification
+
+When a user tries to verify itself, he needs to insert his pin and also his biometric data.
+
+The system extracts the corresponding feature from the biometric input and compares it to the template stored for the user. If there is a match, then the system authenticates the user.
+
+#### Identification
+
+For identification, the user only needs to insert his biometric data.
+
+The system will then compare the biometric-obtained template with the set of stored templates. If there is a match, then the user is identified.
 
 # Access Control
 
@@ -516,16 +556,32 @@ Access right describes the way in which a subject may access an object. These ri
 
 Access is granted by another entity which enables the requestor to access the requested resource.
 
+### Access Matrix
+
 Often this is provided by using an __access matrix__.
-(E.g. UNIX's OS has `root`, which grants access to resources)
+(E.g. in UNIX systems, a user can do `chmod xx7` to give full access rights to all other entities for a file he owns)
 
 This model takes a subject-centered approach to access control:
 - It defines for each subject, the list of the objects for which he has nonempty access control rights.
+
+### Access Control List
+
+It defines for each object (resource) a list which enumerates __all__ the subjects (user) that have access rights to it, and for each subject, it shows the access rights (read, write, execute) that the subject has for the object.
+
+(_Do not use resource or user, instead use object and subject_)
 
 __Extended rules__ to this model are:
 - Transferring rights for a resource.
 - Creation of another subject.
 - Owner access right to a subject.
+
+### Capabilities
+
+It defines for each subject, the list of the object for which he has nonempty access control rights, together with the specific rights (read, write, execute) for each object.
+
+(So its the reverse of the access control list)
+
+### Organization of the Access Control Function
 
 Every access to a resource from a subject is mediated by the __controller__ for that resource. The controller's decision is based on the current contents of the access matrix.
 Certain subjects have the authority to make __changes__ to the access matrix.
@@ -557,19 +613,41 @@ Using this model increases flexibility and scalability in policy administration:
 - Will reduce errors in administration.
 - Will reduce the cost of administration.
 
-### Role Hierarchy
+### Role Hierarchy (RBAC$1$)
 
 Most of the times organizations are going to have many operations that are common to a large number of roles. So instead of creating new roles for each job position, we use a hierarchy of roles based on inheritance of permissions.
 
 So the more specialized a role is, the more permission it has.
 
-### Constrains caused by security policies of an organization
+### Constrains caused by security policies of an organization (RBAC$2$)
 
 These constrains are:
 - Mutually exclusive roles, where a user cannot be assigned to mutually exclusive roles at the same time.
 - Cardinality, so we have a constrain on the maximum number of roles a user can have.
 - Prerequisite roles, where a user can be assigned to a role only if it is already assigned to another specific role.
 
-## Attribute-based Access Control (ABAC
+### Consolidation (RBAC$3$)
 
-wefinfoiwfwfonnowefofewnoewfnofwenofejonewfnjoewfjfnoew
+The procedure of consolidating the role hierarchy (RBAC$2$) and the constrains (RBAC$3$) is then finalized in the RBAC$3$.
+
+## Attribute-based Access Control (ABAC)
+
+In this model of access control, we can define __attributes__ on both resources and subjects, and based on these, give or not access to a object for a subject.
+
+Its the most __flexible__ and __expressive__ model of access control.
+
+System that use this model are capable of enforcing all the other models of access control.
+
+ABAC implements __policies__ to govern allowable behavior. A policy is a set of rules and relationships (between subject and object).
+These policies are based on the privileges of subjects and how objects are to be __protected__ under which environment conditions.
+
+Systems that use ABAC controls access to its objects by evaluating __access control policies__ against the attributes of entities, operations, and the __environment__ relevant for a request.
+
+![|500](https://i.imgur.com/jHDcZI0.png)
+
+Eg. a movie theater can use ABAC to enforce allowed access to movies based on the subject's age and the object's rating (R, PG-13, G).
+
+# Malware
+
+
+
