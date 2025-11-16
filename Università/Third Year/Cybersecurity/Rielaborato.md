@@ -670,7 +670,7 @@ So we can have:
 Malwares can propagate by:
 - Infecting already existing content that is then sent to other systems to spread.
 - Exploiting software vulnerabilities using worms or drive-by-downloads to allow the malware to replicate.
-	- Drive-by-download is an attack tthat uses code on a compromised website that exploits a browser vulnerability to attack when the site is viewed.
+	- Drive-by-download is an attack that uses code on a compromised website that exploits a browser vulnerability to attack when the site is viewed.
 - Social engineering attacks that successfully convince users to install trojans or to respond to phishing attacks.
 
 ## Payloads of Malware
@@ -710,3 +710,199 @@ Generally these used techniques that varies from:
 - Social engineering.
 - Spear-phishing emails.
 - Drive-by-downloads from websites likely used from the target.
+
+## Virus
+
+A virus is a software that __infects__ programs:
+- It modifies them to include a __copy__ of the virus, so it replicates itself.
+- It can easily spread through network environments.
+
+When a virus is attached to an executable program, all the permissions granted to the program is also possessed by the virus.
+
+### Virus Components
+
+Viruses are made of $3$ components:
+- The __infection vector__, is the mean by which a virus propagates in the system, enabling it to replicate.
+- The __trigger__, an event or condition that determines when the __payload__ is activated, known also as a __logic bomb__.
+- The __payload__, that is what the virus does, besides spreading.
+
+### Virus Phases
+
+During its lifetime, a virus generally goes through $4$ phases:
+- __Dormant phase__, where the virus is idle, and will eventually be awaken by some event.
+	- Not all viruses have this stage.
+- __Triggering phase__, where the virus is activated to perform his function.
+- __Propagation phase__, where the virus places copies of itself into other programs or into certain system's area on the disk.
+	- The clone may __not__ be identical to the original version.
+- __Execution phase__, where the virus actually performs the damaging functions.
+
+### Macro and Scripting Viruses
+
+These are viruses that attaches themself to documents, making them:
+- Platform independent.
+- Easily spreadable.
+- Much easier to write (for the attacker).
+- Because they don't infect system programs, older file systems cannot prevent their spread, also since users are expected to open them (documents) to be able to modify them.
+
+### Virus Classification
+
+Viruses can be classfied by their:
+- Target.
+	- Boot sector infector, infects low level parts of the system. (Eg. master boot record)
+	- File infector, infects executables.
+	- Macro virus, infects files with macro or scripting code interpretable by applications.
+	- Multipartite virus, infects files in multiple ways.
+- Concealment strategy.
+	- Encrypted virus, where a portion of the virus encrypts the remainder of itself.
+	- Stealth virus, designed explicitly to hide itself from the system's antivirus.
+	- Polymorphic virus, so it can mutate itself with every infection.
+	- Metamorphic virus, so it can mutate and rewrite itself completely every time and may even change behavior and appearance.
+
+## Worms
+
+Worms are programs that actively seek out more machines to infect generally through system vulnerabilities or by communicating with the network attached to the infected system.
+Each of these infected machine serves as an automated launching pad for attacks on other machines.
+
+Worms don't need a host to attach to, they are fully functional programs.
+
+One of the earliest significant worm infection is the __Morris worm__.
+
+__WannaCry__ was a ransomware attack that propagated itself by scanning local and remote networks, attempting to exploit a vulnerability in the file sharing service. Once inside a system, it would encrypt files, to then demand a ransom payment in order to recover them.
+
+### Mobile Phone Worms
+
+Worms that infect mobile phones use __bluetooth wireless connections__ or multimedia messaging service (MMS) to communicate.
+
+These specific worms designed for mobile phones can:
+- Completely disable the phone.
+- Delete data on the phone.
+- Force the device to send costly messages.
+
+The vast majority of mobile phone malware is caused by the use of __trojan apps__.
+
+## Drive-By-Download
+
+This is a common technique that exploits browser and plugin vulnerabilities.
+So when the user views a webpage controlled by the attacker, it contains code that exploits the bug to download and install malware on the system without the user's knowledge or consent.
+
+## Watering-Hole Attack
+
+This is a variant of drive-by-download that is used in highly targeted attacks.
+
+The attacker __researches__ their victims to identify websites that they are likely to visit, and then it scans these sites to identify those that have vulnerabilities that allows the attacker to infect the victim.
+
+## Malvertising
+
+This technique uses __advertisements__ on websites to infect their visitors.
+
+## Clickjacking
+
+This technique is also known as a __user-interface__ redress attack.
+
+It tricks the user into thinking that he is typing sensible information like passwords or banking data when using those services (Eg. when purchasing something), but in reality he is typing it into an invisible frame controlled by the attacker that is place on top if the actual website.
+
+Attackers can also register keystrokes and clicks.
+
+## Social engineering for Malware Propagation
+
+This technique tricks users to __assist__ in the compromise of their own system.
+
+Generally this is done by:
+- Spamming the target using phishing emails.
+- The user downloads programs or utilities that contains harmful hidden code. (Trojan)
+
+## Ransomware
+
+When a ransomware is installed on infected systems, it __encrypts__ a large number of files, to then demand a ransom payment using untraceable currencies like Bitcoin.
+
+Tactics such as:
+- Threatening to publish sensitive and personal information
+- Permanently destroy the encryption key after a period of time
+are used to increase the pressure on the victim to __pay up__.
+
+## Botnets
+
+This type of attack uses collection of bots capable of acting in a __coordinated manner__.
+
+These can be used in:
+- Distributed denial of service attacks (DDoS).
+- Spamming.
+- Sniffing traffic.
+- Keylogging.
+- Spreading new malware.
+- Attacking IRC chat networks.
+- Manipulating online polls or games.
+
+Bots are different from worms because:
+- Worms propagates and activates themself.
+- Bots are initially controlled from some __central facility__.
+
+## Keyloggers and Spyware (Information Theft)
+
+A __keylogger__ captures keystrokes to allow the attacker to monitor sensitive information.
+
+Keyloggers generally use some type of filtering to only return information close to keywords like `login` or `password`.
+
+A __spyware__ is a type of software that collects information from a computer and transmits it to another system by monitoring browser information, network traffic, and more generally the system.
+
+## Phishing (Information Theft)
+
+This technique exploits __social engineering__ to leverage the user's __trust__ by masquerading as communication medium from a trusted souce.
+
+Typically the attacker:
+- Sends spam emails that contains URL to fake websites.
+- Suggests that urgent action is required by the user to authenticate their account.
+
+A more advanced method is __spear-phishing__:
+- Where the targets are carefully researched by the attacker and the emails are specifically crafted (custom-made) in order to deceive and convince them of its authenticity.
+
+## Backdoors (also called trapdoors) (Stealthing) 
+
+A backdoor is a __secret entry point__ into a program that allows someone who is aware of the backdoor to gain access without going through the normal security access procedure.
+
+The backdoor is __code__ that recognizes some special sequence of input or is triggered by being run from a certain user ID or by an unlikely sequence of events.
+
+### Normal use of Backdoors
+
+The normal use of backdoors are for __maintenance__.
+
+A __maintenance hook__ is a backdoor used by programmers to debug and test programs.
+
+## Rootkit (Stealthing)
+
+A rootkit is a set of programs installed on a system to maintain __hidden access__ to that system with __root privileges__, while hiding evidence of its presence to the greatest extent possible.
+
+It does this by subverting the mechanisms that monitor and report on the process, files and registries of a computer.
+
+## Malware Countermeasure Approaches
+
+The __prevention__ of malware threats are the ideal solution for it.
+
+Users can do this by:
+- Improving their awareness to threats.
+- Mitigating vulnerabilities.
+- Mitigating threats.
+- Having a strict policy.
+
+If prevention fails, technical mechanisms like __anti-virus__ softwares can be used to support the threat mitigation options:
+- Detection of malware.
+- Identification of malware.
+- Removal of malware.
+
+### Generations of Anti-Virus Software
+
+- First generation: Simple scanners that required a malware signature to identify it, so its limited to the detection of __already known__ malwares.
+
+- Second generation: Heuristic scanners that uses heuristic __rules__ to search for probable malware instances.
+
+- Third generation: Activity traps, so programs that reside in the memory that identify malware by its __actions__ rather tha its structure in an infected program.
+
+- Fourth generation: Full-featured protection, so packages consisting of a __variety__ of anti-virus techniques that does scanning, sets up activity traps and have access control capabilities.
+
+### Sandbox Analysis
+
+Another technique for detecting malware is by running potentially malicous programs in an __emulated__ sandbox or on a __virtual machine__ (VM).
+
+This allows the code to execute in a __controlled__ environment where its behavior can be closely monitored without threatening the security of the real system.
+
+The most difficult design issue with this technique is to determine how __long__ to run each malware before it activates.
