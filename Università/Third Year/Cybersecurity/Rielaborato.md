@@ -906,3 +906,4 @@ Another technique for detecting malware is by running potentially malicous progr
 This allows the code to execute in a __controlled__ environment where its behavior can be closely monitored without threatening the security of the real system.
 
 The most difficult design issue with this technique is to determine how __long__ to run each malware before it activates.
+
