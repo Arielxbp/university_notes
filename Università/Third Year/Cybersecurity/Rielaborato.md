@@ -907,3 +907,252 @@ This allows the code to execute in a __controlled__ environment where its behavi
 
 The most difficult design issue with this technique is to determine how __long__ to run each malware before it activates.
 
+# Database Security
+
+Most organizations today rely on databases, but its security is not up to standards. This is caused by a series of problems:
+- Databases have a sophisticated interaction protocol called SQL, which is complex and needs a full understanding of the security vulnerabilities of SQL to be able to create an effective security for it.
+- Most organizations lack full-time database security personnel.
+- Most enterprise environments consist of a __heterogeneous__ mix of database, enterprise and OS platforms, thus creating an additional complexity hurdle for security personnel.
+
+A __database__ is a structured collection of data, stored for use by one or more applications.
+It contains the relationships between data items and groups of data items, often containing sensitive data that needs to be secured.
+
+SQL or structured query language, is the standardized language to define schema, manipulate and query data in a __relational database__.
+
+## SQL Injection Attacks (SQLi)
+
+This type of attack is one of the __most prevalent__ and dangerous network-based security threats, designed to exploit the nature of __web application pages__.
+
+The attack sends malicious SQL __commands__ to the database server (Eg. `DROP TABLE`).
+
+Its most common atack __goal__ is the bulk __extraction__ of data.
+
+The technique consists of terminating a command prematurely and appending a new command (the malicious query), finishing with a comment marker `--` which tells the databse to ignore the rest of the query. This allows the attacker to prevent any additional code from executing after their injected command.
+
+So we have a SQLi when it is possible to:
+- Modify the syntax of the query by altering the application input.
+
+Attackers can use different avenues to perform a SQLi attack:
+- From user input.
+- By forging values placed in network headers.
+- By injecting the database so the queries are modified.
+- From network cookies.
+- Using physical user input.
+
+Attack __types__ can be grouped into $3$ main categories:
+- Inband.
+- Inferential.
+- Out-of-band.
+
+An __inband attack__ uses the same communication channel for injecting SQL code and retrieving the results. These attacks generally include the use of:
+- __Tautology__, so query conditionals are always evaluated to `true`.
+- __End-of-line comments__, so the query part after `--` is ignored.
+- __piggybacked queries__, so stacking queries on top of legitimate ones.
+
+An __inferential attack__ uses particular request and observes the resulting behavior of the database server to __reconstruct__ the information. So in these attacks there is no actual transfer of data.
+These type of attack are:
+- __Incorrect queries__.
+- __Blind SQL injection__, where the attacker asks the server `true/false` questions.
+- __Out-of-band attack__, where data are retrieved using a different channel, it works because outbound connectivity from the database server is lax.
+
+## SQLi Countermeasures
+
+There are $3$ types of countermeasures to SQLi:
+- Manual defensive coding practices.
+- Parameterized query insertion.
+- SQL DOM.
+
+### Defensive coding practices
+
+Programmers must take care of __input sanitization__, so for example checking that inputs that are supposed to be a type of value contain no other types of values.
+
+### Parameterized query insertion
+
+This approach attempts to prevent SQLi by allowing the application developer to more accurately specify the __structure__ of an SQL query, and pass the value parameters to it separately such that no unsanitary user input is allowed to modify the query structure.
+
+### SQL DOM
+
+This is a set of __classes__ that enables automated data type validation and escaping.
+It uses __encapsulation__ of database queries to provide a safe and reliable way to access databases.
+So developers withing the API are able for example to implement input filtering and rogorous type checking.
+
+## Database Access Control
+
+A DBMS can support a range of administrative __policies__, including the following:
+- __Centralized__ administration, where a small number of privileged users may grant and revoke access rights.
+- __Ownership-based__ administration, where the owner (creator) of a table may grant and revoke access rights to the table.
+- __Decentralized__ administration, where in addition of granting and revoking access rights to a table, the owner of the table may grant and revoke authorization rights to other users, allowing them to be able to grant and revoke access rights to the table.
+
+Typical access rights are:
+```SQL
+SELECT - INSERT - UPDATE - DELETE
+-- AND REFERENCES IN OTHER TABLES
+```
+
+
+### Cascading Authorizations
+
+By using a decentralized administration, the grant option enables an access right to cascade through a number of users.
+
+And when the owner of the table revokes an access right for a user, __any__ cascaded access right is also __revoked__, unless that access right would exist even if the original grant from the owner had never occurred.
+
+### Role-Based Access Control
+
+A role-based access control eases administrative burden and improves security.
+So databases that use RBAC needs to provide the following capabilities:
+- Create and delete roles.
+- Define permissions for a role.
+- Assign and cancel assignment of users to roles.
+
+## Inference
+
+Inference (deduction), related to database security, is the process of performing __authorized queries__ and __deducing unauthorized information__ from the legitimate responses received.
+
+## Database Encryption
+
+The database is typically the __most__ valuable information resource for any organization, so its protected by multiple layers of security.
+
+Encryptions is the __last line of defense__ in database security:
+- It can be applied to the entire database, at the record level, attribute level, or level of the individual field.
+
+There are a few disadvanteges to encryption:
+- Key management, where authorized users must have access to the decryption key for the data.
+- __Inflexibility__, because when part or all of the database is encrypted, it becomes difficult to perform __record searching__.
+
+To mitigate the inflexibility, it must be possible to work with the database in its __encrypted form__.
+
+# Buffer overflow
+
+A buffer overflow, also known as a buffer overrun or buffer overwrite, is a condition at an interface under which more input can be placed into a buffer (or data holding area) than the capacity allocated, overwriting other information such as __return addresses__, __pointers__ to previous stack frames.
+
+It is a very common attack mechanism, and while prevention techniques are already known, its still of major concern because of:
+- Legacy code in widely deployed operating systems and applications.
+- Continued careless programming practices by programmers.
+
+## Buffer overflow Basics
+
+When a process attempts to store data beyond the limits of a fixed-sized buffer, it may __overwrite__ adjacent memory locations, that could be located:
+- On the __stack__, in the __heap__, or in the __data section__ of the process.
+
+These locations could hold other program variables, parameters or program control flow data. So the consequences can be:
+- __Corruption__ of program data.
+- Unexpected __transfer of control__.
+- Memory access __violation__.
+- __Execution__ of code chosen by the attacker.
+
+## Buffer overflow Attacks
+
+To exploit a buffer overflow, an attacker needs:
+- To identity a buffer overflow __vulnerability__ in a program that can be triggered by using externally source data.
+- To understand how that buffer is __stored__ in the processes memory, to then potentially corrupt adjacent memory locations and altering the flow of execution of the program.
+
+To identify vulnerable programs, an attacker uses:
+- Inspection of __program source code__.
+- Tracing the execution of programs as they process __oversized__ inputs.
+- Using __tools__ such as `fuzzing`.
+
+## Programming Languages influence on Buffer Overflow
+
+At the machine level, data that is manipulated by machine instructions, executed by the processor, are stored in either the processor's __registers__ or in __memory__ (RAM).
+
+Older languages such as `C` allows direct access to memory, hence are more vulnerable to buffer overflow, caused by having a large legacy of widely used, unsafe functions too.
+
+On the other side, modern high-level languages have a strong notion of __type__ and valid operations, so they are not vulnerable to buffer overflows, but have more overhead.
+
+## Stack Buffer Overflow
+
+A stack buffer overflow occurs when the targeted buffer (Eg. an array using malloc) is located on the stack, usually as a local variable in a function's stack frame.
+
+This type of overflow is caused when one function, after calling another one needs somewhere to save the __return address__. It also needs locations to save a bunch of parameters to be passed (arguments of the newly called function) and to possibly save its own register values to resume later.
+
+![|500](https://i.imgur.com/y3uygJF.png)
+
+## Shellcode
+
+Many buffer overflow attacks in the end consists of the __transfer of execution__ to code supplied by the attacker.
+
+The supplied code is often saved in the buffer being overflowed.
+
+Originally it was created to transfer control to user command-line interpreter, the shell. This feature was achieved in different ways for different systems.
+
+This means that shellcode is __specific__ to a __particular processor architecture__, and usually to a specific __operating system__, and because it's machine code, to write shellcode one needed to understand deeply assembly.
+
+Targeted programs for shellcodes can be:
+- A trusted system utility.
+- A network service daemon.
+- A commonly used library code.
+
+A shellcode's function can be:
+- Launch a remote shell for the attacker.
+- Create a reverse shell for the attacker.
+- Flush firewall rules that currently are blocking other attacks.
+- Break out of a chroot environment, so gaining full access to the system.
+
+### Shellcode Caveats
+
+There are several generic restrictions on the content of shellcode.
+
+First, it has to be __position independent__, it means that it cannot contain any absolute address.
+Thisi is because the attacker generally cannot determine in advance exactly where the target buffer will be located in the stack frame of the function in which it is defined.
+
+So the shellcode must be able to run no matter where in memory it is located.
+
+Secondly, it cannot contain any `NULL` values, so all buffer overflows caused by using unsafe string manipulation routines are not done by using shellcode.
+
+## Buffer Overflow Defenses
+
+Buffer overflow defenses can be broadly classified into $2$ categories:
+- __Compile-time defenses__, which aim to harden programs to __resist__ attacks in new programs.
+- __Run-time defenses__, which aim to __detect__ and __abort__ attacks in existing programs.
+
+### Compile-Time Defenses
+
+These type of defenses aim to prevent or detect buffer overflows by instrumenting programs when they are compiled. Possible approaches are:
+- Choosing a high-level language that does not permit buffer overflows.
+- Encouraging safe coding standards.
+- Using safe standard libraries.
+- Including additional code to detect corruption of the stack frame.
+
+Most of these approaches require __recompilation__ of existing programs.
+
+### Run-Time Defenses
+
+These type of defenses can be deployed as operating systems updates, to provide some protection for existing vulnerable programs.
+
+These defenses involve changes to the __memory management__, so the alteration of the properties of regions of memory, or making predicting the location of targeted buffers sufficiently difficult to prevent many types of attacks. Possible approaches are:
+- Using virtual memory support to make some regions of memory __non-executable__.
+- Changing the address at which the stack is located in a random manner for each process.
+	- By Manipulating location of key data structures like the stack, heap and global data.
+	- We can go further by randomizing location of standard library functions.
+- Placing guard pages between critical regions of memory, so any attempted access aborts process.
+
+## Variants of Buffer Overflow Attacks
+
+### Replacement Stack Frame
+
+The first variant is the __replacement of the stack frame__.
+By overwriting a target buffer and saving the frame pointer address, the attacker changes the saved frame pointer value to refer to a __dummy stack frame__. When the functions returns to the replacemente dummy frame, the control is transferred to the shellcode in the overwritten buffer.
+
+This attack is preventable by using any stack protection mechanism to detect modifications to the stack frame.
+
+### Return to System Call
+
+The second variant is the __return to system call__.
+Where the attacker replaces the return address with a standard library function, in order to circumvent the non-executable region of memory defense.
+
+This attack is preventable by using any stack protection mechanism to detect modifications to the stack frame.
+
+### Heap Overflow
+
+The third variant is the __heap overflow__.
+The attacker tries to use buffers located in the heap, where memory is requested by programs to use in dynamic data structures.
+
+This attack is preventable by making the heap non-executable.
+
+### Global Data Overflow
+
+The fourth variant is the __global data overflow__.
+The attacker tries to use buffers located in the global data section in the memory. Generally this is located above the program code, and has function pointers and vulnerable buffers.
+
+This attack is preventable by making the global data non-executable.
+
