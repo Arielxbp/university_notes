@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "99a480afcbe9cf51",
+        "id": "f3ba43c88ce777c4",
         "type": "tabs",
         "children": [
           {
-            "id": "d3ef8502bce84042",
+            "id": "c810c22243ef42d1",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -181,10 +181,10 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "d3ef8502bce84042",
+  "active": "c810c22243ef42d1",
   "lastOpenFiles": [
-    "Third Year/Cybersecurity/Rielaborato.md",
     "Third Year/Embedded & Multicore programming/Lesson 10 - CUDA.md",
+    "Third Year/Cybersecurity/Rielaborato.md",
     "Third Year/Embedded & Multicore programming/Lesson 9 - OpenMP.md",
     "Third Year/Embedded & Multicore programming/Lesson 8 - Amdahl's law.md",
     "Third Year/Cybersecurity/Appunti/Lesson 25_11_12.md",
