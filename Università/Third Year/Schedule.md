@@ -1,34 +1,55 @@
 ___
 
-## Ingegneria del software
 
-- [ ] Guardare le prime lezioni registrate
-- [ ] Imparare sintassi di c++
-- [ ] Fare quiz su moodle
-- [ ] Fare esercizi su moodle
-- [ ] Riscrivere Markov Chains
+## Automi, Calcolabilità e Complessità (12/01)
 
-## Automi, Calcolabilità e Complessità
+- [x] Argomento: Automi - Data: 24/12
+- [ ] Argomento: Calcolabilità - Data: 25/12
+- [ ] Argomento: Calcolabilità - Data: 26/12
+- [ ] Argomento: Calcolabilità - Data: 27/12
+- [ ] Argomento: Complessità - Data: 28/12
+- [ ] Argomento: Complessità - Data: 29/12
+- [ ] Argomento: Complessità - Data: 30/12
+- [ ] Argomento: Ripasso ed esercizi - Data: 9/01
+- [ ] Argomento: Ripasso ed esercizi - Data: 10/01
+- [ ] Argomento: Ripasso ed esercizi - Data: 11/01
 
-- [ ] Riscrivere appunti di venerdì
-- [ ] Riscrivere appunti di martedì
+## Ingegneria del software (14/01)
 
-## Programmazione per il web
+- [x] Argomento: Quiz domande - Data: 31/12
+- [ ] Argomento: Quiz domande - Data: 01/01
+- [ ] Argomento: Quiz domande - Data: 02/01
+- [ ] Argomento: C++ - Data: 03/01
+- [ ] Argomento: C++ - Data: 04/01
+- [ ] Argomento: C++ - Data: 05/01
+- [ ] Argomento: Ripasso quiz domande: Data 12/01
+- [ ] Argomento: Ripasso C++ !!!!!!!!!!!!!!! quiz domande: Data 13/01
 
-- [x] Recuperare lezioni su Git
-- [ ] Studiare slide su https, crawler e apis
+## Interazione uomo macchina (15/01)
 
-## Programmazione di sistemi multicore
+- [ ] Esonero dicembre
 
-- [x] Fare esercizi nelle slide di c
-- [ ] Riscrivere slide su MPI (Importante!)
+## Cybersecurity (16/01)
 
-## Interazione uomo macchina
+- [x] Argomento: Ripasso rielaborato - Data: 06/01
+- [ ] Argomento: Ripasso rielaborato - Data: 07/01
+- [ ] Argomento: Ripasso rielaborato - Data: 08/01
+- [ ] Argomento: Ripasso rielaborato - Data: 14/01
+- [ ] Argomento: Ripasso rielaborato - Data: 15/01
 
-- [ ] Studiare slide e riscrivere appunti
-- [ ] Bruh
+## Programmazione per il web (20/01)
 
-## Cybersecurity
+- [x] Argomento: Rifinire progetto - Data: 16/01
+- [ ] Argomento: Rifinire progetto - Data: 17/01
+- [ ] Argomento: Rifinire progetto - Data: 18/01
+- [ ] Argomento: Studiare per orale - Data: 19/01
+- [ ] 
+## Programmazione di sistemi multicore (27/01)
 
-- [x] Riscrivere gli appunti e includere alcune slide non finite
-- [x] Riscrivere slide di martedì su encryption di messaggi
+- [x] Argomento: Rifinire progetto - Data: 20/01
+- [ ] Argomento: Rifinire progetto - Data: 21/01
+- [ ] Argomento: Rifinire progetto - Data: 22/01
+- [ ] Argomento: Rifinire progetto - Data: 23/01
+- [ ] Argomento: Rifinire progetto - Data: 24/01
+- [ ] Argomento: Rifinire progetto - Data: 25/01
+- [ ] Argomento: Studiare per orale - Data: 26/01
