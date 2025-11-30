@@ -1,5 +1,9 @@
 ___
 
+ssh -L 8080:localhost:8080 arielxbp@192.168.1.106
+
+curl -X POST http://localhost:8080/session   -H "Content-Type: application/json"   -d '{"name":"alice"}'
+
 ## doLogin
 
 - [x] API
