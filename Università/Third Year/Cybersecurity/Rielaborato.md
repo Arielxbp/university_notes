@@ -1156,3 +1156,161 @@ The attacker tries to use buffers located in the global data section in the memo
 
 This attack is preventable by making the global data non-executable.
 
+# DoS
+
+__Availability__ is one of the fundamental security services. It relates to a system being __accessible__ and usable on demand by authorized users.
+
+A denial-of-service attack is:
+- An action that prevents the authorized use of networks, systems, or applications by __exhausting resources__ such as CPU, memory, bandwidth and disk space.
+
+So this type of attack attempts to exhaust some critical resource associated with the targeted service.
+- E.g. flooding a web server with many requests in a small period of time, making the server __unable__ to respond to __valid__ requests from users in an acceptable time. (Application resources)
+- E.g. overloading or crashing the network handling software. (System resources)
+
+## Classic DoS Attack
+
+A classic DoS attack is done by using the __ping__ command to flood a target server:
+
+The aim of this attack is to overwhelm the capacity of the network connection to the target organization. In this way packets of transmitted data are discarted as capacity decreases.
+
+Given that the source of the attack is __clearly identified__, defense mechanisms against it are fairly simple to implement. Unless the attacker is using a __spoofed address__.
+
+## Source Address Spoofing
+
+Generally attackers will use spoofed addresses to perform DoS attacks.
+
+To do that they use __forged__ source addresses, usually via the raw socket interface on the operating system.
+
+This makes attacking systems harder to identify.
+
+Security researchers, in order to develop defences against spoofing, are advertising routes to unused IP addresses to monitor attack traffic.
+Because those are unused addresses, no real packets should arrive their way, so the only packets that do arrive are remains of spoofed DoS attacks.
+This is called __backscatter traffic__.
+
+## SYN Spoofing
+
+A similar attack to the DoS attack is the SYN spoofing attack.
+
+The attacker exploits the TCP $3$-way-handshake that is used to establish a secure connection from client to server:
+- By sending from spoofed addresses many SYN packets to a target server
+- This will cause the server to send back to each of those fake addresses a SYN-ACK packet
+- But because those addresses are mostly unused or busy, they wont reply.
+- Meanwhile the server for each of those requests it maintains in his table an entry of known TCP connections, and it will resend a SYN-ACK packet a few times before closing the connection.
+- So if this table is fully occupied by non-existent connections, real incoming TCP requests will be denied during the period of time before the closing of the fake connections.
+
+## Flooding Attacks
+
+Another category of attacks are flooding attacks, these are classified based on the network protocol used.
+
+These have the same intent to overload the network capacity on some __link__ to a server.
+
+Attackers can use many types of network packets do perform this attack:
+- ICMP flood. (These are pings to the target server)
+- UDP flood.
+- TCP SYN flood.
+
+### Distributed Denial of Service Attacks (DDoS)
+
+A DDoS is a type of the classic DoS attack, but distributed, that is using __multiple systems__ to generate the attack.
+
+The attacker uses a flaw in the operating system or in a common application to gain access and installs the malicious program on it, making them a __zombie__.
+
+Large collections of such systems under the control of one attacker can be obtained, forming a __botnet__.
+
+#### Mirai
+
+Mirai is a 2016 malware that launched a DDoS attack on the website of a well-known security expert.
+
+The owners of Mirai released the malicious code on the Internet, and quickly other groups replicated the malware.
+
+A lot of these replicated Mirai are believed to be behind most of the massive DDoS attacks.
+
+#### Rent a DDoS botnet
+
+In many cases, attackers can launch DDoS attacks by using publicly available tools or by paying a small fee to hire a DDoS-as-a-service botnet from the dark web.
+
+### SIP invite scenario
+
+SIP is a text-based protocol.
+
+A SIP request will trigger in the server a moderate amount of consumed resources.
+
+So the attacker will continuously send invites in order to deplete the server's network capacity.
+
+## Hypertext Transfer Protocol Based Attacks (HTTP Attacks)
+
+There are two types of HTTP based attacks:
+- HTTP flood
+- Slowloris - R.U.D.Y. (Are you dead yet)
+
+### HTTP Flood
+
+This type of attack bombards web servers with HTTP requests coming from many bots by using stress test tools like __LOIC__ and __HOIC__.
+
+A variant of the HTTP flood attack is the recursive one, where the bot starts from a given HTTP link and it follows all the links on the provided website in a recursive way. This is called __spidering__.
+
+### Slowloris - R.U.D.Y
+
+Slowloris is a type of HTTP bassed attack that exploits the common server technique of using multiple threads to support multiple requests to the same server application.
+
+It attempts to monopolize all of the available request handling threads on the Web
+server by sending HTTP requests that never complete.
+
+Since each request consumes a thread, the Slowloris attack eventually consumes all of the Web server’s connection capacity, effectively denying access to legitimate users.
+
+Existing intrusion detection and prevention solutions that relies on __signatures__ to detect attacks will generally __not__ work on Slowloris.
+
+## Reflection Attacks
+
+A reflection attack goal is to generate enough volumes of packets to __flood__ the link to the target system by using an intermediary (server) without alerting it.
+
+The attacker sends packets to a know service on the intermediary with a spoofed source address of the actual target system.
+
+When the intermediary responds, it will send the response to the target, but this will be reflected by the intermediary.
+
+A basic defense against these type of attacks is to block spoofed-sourced packets.
+
+## DNS Amplification Attacks
+
+A DNS amplification attack exploits the DNS behavior to convert a small request to a much larger response (amplification). These requests are then sent to the target, flooding them.
+
+A basic defense against these type of attack is to prevent the use of spoofed source addresses.
+
+## Memcached DDoS attack
+
+Memcached is a high-performance caching mechanism for dynamic websites that allows to speed up the delivery of web contents.
+
+The idea is to make a request that stores a large amount of data to then send a spoofed request to make such data to be delivered to the target via UDP.
+
+## DoS Attack Defences
+
+DoS attacks cannot be prevented entirely, because high traffic volumes may be actually legitimate.
+- E.g. high publicity about a specific website.
+- E.g. activity on a very popular website.
+
+To defend against DDoS attacks:
+- One can prevent the attack preemptively before it.
+- One can detect the attack during it and filter it.
+- One can source traceback and identify the attack during it and after.
+- One can react after the attack has been done.
+
+### DoS Attack Prevention
+
+To prevent DoS attacks we can:
+- __Block__ spoofed source addresses, prefferably on routers as close to the source as possible.
+- __Filter__ to ensure that the path back to the claimed source address is the one being used by the current packet.
+- Use __modified__ TCP connection handling code.
+	- By cryptographically encoding critical information in a cookie that is sent as the server's initial sequence number, so if the client responds with an ACK packet containing the incremented sequence number then the server will know that the client is legitimate.
+- __Block__ suspicious services and combinations.
+- Use __mirrored__ and __replicated__ servers when high-performance and reliability is required.
+
+### Responding to DoS Attacks
+
+Generally the organization that owns a service should contact the ISP to impose:
+- Filtering upstream.
+- Antispoofing.
+- Directed broadcast.
+- Rate limiting filters.
+
+An alternative can be the ISP tracing packet flow back to the source to stop them, but this can be quite difficult and time consuming.
+
