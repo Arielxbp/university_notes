@@ -1314,3 +1314,117 @@ Generally the organization that owns a service should contact the ISP to impose:
 
 An alternative can be the ISP tracing packet flow back to the source to stop them, but this can be quite difficult and time consuming.
 
+# Web Security
+
+TBD
+
+# Symmetric Encryption
+
+The main purpose of cryptography is to __alter__ a message so that only the intended recipients can alter it back to then read the original message.
+
+Other purposes of cryptography are:
+- Preserving confidentiality.
+- Authenticating sender and receiver of messages.
+- Facilitate the message integrity.
+- To ensure that the sender will not be able to deny the act of sending his message (non-repudiation).
+
+## Symmetric Cryptosystem
+
+The main idea is that we assume the communication channel is __insecure__ and can be eavesdropped.
+
+So the sender and the receiver will use:
+- A secret key $K$.
+- An encryption function $E_{k}(P)$.
+- A decryption function $D_{k}(C)$.
+- The actual message, as a plaintext.
+
+The sender before sending the message, will encrypt the plaintext with the key by using the encryption function. The result is a __ciphertext__ that has the same length as the plaintext.
+
+The receiver receives the ciphered text, and will use the decryption function to decrypt the ciphertext. He has the same key used by the sender to encrypt the message, and will use it inside the decrypt function.
+
+### Efficiency
+
+Both functions $E_{k}$ and $D_{k}$ should have __efficient__ algorithms.
+
+### Consistency
+
+All messages encrypted by using the encryption functions __need__ to be the same original message after passing them to the decryption function.$$D_{k}(E_{k}(P))=P$$
+
+## Brute force Attack
+
+For the attacker to perform a brute force attack, he is required to have some knowledge about the structure of the plaintext that he is trying to decrypt.
+
+The attacker will try all the possible keys for the decryption and will try to determine if the obtained result is a likely plaintext.
+
+### Countermeasure
+
+Every key should be a sufficiently long random value to make exhaustive search attacks almost impossible.
+
+## Types of attacks
+
+An attacker may have:
+- A collection of ciphertext.
+- A collection of plaintext/ciphertext pairs.
+- A collection of plaintext/ciphertext pairs for plaintexts selected by the attacker.
+- A collection of plaintext/ciphertext pairs for ciphertexts selected by the attacker.
+
+## Symmetric Key Cryptography
+
+This type of cryptography uses:
+- Substitution, where each character in the text is __replaced__ by another character of the same or different alphabet.
+- Transposition, where the __order__, but not the value of the characters in the text is changed.
+
+### Caesar cipher (Substitution)
+
+The Caesar cipher is a simple substitution cipher that works by:
+- Replacing each character in the plain text with the character $3$ positions forward in the alphabet.
+- And if the end of the alphabet is reached, start over in the alphabet.
+
+Alternatives can be instead of using the next $3$ positions,  any other number. This is considered then the key to decrypt a ciphered text done by a Caesar cipher.
+
+## Weakness and Improvement
+
+With cyclic permutation, it is easy to find the key as there are only $N$ possibilities to try, where $N$ is the number of characters in the alphabet.
+
+So an improvement over it can be by using __random permutation__ of the alphabet, where we map every letter of the alphabet with another but random letter.
+
+In this way a single alphabet can yield $26!$ combinations.
+
+## Frequency Analysis (Cryptanalysis)
+
+By doing a frequency analysis, single alphabet subsitution characters can be analyzed by calculating the frequencies of characters in a ciphertext, and comparing the frequencies of characters in typical texts of the same language.
+
+## Poly-Alphabetic Ciphers
+
+It is still relatively easy to find the key in a random permutation with single alphabet.
+
+So instead we can use a poly-alphabetic substitution cipher:
+- The word will work as key, because it will determine the displacement of designated character that will replace the plaintext character.
+
+In this way, the same character in the plaintext may be represented by a different designated character.
+
+### Cyclic permutation (Example of poly-alphabetic cipher)
+
+We assign $2$ random letters as the key for $2$ coding.
+
+It works by:
+- Replacing the plaintext letter with a mapped letter from the first coding or the second coding based on the position, even or odd, of the plaintext letter.
+
+(___insert example image here___)
+
+### Vigenére Code
+
+
+
+### One-time pad
+
+
+
+#### Weaknesses
+
+
+
+## Transposition Ciphers
+
+This ciphering is done by changing the order of the letters in the message.
+
