@@ -1316,7 +1316,88 @@ An alternative can be the ISP tracing packet flow back to the source to stop the
 
 # Web Security
 
-TBD
+When displaying online resources, servers and clients use __scripting__ languages to create dynamic contents for web users.
+
+Client side scripting can be done by:
+- Javascript, VBscript, ActiveX, Ajax.
+These languages tell the browser the instructions to execute according to the user behavior.
+
+Server side scripting can be done by:
+- Javascript, PHP, ASP.NET, Java, Adobe ColdFusion, Perl, Ruby, Go, Python.
+These languages build the answer based on the context:
+- User identity.
+- The actual request.
+- The ongoing session.
+- ...
+
+##  HTTP Authentication
+
+It's an authentication mechanism that is rarely used nowadays.
+
+It consisted in:
+- Client browser starts a request without sending any client-side credentials.
+- Server replies with a status message "401 Unauthorized" binded together with a specific authentication header, which contains information on the authentication method.
+- The browser gets the client's credentials and include them in the authorization header.
+
+The credentials are encoded in `base64` or __hashed__, and sent to the server.
+
+## Monitoring and manipulating HTTP
+
+THe payload is encapsulated in TCP packets as __cleartext__, this makes the communication __easy__ to monitor and __manipulate__.
+
+We can monitor a communication by using:
+- Sniffing tools, like Wireshark.
+
+We can manipulate a communication by using:
+- Traditional browser and extensions.
+- Proxies.
+- Advanced softwares like netcat, curl, ...
+
+__HTTPS__ in this regard is not secure at all, we can just use:
+- Browser extensions (Tamper Data).
+- Proxies.
+to monitor/manipulate payloads sent with HTTPS protocol.
+
+### Proxy HTTP
+
+It's used by attackers to find exploits by doing traffic shaping or/and mangling.
+
+## HTTP Sessions
+
+Because the HTTP protocol is __stateless__, every request is independent from the previous ones.
+
+The problem is that modern dynamic web applications require the ability to maintain some kind of sessions.
+
+The solution is the use of __sessions__. By maintaining sessions:
+- The server can avoid asking log-ins for every requested page.
+- Store user preferences.
+- Keep track of past actions of the user. (E.g. a shopping card, favorites)
+- ...
+
+These sessions are implemented by web applications themselves and are __transmitted__ between the client and the server.
+
+The transmission is done by:
+- HTTP payload, like `<INPUT TYPE="hidden" NAME="sessionid" VALUE="6767">`
+- URL, as a query like `http://website.com/page.php?sessionid=6767`
+- Header HTTP. (E.g. with cookies)
+
+The most common way to implement sessions are by using cookies.
+
+## Cookies
+
+Cookies are files of data created by the server and __memorized__ by the client.
+
+These are transmitted between the two using HTTP header.
+
+A cookie can contains data like:
+- expiration date of himself.
+- The path for which it is valid.
+- The domain on which it is valid.
+- A `secure` flag that states whether the cookie must be transmitted on a secure channel only.
+- A `httpOnly` flag that states if no API is allowed to access `document.cookie
+
+- 
+
 
 # Symmetric Encryption
 
