@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Third Year/Cybersecurity/Rielaborato.md",
+                "file": "Third Year/Embedded & Multicore programming/Lesson X - Bottlenecks in HPC applications and how to spot them.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Rielaborato"
+              "title": "Lesson X - Bottlenecks in HPC applications and how to spot them"
             }
           }
         ]
@@ -183,12 +183,13 @@
   },
   "active": "c810c22243ef42d1",
   "lastOpenFiles": [
+    "Third Year/Schedule.md",
+    "Third Year/Embedded & Multicore programming/Lesson X - Bottlenecks in HPC applications and how to spot them.md",
+    "Third Year/Cybersecurity/Rielaborato.md",
     "Third Year/IUM/Notes.md",
     "Third Year/Web programming/Project.md",
     "Third Year/Embedded & Multicore programming/Lesson 10 - CUDA.md",
-    "Third Year/Cybersecurity/Rielaborato.md",
     "Second Year/Reti/Rielaborati/Reti di elaboratori.md",
-    "Third Year/Schedule.md",
     "Third Year/Embedded & Multicore programming/Lesson 9 - OpenMP.md",
     "Third Year/Embedded & Multicore programming/Lesson 8 - Amdahl's law.md",
     "Third Year/Cybersecurity/Appunti/Lesson 25_11_12.md",
@@ -210,7 +211,6 @@
     "Third Year/Web programming/Lesson 6 - Yaml e Json.md",
     "Third Year/Cybersecurity/Appunti",
     "Other/Uma rerolls.md",
-    "Third Year/IUM/Lesson 2 - Interfaces.md",
     "Third Year/Cybersecurity/Lesson 3 - Security properties and Threats.md.457698d4.partial",
     "Third Year/Ing Software",
     "Third Year/IUM",
