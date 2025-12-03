@@ -1509,3 +1509,28 @@ It works by:
 
 This ciphering is done by changing the order of the letters in the message.
 
+## Block Ciphers
+
+
+
+
+### Binary Cryptography
+
+Most of modern codes tend to use binary cryptography, so encoding messages as only $1$ and $0$.
+
+Using a XOR gate and a key we can encrypt the binary message into a ciphertext.
+To decrypt it we just need to use a XOR gate with the same key.
+
+The obtained ciphertext gives an attacker zero information about the plaintext.
+
+### Substitution Boxes
+
+
+
+### Actual Block Ciphers used
+
+DES, 3DES and AES are all encryption schemes actually used in practice.
+
+#### Data Encryption Standard (DES)
+
+
