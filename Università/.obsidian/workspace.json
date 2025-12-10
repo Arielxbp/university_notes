@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Third Year/Embedded & Multicore programming/Lesson 11 - OpenMP pt2.md",
+                "file": "Third Year/Embedded & Multicore programming/Lesson 12 - Memory types (+ exam).md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Lesson 11 - OpenMP pt2"
+              "title": "Lesson 12 - Memory types (+ exam)"
             }
           }
         ]
@@ -183,11 +183,12 @@
   },
   "active": "c810c22243ef42d1",
   "lastOpenFiles": [
+    "Third Year/Embedded & Multicore programming/Lesson 11 - OpenMP pt2.md",
+    "Third Year/Embedded & Multicore programming/Lesson 12 - Memory types (+ exam).md",
     "Third Year/Cybersecurity/Rielaborato.md",
     "Third Year/Cybersecurity/Appunti/Lesson 4 - ..md",
     "Third Year/Cybersecurity/Appunti/Lesson 25_11_12.md",
     "Third Year/Cybersecurity/Appunti/Lesson 25_11_06.md",
-    "Third Year/Embedded & Multicore programming/Lesson 11 - OpenMP pt2.md",
     "First Year/Architettura degli elaboratori/Appunti/a.md",
     "Third Year/Embedded & Multicore programming/Lesson X - Bottlenecks in HPC applications and how to spot them.md",
     "Third Year/Schedule.md",
@@ -209,7 +210,6 @@
     "Second Year/Reti/Rielaborati/Reti di elaboratori - Fino a SMTP.pdf",
     "Third Year/Web programming/Lesson 7 - REST.md",
     "Third Year/Web programming/Lesson 6 - Yaml e Json, API.md",
-    "Third Year/Embedded & Multicore programming/Lesson 5 - Contd Parallel programming.md",
     "Third Year/Cybersecurity/Appunti",
     "Third Year/Cybersecurity/Lesson 3 - Security properties and Threats.md.457698d4.partial",
     "Third Year/Ing Software",
