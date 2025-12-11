@@ -11,14 +11,15 @@
             "id": "c810c22243ef42d1",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "split-diff-view",
               "state": {
-                "file": "Third Year/Embedded & Multicore programming/Lesson 12 - Memory types (+ exam).md",
-                "mode": "source",
-                "source": false
+                "aFile": "Università/Third Year/Web programming/Project.md",
+                "bFile": "Università/Third Year/Web programming/Project.md",
+                "aRef": "HEAD",
+                "bRef": ""
               },
-              "icon": "lucide-file",
-              "title": "Lesson 12 - Memory types (+ exam)"
+              "icon": "diff",
+              "title": "Diff: Project"
             }
           }
         ]
@@ -183,8 +184,9 @@
   },
   "active": "c810c22243ef42d1",
   "lastOpenFiles": [
-    "Third Year/Embedded & Multicore programming/Lesson 11 - OpenMP pt2.md",
+    "conflict-files-obsidian-git.md",
     "Third Year/Embedded & Multicore programming/Lesson 12 - Memory types (+ exam).md",
+    "Third Year/Embedded & Multicore programming/Lesson 11 - OpenMP pt2.md",
     "Third Year/Cybersecurity/Rielaborato.md",
     "Third Year/Cybersecurity/Appunti/Lesson 4 - ..md",
     "Third Year/Cybersecurity/Appunti/Lesson 25_11_12.md",
@@ -209,7 +211,6 @@
     "Third Year/Web programming/Lesson X - API Best Practices.md",
     "Second Year/Reti/Rielaborati/Reti di elaboratori - Fino a SMTP.pdf",
     "Third Year/Web programming/Lesson 7 - REST.md",
-    "Third Year/Web programming/Lesson 6 - Yaml e Json, API.md",
     "Third Year/Cybersecurity/Appunti",
     "Third Year/Cybersecurity/Lesson 3 - Security properties and Threats.md.457698d4.partial",
     "Third Year/Ing Software",
