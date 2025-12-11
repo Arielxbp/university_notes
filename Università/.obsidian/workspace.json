@@ -13,15 +13,31 @@
             "state": {
               "type": "split-diff-view",
               "state": {
-                "aFile": "Università/.obsidian/plugins/obsidian-git/data.json",
-                "bFile": "Università/.obsidian/plugins/obsidian-git/data.json",
-                "aRef": ""
+                "aFile": ".gitignore",
+                "bFile": ".gitignore",
+                "aRef": "HEAD",
+                "bRef": ""
               },
               "icon": "diff",
-              "title": "Diff: data.json"
+              "title": "Diff: .gitignore"
+            }
+          },
+          {
+            "id": "a88c61bd782dc760",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "conflict-files-obsidian-git.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "conflict-files-obsidian-git"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -180,8 +196,9 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "da9e1492df4934d9",
+  "active": "a88c61bd782dc760",
   "lastOpenFiles": [
+    "conflict-files-obsidian-git.md",
     "Third Year/Embedded & Multicore programming/Lesson 12 - Memory types (+ exam).md",
     "Third Year/Web programming/Project.md",
     "Third Year/Web programming/Untitled.md",
@@ -193,7 +210,6 @@
     "Third Year/Cybersecurity/Appunti/Untitled.md",
     "Third Year/Cybersecurity/Appunti/Lesson 25_11_12.md",
     "Third Year/Cybersecurity/Appunti/Lesson 25_11_06.md",
-    "conflict-files-obsidian-git.md",
     "Third Year/IUM/Notes.md",
     "Third Year/Cybersecurity/Rielaborato.md",
     "Third Year/Embedded & Multicore programming/Lesson 9 - OpenMP.md",
