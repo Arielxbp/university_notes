@@ -4,22 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "f3ba43c88ce777c4",
+        "id": "e369b2622dec0c2b",
         "type": "tabs",
         "children": [
           {
-            "id": "c810c22243ef42d1",
+            "id": "da9e1492df4934d9",
             "type": "leaf",
             "state": {
-              "type": "split-diff-view",
+              "type": "markdown",
               "state": {
-                "aFile": "Università/Third Year/Web programming/Project.md",
-                "bFile": "Università/Third Year/Web programming/Project.md",
-                "aRef": "HEAD",
-                "bRef": ""
+                "file": "Third Year/Embedded & Multicore programming/Lesson 12 - Memory types (+ exam).md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "diff",
-              "title": "Diff: Project"
+              "icon": "lucide-file",
+              "title": "Lesson 12 - Memory types (+ exam)"
             }
           }
         ]
@@ -79,8 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 309.5,
-    "collapsed": true
+    "width": 309.5
   },
   "right": {
     "id": "784d05b417c81a18",
@@ -182,33 +180,33 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "c810c22243ef42d1",
+  "active": "da9e1492df4934d9",
   "lastOpenFiles": [
-    "conflict-files-obsidian-git.md",
+    "Third Year/Web programming/Project.md",
     "Third Year/Embedded & Multicore programming/Lesson 12 - Memory types (+ exam).md",
+    "Third Year/Web programming/Untitled.md",
+    "Third Year/Schedule.md",
+    "Third Year/Web programming/Lesson X - API Best Practices.md",
     "Third Year/Embedded & Multicore programming/Lesson 11 - OpenMP pt2.md",
-    "Third Year/Cybersecurity/Rielaborato.md",
-    "Third Year/Cybersecurity/Appunti/Lesson 4 - ..md",
+    "Third Year/Embedded & Multicore programming/Lesson X - Bottlenecks in HPC applications and how to spot them.md",
+    "Third Year/Embedded & Multicore programming/Lesson 10 - CUDA.md",
+    "Third Year/Cybersecurity/Appunti/Untitled.md",
     "Third Year/Cybersecurity/Appunti/Lesson 25_11_12.md",
     "Third Year/Cybersecurity/Appunti/Lesson 25_11_06.md",
-    "First Year/Architettura degli elaboratori/Appunti/a.md",
-    "Third Year/Embedded & Multicore programming/Lesson X - Bottlenecks in HPC applications and how to spot them.md",
-    "Third Year/Schedule.md",
+    "conflict-files-obsidian-git.md",
     "Third Year/IUM/Notes.md",
-    "Third Year/Web programming/Project.md",
-    "Third Year/Embedded & Multicore programming/Lesson 10 - CUDA.md",
-    "Second Year/Reti/Rielaborati/Reti di elaboratori.md",
+    "Third Year/Cybersecurity/Rielaborato.md",
     "Third Year/Embedded & Multicore programming/Lesson 9 - OpenMP.md",
     "Third Year/Embedded & Multicore programming/Lesson 8 - Amdahl's law.md",
     "Third Year/Cybersecurity/Appunti/Lesson 1 - Introduction 1.md",
     "Third Year/Cybersecurity/Appunti/Lesson 1 - Introduction.md",
-    "Third Year/Cybersecurity/Appunti/Untitled.md",
+    "Third Year/Cybersecurity/Appunti/Lesson 4 - ..md",
     "Third Year/Cybersecurity/Appunti/Lesson 3 - Security properties and Threats 1.md",
     "Third Year/Cybersecurity/Appunti/Lesson 3 - Security properties and Threats.md",
     "Third Year/Embedded & Multicore programming/Lesson 7 - Collective Communication (Cont'd).md",
     "Third Year/Ing Software/Lesson 23_10 - a.md",
     "Third Year/Embedded & Multicore programming/Lesson 6 - Parallel Design Patterns.md",
-    "Third Year/Web programming/Lesson X - API Best Practices.md",
+    "Second Year/Reti/Rielaborati/Reti di elaboratori.md",
     "Second Year/Reti/Rielaborati/Reti di elaboratori - Fino a SMTP.pdf",
     "Third Year/Web programming/Lesson 7 - REST.md",
     "Third Year/Cybersecurity/Appunti",
