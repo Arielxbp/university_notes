@@ -20,8 +20,37 @@
               "icon": "diff",
               "title": "Diff: .gitignore"
             }
+          },
+          {
+            "id": "0854663f09e4b53e",
+            "type": "leaf",
+            "state": {
+              "type": "split-diff-view",
+              "state": {
+                "aFile": "Università/.obsidian/workspace.json",
+                "bFile": "Università/.obsidian/workspace.json",
+                "aRef": ""
+              },
+              "icon": "diff",
+              "title": "Diff: workspace.json"
+            }
+          },
+          {
+            "id": "f5817fb4fb1d6f1f",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "conflict-files-obsidian-git.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "conflict-files-obsidian-git"
+            }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -181,10 +210,10 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "c810c22243ef42d1",
+  "active": "f5817fb4fb1d6f1f",
   "lastOpenFiles": [
-    "Third Year/Embedded & Multicore programming/Lesson 12 - Memory types (+ exam).md",
     "conflict-files-obsidian-git.md",
+    "Third Year/Embedded & Multicore programming/Lesson 12 - Memory types (+ exam).md",
     "Third Year/Embedded & Multicore programming/Lesson 11 - OpenMP pt2.md",
     "Third Year/Cybersecurity/Rielaborato.md",
     "Third Year/Cybersecurity/Appunti/Lesson 4 - ..md",
