@@ -13,13 +13,12 @@
             "state": {
               "type": "split-diff-view",
               "state": {
-                "aFile": "Università/Third Year/Web programming/Project.md",
-                "bFile": "Università/Third Year/Web programming/Project.md",
-                "aRef": "HEAD",
-                "bRef": ""
+                "aFile": ".gitignore",
+                "bFile": ".gitignore",
+                "aRef": ""
               },
               "icon": "diff",
-              "title": "Diff: Project"
+              "title": "Diff: .gitignore"
             }
           }
         ]
@@ -184,8 +183,8 @@
   },
   "active": "c810c22243ef42d1",
   "lastOpenFiles": [
-    "conflict-files-obsidian-git.md",
     "Third Year/Embedded & Multicore programming/Lesson 12 - Memory types (+ exam).md",
+    "conflict-files-obsidian-git.md",
     "Third Year/Embedded & Multicore programming/Lesson 11 - OpenMP pt2.md",
     "Third Year/Cybersecurity/Rielaborato.md",
     "Third Year/Cybersecurity/Appunti/Lesson 4 - ..md",
