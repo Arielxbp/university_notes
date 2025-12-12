@@ -1394,9 +1394,32 @@ A cookie can contains data like:
 - The path for which it is valid.
 - The domain on which it is valid.
 - A `secure` flag that states whether the cookie must be transmitted on a secure channel only.
-- A `httpOnly` flag that states if no API is allowed to access `document.cookie
+- A `httpOnly` flag that states if no API is allowed to access `document.cookie`.
 
-- 
+A cookie creates a session:
+- The session data is stored on the server.
+- The server sends a session ID to the client through a cookie.
+- For each client request, it sends back the obtained ID to the server.
+- So the server uses these IDs to retrieve information.
+
+### Cookies: Security
+
+Because cookies are used for critical elements like authentication, and can bypass authentication schemas (defenses), they can be targeted by attackers.
+
+So cookies should be considered valid for only a __small__ amount of time.
+
+## Content Isolation
+
+Most browser's security mechanism rely on the possibility of __isolating__ documents depending on the resource's origin.
+
+Meaning that:
+- Content coming from website $A$ can only read and modify content coming from $A$, and __cannot access__ content coming from website $B$.
+
+In this way a malicious website cannot run scripts that access data and functionalities of other websites visited by the victim.
+
+The 
+
+
 
 
 # Symmetric Encryption
