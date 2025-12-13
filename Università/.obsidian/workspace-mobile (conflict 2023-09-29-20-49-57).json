@@ -1,0 +1,160 @@
+{
+  "main": {
+    "id": "d1a98642c0723bc9",
+    "type": "split",
+    "children": [
+      {
+        "id": "99a9c91d28b894c6",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "af1c59b19f41930f",
+            "type": "leaf",
+            "state": {
+              "type": "excalidraw",
+              "state": {
+                "file": "Files vari/Addizioni,sottrazioni,moltiplicazioni.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "1cefab2dc1732fd0",
+    "type": "mobile-drawer",
+    "children": [
+      {
+        "id": "ebad5df74e2e57d0",
+        "type": "leaf",
+        "state": {
+          "type": "file-explorer",
+          "state": {
+            "sortOrder": "alphabetical"
+          }
+        }
+      },
+      {
+        "id": "39f5a1051f070ca0",
+        "type": "leaf",
+        "state": {
+          "type": "search",
+          "state": {
+            "query": "",
+            "matchingCase": false,
+            "explainSearch": false,
+            "collapseAll": false,
+            "extraContext": false,
+            "sortOrder": "alphabetical"
+          }
+        }
+      },
+      {
+        "id": "0dad95c1cbd0d2bc",
+        "type": "leaf",
+        "state": {
+          "type": "tag",
+          "state": {
+            "sortOrder": "frequency",
+            "useHierarchy": true
+          }
+        }
+      },
+      {
+        "id": "7580ad73009bfc16",
+        "type": "leaf",
+        "state": {
+          "type": "bookmarks",
+          "state": {}
+        }
+      }
+    ],
+    "currentTab": 0
+  },
+  "right": {
+    "id": "5cc2477da9ac4c8d",
+    "type": "mobile-drawer",
+    "children": [
+      {
+        "id": "f305e30da82f2a99",
+        "type": "leaf",
+        "state": {
+          "type": "backlink",
+          "state": {
+            "file": "Files vari/Addizioni,sottrazioni,moltiplicazioni.md",
+            "collapseAll": false,
+            "extraContext": false,
+            "sortOrder": "alphabetical",
+            "showSearch": false,
+            "searchQuery": "",
+            "backlinkCollapsed": false,
+            "unlinkedCollapsed": true
+          }
+        }
+      },
+      {
+        "id": "071dc2f460f64dd0",
+        "type": "leaf",
+        "state": {
+          "type": "outgoing-link",
+          "state": {
+            "file": "Files vari/Addizioni,sottrazioni,moltiplicazioni.md",
+            "linksCollapsed": false,
+            "unlinkedCollapsed": true
+          }
+        }
+      },
+      {
+        "id": "155c04b56574d0ec",
+        "type": "leaf",
+        "state": {
+          "type": "outline",
+          "state": {
+            "file": "Files vari/Addizioni,sottrazioni,moltiplicazioni.md"
+          }
+        }
+      }
+    ],
+    "currentTab": 0
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "obsidian-excalidraw-plugin:Create new drawing": false
+    }
+  },
+  "active": "af1c59b19f41930f",
+  "lastOpenFiles": [
+    "Files vari/Temporan.pdf",
+    "Files vari/Untitled.canvas",
+    "Files vari/Addizioni,sottrazioni,moltiplicazioni.md",
+    "Progettazione di sistemi digitali/Rielaborati/Lezione n2 sistemi 29 Settembre.md",
+    "Progettazione di sistemi digitali/Appunti/Appunti 29 Settembre.md",
+    "Files vari/Conversione in basi esempio.md",
+    "Progettazione di sistemi digitali/Rielaborati/Drawing 2023-09-29 19.35.20.excalidraw.md",
+    "Progettazione di sistemi digitali/Rielaborati/Rielaborato lezione n1 25 Sett.md",
+    "Calcolo differenziale/Appunti/Appunti 29 Settembre.md",
+    "Software da scaricare.md",
+    "Da fare.md",
+    "Progetti.md",
+    "Untitled.md",
+    "Calcolo differenziale/Rielaborati/Rielaborato lezione n1 25 Sett.md",
+    "Libri/Sistemi digitali lib.pdf",
+    "Libri/Introduzione alla logica e al linguaggio matematico (Giorgio T. Bagni Daniele Gorla Anna Labella) (Z-Library).pdf",
+    "Libri",
+    "Files vari/Spiegazione Lezione^1 2509_230926_144159 1.pdf",
+    "Spiegazione lezione^1 2509_230925_235623.pdf",
+    "Files vari",
+    "Files vari/Spiegazione lezione^1 2509_230925_235623.pdf",
+    "Files vari/Spiegazione Lezione^1 2509_230926_144159.pdf",
+    "Progettazione di sistemi digitali/Rielaborati",
+    "Progettazione di sistemi digitali/Appunti"
+  ]
+}
