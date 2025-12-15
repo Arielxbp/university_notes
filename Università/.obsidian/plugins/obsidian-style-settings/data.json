@@ -8,5 +8,6 @@
   "minimal-style@@h1-weight": 600,
   "minimal-style@@h1-size": "1.725em",
   "minimal-advanced@@styled-scrollbars": false,
-  "minimal-style@@bold-color@@dark": "#F06464"
+  "minimal-style@@bold-color@@dark": "#F06464",
+  "minimal-style@@image-muted": 1
 }
