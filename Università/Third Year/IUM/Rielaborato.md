@@ -306,6 +306,8 @@ Una storyboard __mostra un sistema__ e __il suo contesto d'uso__.
 Permette di condividerlo con altri, non lega il sistema a un'interfaccia particolare.
 Permette la discussione e il miglioramento delle scelte.
 
+__RIVEDERE COSA NON INCLUDERE NELLE STORYBOARDS__
+
 # Evaluation (valutazione)
 
 La valutazione serve a testare:
@@ -410,12 +412,44 @@ Per ogni passo l'esperto di psicologia solitamente, si chiede mentre esegue il t
 E riporta i problemi trovati su un documento.
 
 
-Heuristic evaluation
+### Heuristic evaluation
 
-Model-based evalutation
+Euristica, sono le linee guida, o principio generale, o regola pratica semplice ed efficiente.
 
-Review-based evaluation
+Questa tecnica serve per guidare le decisioni di progetto o per criticare decisioni già prese.
 
+__Nielsen__ e __Molich__ hanno proposto $10$ euristiche per __scoprire problemi__ di usabilità dei sistemi interattivi.
+
+Nella valutazione euristica il valutatore esamina il progetto per vedere se il progetto viola una o più euristiche.
+
+1. visibilità dello stato del sistema
+2. corrispondenza tra il sistema e il mondo reale
+3. libertà e controllo da parte degli utenti
+4. coerenza e standard
+5. prevenzione degli errori
+6. riconoscere piuttosto che ricordare
+7. flessibilità ed efficienza d'uso
+8. design minimalista ed estetico
+9. aiutare gli utenti a riconoscere, diagnosticare e correggere gli
+errori
+10. aiuto/guida e documentazione
+
+Per ogni euristica si procede descrivendo:
+- Problema.
+- Analisi.
+- Soluzione.
+
+### Model-based evalutation
+
+
+
+### Review-based evaluation
+
+Questa tecnica si basa su __risultati ottenuti da studi precedenti__.
+
+È usato per supportare o rifiutare parti del design.
+
+Un __esperto__ è richiesto per assicurarsi che il tutto sia corretto.
 
 # Modi
 
