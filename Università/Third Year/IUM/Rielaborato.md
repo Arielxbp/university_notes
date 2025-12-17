@@ -70,6 +70,22 @@ Esistono tuttavia altri tipi di interfacce (Post-WIMP), come:
 - Controlli fisici (Physical controls). (Touch screens?)
 - Interfacce utente tattili (E.g. Guanto che detecta i movimenti della mano)
 
+## Personas
+
+È uno strumento usato nel design di interfacce.
+
+Una "persona" rappresenta un modello __astratto__ di utenti reali, create sulla base di dati ottenuti tramite il needfinding e l'analysis.
+
+Aiutano a comprendere meglio i need e i comportamenti degli utenti durante il processo di progettazione.
+
+Forniscono un quadro di riferimento per la progettazione, consentendo di identificare le esigenze degli utenti e le possibili sfide.
+
+È tipo un CV ma con:
+- Nome
+- __Una foto__.
+- Caratteristiche demografiche, tipo l'età, il sesso, la professione, ...
+- Frustrazioni, ovvero quali sono i problemi che potrebbe sperimentare.
+- Comportamenti, ovvero come utilizza il sistema, quali sono le sue abitudini.
 
 # Human-Centered Design Process
 
@@ -79,7 +95,7 @@ I passi principali del processo di design centrato sull'utente sono:
 - __Needfinding__: cosa esattamente è necessario, come le persone attualmente compiono questo obiettivo.
 - __Analysis__: formalizzare e strutturare i bisogni degli utenti, creare le task.
 - __Design__: creare il sistema, le regole, le linee guida e i principi di design da seguire.
-- __Iteration and prototyping__: il design deve essere supportato da un immediata verifica, dove si valuta il design nella sua forma parziale. Ciò coinvolge ovviamente gli utenti finali.
+- __Iteration and prototyping__, __evaluation__: il design deve essere supportato da un immediata verifica, dove si valuta il design nella sua forma parziale. Ciò coinvolge ovviamente gli utenti finali.
 - __Implementation and deployment__: solo dopo aver valutato il design si procede all'implementazione fisica (Hardware) e logica (Software), insieme alla documentazione.
 
 # Needfinding
@@ -239,4 +255,104 @@ Servono per chiedere il livello di agreement about a statement.
 Un numero pari di valori tolgono l'uso di un valore come risposta neutrale.
 
 # Task Analysis
+
+## Need
+
+A need is the underlying problem (gap).
+
+## Goal
+
+A goal is the end-state a user wants to achieve.
+
+It describes what the user want to do.
+
+## Task
+
+A task is a set of activities or __sequential steps__ required to achieve a specific __goal__.
+
+Tasks break down the goal into multiple simple pieces.
+
+# Storyboard
+
+Gli storyboard sono delle rappresentazioni grafiche del sistema viste in modo molto basilare, __senza include alcuna funzionalità del sistema__.
+
+Serve a comunicare cosa un utente può ottenere usando il sistema.
+
+Ogni pannello dovrebbe contenere cosa succede __nei punti chiave__ nel tempo.
+
+Le storyboard sono usate sui __tasks__:
+- Illustrano un __goal__ per il task.
+- Come un task si esegue in vari step.
+- Alla fine, come l'utente raggiunge il goal.
+
+Non si deve includere l'interfaccia dell'utente in modo dettagliato. No problemi sul come fare l'interfaccia, buttons, layout, ...
+
+Non si deve perdere tanto tempo sul fare la storyboard. No distrazioni sul voglio farlo troppo bene, porta a voler fare tutto nei minimi dettagli, fonts, colori, icone, ...
+
+Una storyboard __mostra un sistema__ e __il suo contesto d'uso__.
+
+Permette di condividerlo con altri, non lega il sistema a un'interfaccia particolare.
+Permette la discussione e il miglioramento delle scelte.
+
+# Evaluation (valutazione)
+
+La valutazione serve a testare:
+- L'__usabilità__ e la __funzionalità__ del sistema.
+
+Può essere eseguita in:
+- Un laboratorio.
+- Campo aperto.
+
+La valutazione viene eseguita sia sul __design__ che sull'__implementazione__.
+
+I goals della valutazione sono:
+- Quello di controllare quanto funzionano le funzionalità del sistema.
+- Quello di controllare che effetti provoca l'interfaccia del sistema sull'utente.
+- Quello di identificare problemi specifici.
+
+Lo scenario descrive una situazione potenzialmente reale nella quale si immedesimano i partecipanti alla valutazione.
+
+## Metodi per osservare
+
+I metodi usati per osservare la valutazione:
+- __Think aloud__.
+- __Cooperative evaluation__.
+- __Protocol analysis__.
+- __Post-task walkthrough__.
+
+### Think aloud
+
+L'utente viene osservato mentre effettua la task e gli viene chiesto di __descrivere__ cosa sta facendo e perché, cosa sta pensando, ...
+
+I vantaggi sono:
+- Semplice da fare.
+- Può portare a intuizioni utili.
+- Può mostrare come il sistema viene usato veramente.
+
+Gli svantaggi sono:
+- È soggettivo.
+- L'atto di descrivere e parlare e ... può alterare cosa farebbe senza queste richieste.
+
+### Cooperative evaluation
+
+È una variazione del Think aloud.
+
+L'utente collabora insieme al valutatore, si chiedono domande utili a vicenda.
+
+### Protocol analysis
+
+Usare mezzi audio, video, penna e fogli per segnare tutti i passi, pensieri, ...
+
+È un metodo difficile da eseguire con successo.
+
+### Post-task walkthrough
+
+La trascrizione testo/audio/video viene fatta visionare al partecipante per __ottenere dei commenti sul perché__ ha fatto certe cose.
+
+Se è immediato, il partecipante si ricorda ancora il perché ha fatto quella cosa.
+Se viene fatto vedere dopo, il partecipante ha avuto tempo per __pensare__.
+
+È necessario nei casi in cui il think aloud non è possibile.
+
+## Esperimenti
 
