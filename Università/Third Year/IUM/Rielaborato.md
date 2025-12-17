@@ -356,3 +356,177 @@ Se viene fatto vedere dopo, il partecipante ha avuto tempo per __pensare__.
 
 ## Esperimenti
 
+Gli esperimenti si fanno scegliendo l'ipotesi, le variabili dipendenti e indipendenti. (più semplici possibili le variabili indipendenti)
+Si scelgono i partecipanti e si sceglie il __metodo dell'esperimento__:
+- Between subjects.
+- Within subjects.
+
+### Between subjects
+
+L'esperimento si fa su una variabile indipendente modificata rispetto alla condizione di controllo (default).
+
+Ogni partecipante __esegue una sola volta__ il test, quindi ha una sola condizione cambiata.
+
+Tale metodo __non risente__ del "__trasferimento dell'apprendimento__".
+
+### Within subjects
+
+A ogni partecipante vengono dati tutte le condizioni dell'esperimento.
+Quindi ogni partecipante __svolge più test__.
+
+Questo metodo usa meno gente, cioè meno costoso.
+
+Tale metodo __risente__ del "trasferimento dell'apprendimento".
+
+
+
+While Agile focuses on building software through rapid, iterative delivery, UCD ensures that what is being built actually solves the right problems for the end user
+
+## Tecniche di valutazione: Expert-based
+
+Nel progetto solo una o la seconda è realizzabile.
+Ogni volta che realizza una versione del prototipo usare una di queste due tecniche.
+
+### Cognitive walkthrough
+
+Per usare cognitive walkthrough serve specifiche del sistema, descrizione di un task, descrizione di un utente tipo del sistema, sequenza dei passi necessari per compiere il task.
+Per ogni passo l'esperto di psicologia solitamente, si chiede mentre esegue il task:
+- L'effetto dell'azione è lo stesso dell'obiettivo dell'utente?.
+- L'utente può vedere che l'azione è disponibile?.
+- L'utente capirà che quella è l'azione da eseguire?.
+- Dopo averla eseguita, capirà il feedback ricevuto?.
+E riporta i problemi trovati su un documento.
+
+
+Heuristic evaluation
+
+Model-based evalutation
+
+Review-based evaluation
+
+
+# Modi
+
+content: l'insieme di informazioni che risiedono in un sistema e che hanno significato e utilità per l'utente
+
+GID (Graphical Input Device): meccanismo per
+comunicare al sistema una particolare locazione o
+la scelta di un oggetto (tipicamente la posizione del
+cursore)
+
+GID button: bottone principale del GID
+
+## Gesture (gesto)
+
+Una gesture è una sequenza di azioni completata "automaticamente" una volta avviata.
+
+E.g.:
+- Scrivere una parola comune (autocomplete?)
+- Premere il tasto invio.
+- Drag and drop sul smartphone.
+	- Appoggio il dito su un oggetto, tengo fermo il dito (così l'oggetto viene "agganciato")
+	- Sposto il dito.
+	- Stacco il dito dallo schermo.
+
+## Modi (definizione)
+
+I modi si manifestano nella maniera in cui un'interfaccia risponde ai gesti.
+
+Dato un gesto, un'interfaccia è in un __modo__ se l'interpretazione di quel gesto è sempre la stessa.
+E quando il gesto viene interpretato in maniera diversa, l'interfaccia si trova in un __altro modo__.
+
+E.g. il tasto invio può essere interpretato in vari modi:
+- Può essere interpretato come "andare a capo"
+- Può essere interpretato come "confermare l'inserimento"
+- Può essere interpretato come "seleziona l'elemento dopo aver scelto tale oggetto"
+
+## "Luogo dell'attenzione"
+
+Un luogo dell'attenzione è un oggetto fisico o un idea alla quale:
+- Stiamo pensando __attivamente e intenzionalmente__.
+
+Può esserci __un solo__ luogo dell'attenzione __alla volta__.
+
+È simile al concetto di focussarsi. (Se qualcosa accade al di fuori del luogo che succede)
+
+## Caps lock
+
+Il tasto di blocco maiuscole __crea un modo__.
+
+Ma solitamente gli utenti sbagliano a scrivere in maiuscolo solo dopo aver scritto un pò, __anche se__ vi sono LED verde sul tasto stesso, o altri indicatori di caps lock.
+
+Quindi i modi __possono indurre in errore__, anche se possono comunque essere utili, aggiungendo __flessibilità__.
+
+Ne l'esperienza ne l'inesperienza riesce a proteggere l'utente dagli errori dovuti ai modi.
+- L'esperto ha semplicemente acquisito delle abitudini.
+
+## Mode errors
+
+Quindi gli errori causati dai modi:
+- Sono errori che accadono quando un utente pensa in modo errato e/o analizza una situazione in modo sbagliato.
+
+Come evitare questi errori:
+- __Non avere__ modi.
+- Assicurarsi che i modi sono marcati in modo distintivo.
+- __Assicurarsi che il comando__ richiesto da __differenti modi__ non sia lo stesso, in modo tale che un comando eseguito in modo sbagliato __non porterà a difficoltà__, ovvero il comando non deve produrre alcun effetto.
+
+Gli errori di modo provengono principalmente dagli spostamenti del luogo d'attenzione dell'utente.
+
+Se si riesce a redesignare l'interfaccia in modo che si eliminino tutti gli spostamenti di attenzione, allora non ci saranno più errori di modo.
+
+## Interfaccia modale
+
+Un interfaccia è __modale rispetto a un gesto__ se:
+- Lo stato corrente dell'interfaccia non è il luogo dell'attenzione dell'utente. (E.g. tipo quando stai su clash of clans e perdi la connessione esce il popup, ma il tuo luogo dell'attenzione era sulla battaglia)
+__e__
+- L'interfaccia risponderà al gesto con un tra n>1 possibili risposte, a seconda dello stato del sistema.
+E.g. Quando un app vuole farti attivare la location, tu decidi si o no.
+
+Le interfacce modali servono a:
+- __Ottenere immediatamente l'attenzione dell'utente__ per comunicare __informazioni critiche__, __confermare azioni non reversibili__....
+
+--
+In Human-Computer Interaction (HCI),
+**modes** are distinct states where the same user input (gesture, keypress, or click) results in different actions depending on the system's current condition.
+-\-
+
+A **modal interface** is one that transitions between different states or "modes". It restricts a user's interaction to a specific task or window, requiring them to complete or dismiss it before they can return to the rest of the application
+
+**High Risk of "Mode Errors":** Users may perform an action intended for one mode while actually in another (e.g., typing a password with **Caps Lock** active, which is a common modal state).
+
+Quindi è una cosa che cambia lo stato di un elemento in __uno specifico _modo___.
+
+Un __quasi-modo__ è un modo ottenuto attivando e mantenendo fisicamente un controllo:
+- E.g. tasto ctrl
+
+## Interfaccia NON modale
+
+Un interfaccia può essere modale rispetto a uno o più gesti e __non__ modale risposto a un altro o vari altri gesti.
+
+Un'interfaccia è __non-modale__ se non è modale rispetto a qualunque possibile gesto.
+
+## Interazione noun-verb e verb-noun
+
+Eseguire azioni (verb) su oggetti (noun).
+
+Sono anche chiamati object-action e action-object.
+
+### Noun-verb
+
+Si seleziona prima l'oggetto:
+E.g. seleziono prima la gomma su photoshop, e poi cancello.
+E.g. seleziono un tool da una palette di strumenti e poi lo uso.
+
+Si seleziona l'oggetto mentre esso è nel luogo dell'attenzione.
+Il luogo dell'attenzione si sposta sull'azione e la si attiva.
+Interrompere l'azione non richiede un'altra azione, quindi semplice e reversibile (E.g. scelgo cancellino)
+
+### Verb-noun
+
+Si seleziona prima l'azione:
+E.g. seleziono un testo, scelgo un nuovo font (il font è l'oggetto)
+
+Si sposta il luogo dell'attenzione __sull'azione__ e la si seleziona.
+Si sposta il luogo dell'attenzione sull'oggetto.
+In caso di distrazione e spostamento imprevisto del luogo dell'attenzione, __ci saranno errori di modo__.
+
