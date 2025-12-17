@@ -6,6 +6,18 @@ L'interazione uomo-macchina è un campo multi-disciplinare interessato al:
 L'obiettivo del HCI è quello di avere sistemi che supportano il compito (__task__) dell'utente, focalizzandosi sulla __usabilità__ della macchina, ovvero:
 - Dato un utente, il suo compito che deve compiere e un computer, tale macchina deve aiutare l'utente rendendosi utile, essere usabile ed essere usato.
 
+
+In Human-Computer Interaction (HCI), an
+
+**artifact** (or _artefact_) is ==any object, tool, or byproduct created or modified by human workmanship during the design and development process==.
+Artifacts are typically categorized by their role in the project lifecycle:
+
+- **Research Artifacts:** Objects that capture insights about users, such as User Personas, empathy maps, and User Journey Maps.
+- **Design Artifacts:** Tangible representations of a solution, including Wireframes, mockups, and sitemaps.
+- **Cognitive Artifacts:** Artificial devices (physical or digital) that maintain or display information to enhance human cognitive performance, such as calendars, calculators, or to-do lists.
+- **Testing & Validation Artifacts:** Evidence gathered from user interaction, such as usability test reports, A/B test results, and Prototypes.
+- **Speculative Artifacts:** Design "probes" or objects meant to provoke debate about future ethical or social impacts of technology, rather than for immediate use.
+
 Di seguito si elencano alcuni __approcci__ per modellare un processo di design.
 
 ## User Centered Design (USD)
