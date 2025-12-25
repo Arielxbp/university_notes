@@ -27,7 +27,7 @@ ___
 
 ## Interazione uomo macchina (15/01)
 
-- [ ] Esonero dicembre
+- [x] Esonero dicembre
 
 ## Cybersecurity (16/01)
 
@@ -44,7 +44,7 @@ ___
 - [ ] Argomento: Rifinire progetto - Data: 18/01
 - [ ] Argomento: Studiare per orale - Data: 19/01
 - [ ] 
-## Programmazione di sistemi multicore (27/01)
+## Programmazione di sistemi multicore (xx/02)
 
 - [x] Argomento: Rifinire progetto - Data: 20/01
 - [ ] Argomento: Rifinire progetto - Data: 21/01
