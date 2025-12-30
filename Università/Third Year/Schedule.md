@@ -14,6 +14,12 @@ ___
 - [ ] Argomento: Ripasso ed esercizi - Data: 10/01
 - [ ] Argomento: Ripasso ed esercizi - Data: 11/01
 
+
+- [ ] 2 gg ripasso
+- [ ] resto giorni esami passati
+- [ ] + nuovi esercizi possibili tramite esami passati + gemini per generare domande
+- [ ] Esercizi libro
+
 ## Ingegneria del software (14/01)
 
 - [x] Argomento: Quiz domande - Data: 31/12
