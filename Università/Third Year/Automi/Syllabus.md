@@ -27,9 +27,9 @@ ___
 - [ ] Conversione da DFA a CFG
 - [x] Forma normale di Chomsky CNF
 - [x] Teorema: ogni CFG ammette una CFG equivalente in forma normale
-- [ ] PDA
-- [ ] Lemma: conversione da CFG a PDA + conversione da PDA a CFG (molto lungo)
-- [ ] Pumping lemma per CFG
+- [x] PDA
+- [x] Lemma: conversione da CFG a PDA + conversione da PDA a CFG (molto lungo)
+- [x] Pumping lemma per CFG (Non lo chiede spero)
 
 - [ ] TM
 - [ ] 
