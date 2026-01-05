@@ -21,10 +21,10 @@ ___
 - [x] GNFA 
 - [x] Trasformazione da GNFA a espressione regolare. Dimostrazione è togliere stati e aggiungere sulle etichette la regex parziale
 - [x] Pumping lemma
-- [ ] Grammatiche acontestuali CFG
-- [ ] Derivazione e produzione
+- [x] Grammatiche acontestuali CFG
+- [x] Derivazione e produzione
 - [ ] Tecniche per construire grammatiche
-- [ ] Conversione da DFA a CFG
+- [ ] Conversione da DFA a CFG __da rivedere__
 - [x] Forma normale di Chomsky CNF
 - [x] Teorema: ogni CFG ammette una CFG equivalente in forma normale
 - [x] PDA
