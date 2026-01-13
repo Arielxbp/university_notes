@@ -459,6 +459,8 @@ This provides:
 
 ## Public-Key Encryption
 
+___Continuare da qui___: Slide 2 pag 21/36
+
 It's a form of encryption based on mathematical functions, and is __asymmetric__:
 - It uses two separate keys, one public and the other one private.
 
