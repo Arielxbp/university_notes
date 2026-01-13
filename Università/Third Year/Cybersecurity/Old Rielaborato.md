@@ -298,164 +298,88 @@ When developing security strategies, some fundamentals are:
 The main technique used for providing __confidentiality__ for trasmitted and stored data is:
 - __Symmetric encryption__, also called single-key encryption.
 
-## Symmetric Encryption
-
 This encryption requires:
 - A strong encryption __algorithm__.
 - That both sender and receiver must have obtained copies of the __secret key__ in a secure way.
 - They must keep the key __secure__.
 
-### Diagram of its usage
+The key is a __one-time__ use for that session only, so once one of the two parties are done with the session, that key will be useless.
 
-![|700](https://i.imgur.com/XbkVGWt.png)
+The encryption is on a data block basis, so the plaintext input is divided into blocks, then fed into the algorithm together with the key, to encrypt it.
 
-Most symmetric encryption algorithms are performed on __blocks of data__ and not on the full plaintext:
-1) The input plaintext is divided into fixed block of bits.
-2) These blocks are then fed into the algorithm together with the secret key.
-3) The output ciphertext is transmitted.
-4) The receiver uses the reverse of the encryption algorithm with the same secret key to decrypt the ciphertext into plaintext.
+The __size__ of the key is crucial to a successful encrypted data transmission, because even if the encryption algorithm is secure, if the size of the key is small, one can try to brute-force it by trying every key possible.
 
-### Symmetric Encryption Attack
+To ensure that the encryption is secure, the standard size for a key is $128$ bit.
 
-An attacker can perform __cryptanalytic attacks__ to try to deduce the secret key being used, based on the characteristics of the algorithm and the texts.
-This type of attack relies on:
-- The nature of the algorithm.
-- Some knowledge about the characteristics of the plaintext alphabet.
-- Some sample tuples of (plaintext, ciphertext).
+While brute-force attacks are simple, it is mostly ineffective, because of the size of the key. So there exist another way, called a cryptanalytic attack:
+- This method relies on the nature of the algorithm, some knowledge on the general characteristics of the plaintext alphabet.
+- It exploits the charateristics of the algorithm to attempt to deduce the key.
 
-Also __brute-force__ attacks are possible, where the attacker tries __all possible__ keys on some ciphertext until the result plaintext is readable.
 
-### Defences against Attacks
+The most known symmetric encryption algorithms all use some type of ciphering (block or stream) and keys.
 
-The __size__ of the key is crucial for a successful encrypted data transmission, because even if the encryption algorithm is secure, if the size of the key is small, attackers can brute-force it by trying every possible key.
+The modern standard is __AES__, that stands for "Advanced Encryption Standard":
+- It uses $128$ bit block cipher.
+- Can use $128$, $192$ or $256$ bit secret keys.
 
-So to ensure that the encryption is secure, the standard size for a secret key is $128$ bit.
+Another algorithm is __DES__, now considered insecure:
+- It uses $64$ bit block cipher and $56$ bit secret keys.
 
-While brute-force attacks are simple, they are mostly ineffective if the key is big enough. 
+There exist some issues with AES:
+- Because each block of plaintext is encrypted using the same key, it's doable for cryptanalysts to be able to exploit regularities in the plaintext.
 
 ## Block and stream ciphers
 
 The block cipher:
-- Processes the input one block of elements at a time.
-- Produces an output block for each input blocks.
+- Processes the input one block of elements at a time and it produces an output block for each of the input blocks.
 - Can reuse keys.
-- Is more commonly used.
+- Is it more commonly used.
 
 The stream cipher:
-- Processes the input elements continuously.
-- Produces output one element at a time.
-- The primary advantage against the block cipher is that it is almost always __faster__ and use less code.
-- Encrypts plaintext one byte at a time.
-
-## Most known Symmetric Encryption Algorithms
-
-### AES (Advanced Encryption Standard)
-
-The modern standard is __AES__:
-- It uses $128$ bit block cipher.
-- It can use $128$, $192$ or $256$ bit secret keys.
-
-__Electronic codebook mode__ (ECB) is the simplest approach used to encrypt multiple blocks of data, because:
-- For each block of plaintext, it encrypts it using the same key.
-
-But because of this, cryptanalysts may be able to exploit regularities found in the plaintext.
-
-### DES (Data Encryption Standard)
-
-Another algorithm is __DES__:
-- It uses $64$ bit block cipher.
-- It uses $56$ bit secret keys.
-
-DES is now considered __insecure__, mainly because of the size of the secret keys being only $56$ bit.
-
-#### 3DES
-
-There is a variant of DES, called 3DES:
-- It uses $64$bit block cipher.
-- It uses $112$ or $168$ bit secret keys.
-
-It basically __repeats__ the basic DES algorithm $3$ times using $3$ unique keys.
-
-Because it computes $3$ times, the algorithm is __slow__, so it's not preffered.
-
-### RC4 (ARCFOUR)
-
-RC4 is an algorithm that:
-- Uses a __stream cipher__.
-- Uses from $40$ up to $2048$ bits secret keys.
-
-It is also considered insecure for modern standards.
+- Processes the input elements continuously but it produces one element at a time.
+- The primary advantage against the block cipher is that it is almost always __faster__ and use far less code.
+- It encrypts plaintext one byte at a time.
 
 # Message Authentication
 
-The sender always needs to verify that received messages are authentic:
-- That the contents have not been modified.
-- It's sent from the authentic source.
+Message encryption is necessary to provide some form of authenticity, but by itself its not a secure form of authentication.
 
-Encrypting the sent message provides some __confidentiality__, but it does not provide __authenticity__.
-
-To provide authenticity we use __authentication tags__, a piece of data that is related to the message but not reversible to recover the original message.
-
-So now we need algorithms that:
-- Encrypts plaintext.
-- And create an authentication tag.
+We use encryption and authentication tags together to provide confidentiality, and typically these steps are done separately inside an algorithm.
 
 ## MAC (Message Authentication Code)
 
-Given a message:
-1) An algorithm uses the secret key $k$ and the message itself to calculate the message authentication code.
-2) The message plus the code are sent to the receiver.
-3) The receiver performs the same calculation using the message and the same key $k$ to calculate a new message authentication code.
-4) The received code is compared to the newly calculated code.
-5) If the key is secure (known only to the sender and receiver), then the codes should match.
+To provide authentication we can use MACs, these are codes that are obtained by putting a message and a secure key as a input to a MAC algorithm. This will return a MAC for the input message.
 
-If the codes match:
-- Then the message has not been modified, because the code is related to the message, so if an attacker modifies the message, then the newly calculated code should be different.
-- Then the receiver knows that the sender is verified, because no one else knows the secret key. 
+A MAC algorithm needs to be not reversible.
 
-Obviously a MAC algorithm needs to be __irreversible__.
+By transmitting the MAC binded together with the message we get some form of authenticity.
+
+The receiver needs to have the same secret key used as input to be able to compare the MAC that came together with the message.
 
 ## Cryptographic hash function
 
-A hash function is typically used to produce a __fingerprint__ of a file, message or other block of data.
+A hash functions is typically used to produce a __fingerprint__ of a file, message or other block of data. This function is in general, non-injective, meaning that given an output, no other input can result in the same output.
 
-It generates from an input of $p$ bits an output of $k$ bits fixed in length, where $p\geq k$.
+This function generates a set of $k$ bits that is fixed in length from a bigger set of $L$ bits.
 
-The output is called __hash value__ or __checksum__.
-
-Generally these functions are __non-injective__:
-- Meaning that given an output, no other input can result in the same output.
+Generally a hash function is __not__ useful from a cryptographic standpoint, it needs specific properties.
 
 Hash functions do __not__ take a secret key as input. 
 
-### Properties of a hash function for authentication purposes 
+## MAC + Hash function
+
+We can use the message as the input of the hash function, this value is then encrypted with the secret key using a MAC algorithm to create an encrypted hash value, this is then binded with the message and sent to the receiver.
+
+Once received the encrypted hash value will be separated from the message and decrypted using the MAC key, then it will be compared with the hash value obtained from hashing the message only. If both do not have the same value, then it means that the message was corrupted.
+
+## Properties for a useful hash function
 
 A hash function aimed towards authentication usefulness needs to have the following properties:
 - Can be applied to a block of data of any size.
-- Produces a output fixed in length.
-- The function is relatively easy to compute for any input.
-- One-way or pre-image resistant, meaning that it is computationally impossible given a known hash value, to find its input.
+- Produces a fixed-length output.
+- The hash function needs to be relatively easy to compute for any give input.
+- One-way or pre-image resistant, meaning that it is computationally infeasible given a known hash value, to find its input.
 - Computationally infeasible to find two different inputs such that both output hash value are the same.
-
-## MAC + Hash function
-
-### Using symmetric encryption
-
-It is possible to get MACs using hash functions:
-1) The message is used as the input of the hash function.
-2) The hash value is then encrypted using the secret key in a MAC algorithm.
-3) The encrypted hash value plus the message are sent to the receiver.
-4) The receiver decrypts the encrypted hash value using the same secret key in the algorithm.
-5) The receiver also uses the received message as the input of the hash function.
-6) The decrypted hash value is compared to the just hashed value from the received message.
-
-### Using public-key encryption
-
-Instead of the secret key, that needs to be secure and known to both the sender and receiver, this can be a __public key__.
-
-This provides:
-- A digital signature.
-- And it removes the problem of sending both the sender and receiver the same secret key.
 
 ## Public-Key Encryption
 
