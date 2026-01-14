@@ -137,7 +137,7 @@ It contains two related concepts:
 
 ## Tools for Integrity
 
-Tools used for checking the integrity of informations are:
+Tools used for checking the integrity of information are:
 - __Backups__.
 - __Checksums__, are functions that given a file, computes a distinct numerical value.
 - __Data correcting codes__, are methods for storing data in a way that small changes can be easily detected and automatically corrected.
@@ -437,6 +437,12 @@ A hash function aimed towards authentication usefulness needs to have the follow
 - One-way or pre-image resistant, meaning that it is computationally impossible given a known hash value, to find its input.
 - Computationally infeasible to find two different inputs such that both output hash value are the same.
 
+### Security of Hash Functions
+
+There are two way two attack a secure hash function:
+- Exploiting logical vulnerabilities present in the algorithm.
+- Or brute-forcing __if__ the length of the result hash value is relatively small. 
+
 ## MAC + Hash function
 
 ### Using symmetric encryption
@@ -459,59 +465,173 @@ This provides:
 
 ## Public-Key Encryption
 
-___Continuare da qui___: Slide 2 pag 21/36
+It's a type of encryption based on __mathematical functions__.
 
-It's a form of encryption based on mathematical functions, and is __asymmetric__:
-- It uses two separate keys, one public and the other one private.
+This encryption is __asymmetric__, so it uses two separate keys:
+- A public one and a private one for each user.
+- The public key is public and is used by others users.
+- Both keys need to be able to do both encrypting and decrypting.
+- To distribute them some type of protocol is needed.
 
-Both these keys can be used for encrypting and decrypting.
+__RSA__ is one of the most known asymmetric encryption algorithms.
 
-Encryption with public key:
-- The data input is encrypted by an encryption algorithm using the receiver's public key.
-- The ciphertext (encrypted data) is transmitted to the receiver.
-- When received, the ciphertext is decrypted using its own private key. (receiver)
-In this way, even if another entity intercepts the ciphertext, he can't decrypt it because he doesn't have the receiver's private key.
+### Encrypting using public key
 
-Encryption with private key:
-- The data input is encrypted by an encryption algorithm using the sender's private key.
-- The ciphertext is trasmitted to the receiver.
-- When received, the ciphertext is decrypted using the sender's public key.
-This is used as a way to verify the sender's signature.
+1) Plaintext plus receiver's __public__ key into the encryption algorithm.
+2) Received ciphertext plus receiver's __private__ key into the decryption algorithm.
+
+### Encrypting using private key
+
+1) Plaintext plus sender's private key into the encryption algorithm.
+2) Received ciphertext plus sender's public key into the decryption algorithm.
+
+This also implements some form of authenticity because the receiver is able to verify the sender's signature using the sender's public key.
+
+### Uses of public-key cryptosystems
+
+- To provide __digital signatures__.
+- To distribute symmetric keys.
+- To encrypt secret keys.
+
+### Requirements for public-key cryptosystems
+
+- Pairs of (public key, private key) are computationally easy to create.
+- Both key can do both encryption and decryption.
+- Computationally impossible for attackers to recover the original message.
+- Computationally impossible to get the private key by using the public key.
+
+## Digital Signature
+
+A digital signature is a piece of data that is the result of a cryptographic transformation of data.
+
+It is used to provide:
+- Verification of the sender's authentication.
+- Checking the integrity of the data.
+- Non-repudiation of the sender.
+
+### How to use digital signature
+
+The sender:
+1) Sender's message into hash function.
+2) Hash value plus sender's private key into a digital signature generation algorithm.
+3) The result signature plus message gets sent.
+
+The receiver:
+1) Received message into hash function.
+2) Hash value plus sender's signature plus sender's public key into a digital signature verification algorithm.
+3) The algorithm checks if the signature is valid or not.
+
+### Digital envelope
+
+![|500](https://i.imgur.com/8eaPJlD.png)
+
+In this case we encrypt:
+- The message.
+- And the symmetric key used to encrypt the message.
+
+# Password Cracking
+
+## John the Ripper
+
+John the Ripper is an open source offline password __security auditing__ (password security check) and password __recovery tool__.
+
+It is used as a password __cracker__ that can brute-force various operating system's passwords.
+
+It uses both the CPU and the GPU to perform its calculations.
+
+### How it works
+
+Given a password hash value and the hash function (algorithm), John will:
+- Use every possibile password as input for the given algorithm.
+- If the result hash value of a password is the same as the given password hash value.
+- Then we have a match, so it cracked the password.
+
+Given a password, __modification rules__ are used to generate similar alternatives to the given password.
+- E.g. StrongPassword -> 3tr0ng#passw0rd
+
+### Work modes
+
+John has multiple work modes:
+- __Single crack__, uses the login names and other useful strings from the system as possible passwords, plus some default modification rules.
+- __Wordlist__ mode, tries a list of passwords for each hash value, also uses modification rules.
+- __Incremental__ mode (brute-force), tries __all__ possible characters combination as password.
+- __External__ mode, where it uses custom user-made functions that will generate the possible passwords that it tries.
+
+## Rainbow tables
+
+Given a set of passwords, we store all the corresponding hashes in a table called __pre-computed hash table__.
+
+So this table is a dictionary with pairs (hash value, password).
+
+When given a hash value, we search inside the pre-computed table for the password that is the input for the given hash value.
+
+So the base version of the rainbow table is like an alternative brute-force:
+- Uses a lot of space but no time.
+
+While the brute-force method needs to compute every hash value:
+- Uses a lot of time but no space.
+
+### Hash chains
+
+An alternative rainbow table implementation is by using __hash chains__:
+- This will need to compute some hashes but it uses less space.
+
+So it is a __trade-off__:
+- Longer chains results in more time used to compute the chains, but less chains are stored.
+- More chains results in more space used to store them, but are computed in less time.
+
+#### How it works
+
+It uses a __reduction function__:
+- Given a hash value, it computes a string.
+
+This implementation works by computing a chain of hashes and passwords using the hash function and a reduction function:
+1) It start from a generated password.
+2) The generated password is hashed using the hash function.
+3) The result hash value is then used as input for the reduction function.
+4) The result string is used as input for the hash function.
+5) This is repeated for a fixed number of times.
+6) In the end it saves in the table the starting generated password with the last result string of the reduction function.
+
+Given a hash value for which we want to know the password:
+1) Use the hash value as input for the reduction function.
+2) Find the result string in the table as a last string and get the associated start string.
+3) Use the start string to compute the chain.
+4) Stop when we find a string that used as input for the hash function returns the given hash value.
+5) That string is the password that generates the given hash value.
+
+#### Problems
+
+Hash chains can __loop__.
+
+Hash chains can __merge__, caused by __collisions__.
+
+To fix collisions, we need to use a __sequence__ of reduction functions.
 
 # Authentication
 
-The definition of __user authentication__ is:
-- The process by which a user establishes the validity of a claimed (self-declared) identity present inside a system.
+User authentication is the process of __verifying__ a user's claimed identity inside a system.
 
-## General User Authentication Model Requirements
+## Identification and Authentication requirements for protecting data
 
-An authentication model needs to possess these general requirements:
--  Identify and authenticate system users, and associate the user identification with processes or devices acting on his behalf.
-	- The system needs to authenticate the identity of a user __before__ allowing them access to the system.
-- It is necessary to implement __multi-factor__ authentication to access both privileged and non-privileged accounts.
-- It is necessary to implement __replay-resistant__ authentication mechanisms to access both privileged and non-privileged acocunts.
-	- Replay-resistant means that the system is secure against attackers who may __capture and reuse__ old authentication information, like tokens and passwords.
-
-It also needs to have some requirements about identifiers and passwords:
-- Prevention of the __reuse__ of identifiers for a defined period.
-- It needs to disable identifiers that are __inactive__ after a defined period of inactivity.
-- It needs to enforce a minimum password __complexity__ when new passwords are created.
-- It needs to prohibit the __reuse of old or similar__ password for a defined number of generations.
-- Permission to allow __temporary passwords__ that are used for account recovery, but then needs to be changed immediately upon login to a permanent one.
-- It is allowed to only store and trasmit cryptographically-protected passwords over cryptographically-protected mediums.
+- Authenticate the identity of an user __before__ granting them access.
+- Implementation of __multi-factor__ authentication to access.
+- Implementation of __replay-resistant__ authentication to access, so attackers cannot use captured old authentication information (e.g. tokens, password) to access.
 
 ## Authentication Architectural Model
 
-![|500](https://i.imgur.com/NRFlaPJ.png)
+![|700](https://i.imgur.com/NRFlaPJ.png)
 
 This model describes what happens when a new user wants to use a service:
-- The subscriber is the user.
-- The registration authority is responsible for verifying the user's identity when he first sign up.
-- The credential service provider is responsible for issuing and managing user credentials.
-- The relying party is a service that the user want to login into.
-- The verifier is a generally a service that can verify the identity of a subscriber to a service (RP).
+- The __subscriber__ is the user.
+- The __registration authority__ is responsible for verifying the user's identity when he first signs up.
+- The __credential service provider__ is responsible for issuing and managing user credentials.
+- The __relying party__ is a service that the user want to login into.
+- The __verifier__ is a generally a service that can verify the identity of a subscriber to a service (RP).
 
-E.g. a user wants to login to a shopping website, and it can do that by using google's login system that is implemented inside the website:
+### Example of use
+
+A user wants to login to a shopping website, and it can do that by using Google's login system that is implemented inside the website:
 - The user firstly creates a Google account, giving informations like name, birthdate and username to Google's RA.
 - The RA confirms the user's details and signals to Google's CSP that a new, verified user needs credentials.
 - The CSP prompts the user to create a password (and other authentication methods like 2FA)
@@ -520,34 +640,49 @@ E.g. a user wants to login to a shopping website, and it can do that by using go
 - The verifier successfully validates the user's credentials, and it sends an authenticated assertion to the RP, in this case the shopping website.
 - The website receives this assertion and grants the user access to the website.
 
-## Means of Authentication
+## Methods used to authenticate users
 
-There are four general means of authenticating a user's identity. These can be used singularly or in combination:
+There are four general ways to authenticate an user's identity.
+
+These methods can be used singularly or in combination:
 - Something the user __knows__, like a password, PIN or secret aswers.
 - Something the user __possesses__, generally tokens, that can be both physical like a key card, or digital like a code inside an authenticator app.
 - Something the user __is__, so biometrics, like fingerprints, iris, retina or face.
 - Something the user __does__, so dynamic biometrics, like voice pattern, handwriting or a walking style.
 
-The more authentication means a service use, the more its system is secure.
+The more authentication methods a service uses, the more secure its system becomes.
 
-## Assurance levels
+## Assurance levels for user authentication
 
-An assurance level describes a system's degree of certainty that a user has presented a credential that refers to his identity.
+Assurance levels indicate how sure a system is about:
+- The identity of an user.
+- The authentication provided to access.
 
-## Passwords
+There are $3$ levels of __identity assurance__ (IAL):
+- Level $1$, no need to link the user to a real-life identity. (e.g. An user can be a bot)
+- Level $2$, the user's identity needs to be verified using some proof online.
+- Level $3$, the user's identity needs to be verified using some proof in-person. (offline/real-life)
 
-When a user uses a service, he provides his ID (credentials) and password.
-The service system compares the given password with the one __stored__ in its DB.
+There are $3$ levels of __authentication assurance__ (AAL):
+- Level $1$, only the ID and password are necessary to access. 
+- Level $2$, furthermore also a 2FA is needed.
+- Level $3$, furthermore also a more secure 2FA is needed. (It's like the SPID levels)
 
-The user's ID:
-- Determines that the user is authorized to access the system.
-	- In some systems only those who have an ID are allowed to gain access.
-- Determines the user's privileges.
-	- Some users may have administrator status that enables them to perform critical or protected functions.
+## Password based authentication
+
+To login, an user needs to have:
+- An ID.
+- And the password associated with that ID.
+
+The system compares the given password with the one stored for that ID.
+
+And based on the given ID, the system:
+- Determines that the user is authorized to access. (Guests cannot access certain features)
+- Determines the permissions of the user, what actions inside the system he can perform.
 
 ### Password Vulnerabilities
 
-Some of the main forms of attack against password-based authentication are:
+Some of the main ways to attack password-based authentication systems are:
 
 - __Offline dictionary attack__, that is gaining the hashed password file, then using it to compare passwords hashes against hashes of commonly used password.
 	- Countermeasure: Prevention of unauthorized access to the password file.
@@ -572,23 +707,13 @@ Some of the main forms of attack against password-based authentication are:
 
 - __Electronic monitoring__, that is when a password communicated across a network is eavesdropped by an attacker.
 
-### Password Hashing
+### Social Engineering
 
-The technique used to produce hashed password begins with a hashing algorithm, a salt value and the password:
-- A __salt value__ is a random __fixed-length__ value that is combined with the given password.
-- The hashing algorithm, given the salt and the password, outputs the corresponding __fixed-length__ hashed password, that is __unique__ (almost) and not revertable.
+Social engineering is a type of attack where by __deceiving__ users of a system the attacker gains access to the system information.
 
-The hashed password is stored together with its salt in plaintext in the password file for the corresponding user ID.
-
-The salt __does not need to be secret__ because it is only used to create a unique hash, so it all relies on the one-way hashing algorithm, which is designed to be irreversible, and also on the secrecy of the original password.
-
-When a user wants to login, the system uses his user ID to retrieve the associated salt value, and together with the inputted password, these gets thrown into the hashing algorithm. The output of the algorithm is then compared with the stored hashed password.
-
-### Password Cracking
-
-There exist multiple approaches to cracking user-chosen passwords. Two basic ones are:
-- Dictionary attack, it uses a large dictionary of __possible__ passwords and it tries each one.
-- Rainbow table attack, it uses __pre-computed__ tables to find a password from its hash value.
+There are many ways to deceive:
+- By __pretexting__, so creating a story that convices an administrator to reveal secret information.
+- By __baiting__, so giving something in return if an user performs certain actions.
 
 ### Password criteria and guidelines
 
@@ -608,23 +733,26 @@ There are various forms of authentication tokens:
 - Memory cards.
 - Barcodes.
 - Magnetic stripe cards.
-- Smart cards, both with contact and contactless.
+- Smart cards, with contact and contactless.
 - RFIDs.
 
 ### Barcodes
 
-Barcodes are simply images that are used to encode some type of information. So they are convenient to use but not very secure. (Attackers can simply take a photo of the barcode)
+A barcode is an image used to encode some type of information.
 
-E.g. boarding passes use barcodes.
+So they are convenient to use but not secure:
+- An attacker can take a photo of the barcode.
 
 ### Magnetic Stripe Cards
 
-These are plastic cards with a magnetic stripe containing personalized information about the card holder.
+It's a plastic card that has a magnetic stripe containing personalized information about the card holder.
 
-Its vulnerability is that is easy to read and reproduce, because magnetic stripe readers can be purchased at low cost, and writers are only a little bit more expensive.
-So often card holders need to use another authentication method like PINs to use their cards.
+An attacker can easily read and reproduce a card because:
+- Blank cards are cheap to buy.
+- Card readers are cheap to buy.
+- Card cloners are relatively cheap to buy.
 
-E.g. (Old) Bank cards.
+So often card holders need to use another authentication method like a PIN to use their cards.
 
 ### Smart tokens
 
@@ -634,200 +762,218 @@ Physical ones contain an embedded microprocessor.
 
 #### Smart Cards
 
-These are the most important category of smart tokens.
-
-Smart cards contain an entire microprocessor with:
+A smart card contain a microprocessor with:
 - Processor.
-- Memory, that can be:
-	- Read-only memory (ROM), that stores data that does not change during the card's life.
-	- Electrically erasable programmable ROM (EEPROM), that holds application data and programs.
-	- Random access memory (RAM), that holds temporary data generated when application are executed.
+- Memory.
 - I/O ports.
+
+The memory can be of $3$ types:
+- __Read-only memory__ (ROM), stores data that does not change during the card's life.
+- __Electrically erasable programmable ROM__ (EEPROM), like ROM but can be erased and written again.
+- __Random access memory__ (RAM), stores temporary data that is generated when applications are executed.
 
 They are powered by a compatible reader that sends signals that charge for a little bit the microprocessor so that it can send back the information stored inside the memory.
 
-### Electronic Identity Cards (eIDs)
+### Electronic Identity Cards (eIDs) (Smart Card for authentication purposes)
 
-These are smart cards that have been __verified__ by the government as valid and authentic.
+These are smart cards that have been __verified__ by the government as __valid__ and __authentic__.
 
-There are various different types of functions for an eID, most of these are or have optional features:
-- `ePass`, used for __offline verification__ of __biometric__ identity, reserved for government access. (CIE)
-	- Its __mandatory__ to have this function.
-- `eID`, used for __identification__.
-- `eSign`, used for creating electronic __signatures__.
+An eID card have many uses:
+- As an __ePass__, for biometric identity verification. (Face image, fingerprints)
+- As an __eID__, for identification. (Name, birth, address, expiration)
+- As an __eSign__, to generate __digital signatures__.
 
+#### Password Authenticated Connection Establishment (PACE)
+
+This feature present on eID cards is used to:
+- Make sure that the contactless __RF chip__ in the card cannot be read without the card holder's permission.
+
+### One-time password device (OTP device)
+
+It's a physical device that contains a __secret key__ used to generate OTPs.
+
+Given the secret key plus the time as input into a __hash function__ it generates the OTP.
+
+It has a physical module that protects the secret key from being read.
+
+A system that uses OTP devices to authenticate need to allow some time difference for the generated OTP using it, because the physical device's clock can vary a bit.
 
 ## Biometrics
 
-Biometric refers to any measure used to uniquely identify a person based on biological or physiological traits.
+Biometric refers to any method used to uniquely identify a person using their biological or physiological characteristics.
 
-These systems work by incorporating __sensors__ or __scanners__ to read in biometric information, then it compare this information with stored __templates__ of accepted users before granting access.
+Biometric systems work by:
+- Incorporating __sensors__ or __scanners__ to read biometric information.
+- Then it compares this information with stored __templates__ of accepted users before granting access.
+- This comparison is based on __pattern recognition__.
 
-The comparation is based on __pattern recognition__, so its technically complex and expensive when compared to passwords and tokens.
+Its technically complex and expensive when compared to passwords and tokens.
 
 ![|500](https://i.imgur.com/8k8imaM.png)
 
-### Biometric Accuracy dilemma
+### Biometric accuracy problem
 
-The comparison between the inputted profile and a reference profile is based on a single numeric value.
+The comparison between the given biometric feature and a reference feature is based on __numerical values__.
 
-If the input value is greater than the decision threshold, then a match is declared, and it is granted access.
+If the input value is greater than the __decision threshold__, then it accepts the input, granting access to the user.
 
-So the dilemma is in how low should the decision threshold be:
-- A value too low can result in more matches for convenience but also more prone to false matches.
-- A value too high will increase the robustness of the biometric system, resulting in an increased security, but will inevitably lead to lower matches, even if its the genuine user trying to authenticate.
+So the problem is __how low__ should the threshold be:
+- If too low -> more matches, so more __convenient__ -> but more __false__ matches.
+- If too high -> more __secure__ -> but less matches, so even the genuine user can fail.
+
 
 ![|500](https://i.imgur.com/1KxnqPe.png)
 
 ### Operations of a Biometric Authentication System
 
 There are $3$ operations that a biometric authentication system needs to provide:
-- Enrollment.
-- Verification.
-- Identification.
+- __Enrollment__, registering the user's biometric input plus a PIN.
+- __Verification__, checking if the user's biometric input is valid in order to authenticate the user with the given PIN. (Login)
+- __Identification__, checking if exists an user with the given biometric input. (Identify user)
 
-#### Enrollment
+## Authentication Security Problems
 
-Each individual who is to be included in the database of authorized users must first be __enrolled__ in the system.
-
-This is done by inserting an identifier (name), password or pin, and binding these information with some type of biometric characteristic of the user.
-
-The biometric data obtained then gets digitalized into a set of number, and it will be the user's __template__.
-
-This template is maintained together with the identifier and the pin inside the system.
-
-#### Verification
-
-When a user tries to verify itself, he needs to insert his pin and also his biometric data.
-
-The system extracts the corresponding feature from the biometric input and compares it to the template stored for the user. If there is a match, then the system authenticates the user.
-
-#### Identification
-
-For identification, the user only needs to insert his biometric data.
-
-The system will then compare the biometric-obtained template with the set of stored templates. If there is a match, then the user is identified.
+There are many way to perform an attack to a system's user authentication service:
+- Client attacks.
+- Host attacks.
+- Eavesdropping.
+- Replay, repeating a captured secret user authentication information.
+- Trojan horse, to capture secret user authentication information.
+- Denial of service, to disable a user authentication service.
 
 # Access Control
 
-Access control is a process that regulates access to a system, based on security policies. Access is permitted only to authorized entities.
+Access control is a __process that regulates access__ to a system based on that system's security policies.
 
-There are various models of access control:
+It's objective is to protect __confidentiality__ and __integrity__ of information.
 
-- Discretionary access control (DAC), where access is based on the __identity__ of the user requesting access and on the access __rules__ that determines what requestors are (and are not) allowed to do.
-	- E.g. UNIX-based system use this type of access control.
+## Access control models
 
-- Mandatory access control (MAC), where access is based on __comparing__ security labels with security clearances.
-	- E.g. Most military classification scheme use MAC, with naming that goes from `top secret` to `unclassified`.
+__Discretionary__ access control (DAC):
+- Access is based on the __identity__ of the requesting user and on __authorization rules__ that determines what requestors are allowed to do. (e.g. UNIX systems)
 
-- Role-based access control (RBAC), where access is based on the __roles__ that users have inside the system and on __rules__ that states what accesses each role have.
+__Mandatory__ access control (MAC):
+- Access is based on __comparing__ security __labels__ with security __clearances__. (e.g. Military)
 
-- Attributed-based access control (ABAC), where access is based on __attributes__ of the user, the __resource__ to be accessed, and on the __current environments__.
+__Role-based__ access control (RBAC):
+- Access is based on the __roles__ that users have in the system and on __rules__ that describes what each role can access.
 
+__Attributed-based__ access control (ABAC):
+- Access is based on __attributes__ of the user, the __resource__ to be accessed and on the __current environments__.
 
 ## Subject, Object and Access Rights
 
-Subjects are entities that are capable of accessing objects.
+A __subject__ is an entity capable of accessing objects.
 
-Objects are resources to which access needs to be or is controlled.
+An __object__ is a resource to which access is controlled.
 
-Access right describes the way in which a subject may access an object. These right include but could be not all of them:
+__Access rights__ describes the way in which a subject may access an object.
+
+Most common rights are:
 - Read, write, execute, delete, create and search.
 
 ## Discretionary Access Control (DAC)
 
-Access is granted by another entity which enables the requestor to access the requested resource.
+In the DAC model, access to an object can be granted by __another entity__ using an __access matrix__.
 
-### Access Matrix
+This matrix is a table that describes what each subject is allowed to do on each object. 
 
-Often this is provided by using an __access matrix__.
-(E.g. in UNIX systems, a user can do `chmod xx7` to give full access rights to all other entities for a file he owns)
+There exists an __extended access matrix__ that also includes:
+- Transferring rights from a subject to another.
+- Creating another subject.
+- Taking ownership of other subjects.
 
-This model takes a subject-centered approach to access control:
-- It defines for each subject, the list of the objects for which he has nonempty access control rights.
+(E.g. In UNIX systems, an user can perform `chmod xx7` to give full access rights to all other entities for a file he owns)
 
 ### Access Control List
 
-It defines for each object (resource) a list which enumerates __all__ the subjects (user) that have access rights to it, and for each subject, it shows the access rights (read, write, execute) that the subject has for the object.
+Each object has an __access control list__, that is used to enumerate all the subjects that have access rights to it.
 
-(_Do not use resource or user, instead use object and subject_)
+For each subject in the list it shows all access rights that the subject has for the object.
 
-__Extended rules__ to this model are:
-- Transferring rights for a resource.
-- Creation of another subject.
-- Owner access right to a subject.
-
-### Capabilities
-
-It defines for each subject, the list of the object for which he has nonempty access control rights, together with the specific rights (read, write, execute) for each object.
-
-(So its the reverse of the access control list)
+We can also use the reverse of it, so that:
+- For each subject we enumerate all the objects that he has access rights to, and it shows them.
+(Subject-centered approach to access control)
 
 ### Organization of the Access Control Function
 
-Every access to a resource from a subject is mediated by the __controller__ for that resource. The controller's decision is based on the current contents of the access matrix.
-Certain subjects have the authority to make __changes__ to the access matrix.
+All accesses done by a subject to an object is checked by the __controller__ for that object.
+
+When checking the controller decides based on the current situation of the matrix.
 
 ## Mandatory Access Control (MAC)
 
-In this model of access control, each subject and object is assigned to a __security class__.
+In the MAC model, each subject and object is assigned to a __security class__.
 
-Security classes form then a strict __hierarchy__, called __security levels__.
+Security classes form a rigid __hierarchy__, called __security levels__.
 
 Each subjects has a property called __security clearance__ of a given level.
 
 Each object has a property called __security classification__ of a given level.
 
 The confidentiality of this model is based on two properties:
-- __No read up__, where a subject can only read an object of less or equal security level.
-- __No write down__, where a subject can only write into an object of greater or equal security level.
+- __No read up__, a subject can only read an object of less or equal security level.
+- __No write down__, a subject can only write into an object of greater or equal security level.
 
 ## Role-based Access Control (RBAC)
 
-In this model of access control, we define __roles__ and then specify access control rights for each of these roles, instead of granting right for subjects directly.
-Its goal is to describe organizational access control __policies__.
+In the RBAC model, we define __roles__ and then specify rights for each of these roles, instead of granting right for subjects directly.
 
-Generally the rights of each role is based on the job's function:
-- E.g. a worker of a call center of a bank doesn't need access to the full database of the bank.
+The goal is to describe organizational access control __policies__.
 
-Using this model increases flexibility and scalability in policy administration:
-- Its easy to meet new security requirements.
-- Will reduce errors in administration.
-- Will reduce the cost of administration.
+Roles are created based on the jobs.
 
-### Role Hierarchy (RBAC$1$)
+The permissions that each role have are based on the role's work.
 
-Most of the times organizations are going to have many operations that are common to a large number of roles. So instead of creating new roles for each job position, we use a hierarchy of roles based on inheritance of permissions.
+So a subject's permissions are described by his role.
 
-So the more specialized a role is, the more permission it has.
+Subjects have access to objects based on their assigned role.
 
-### Constrains caused by security policies of an organization (RBAC$2$)
+This model increases flexibility and scalability in policy administration, because:
+- It is easy to meet new security requirements.
+- It reduces administration errors.
+- It reduces administration costs.
 
-These constrains are:
-- Mutually exclusive roles, where a user cannot be assigned to mutually exclusive roles at the same time.
-- Cardinality, so we have a constrain on the maximum number of roles a user can have.
-- Prerequisite roles, where a user can be assigned to a role only if it is already assigned to another specific role.
+### RBAC$1$: Role Hierarchy
 
-### Consolidation (RBAC$3$)
+An organization can have operations that are __common__ to multiple roles.
 
-The procedure of consolidating the role hierarchy (RBAC$2$) and the constrains (RBAC$3$) is then finalized in the RBAC$3$.
+We can define a __hierarchy of roles__, that uses __inheritance__:
+- A parent role's permissions are passed down to the child role.
+- More specialized roles have more permissions.
+- More generalized roles have less permissions.
+
+### RBAC$2$: Constrains
+
+An organization can have specific __administrative rules__ and __security policies__ that results in special __contrains__.
+
+These constrains can be:
+- __Mutually exclusive__ roles, an user cannot be assigned to mutually exclusive roles at the same time.
+- __Cardinality__, there is a maximum number of roles a user can have.
+- __Prerequisite__ roles, an user can be assigned to a role only if it is already assigned to another specific role.
+
+### RBAC$3$: Actually including both RBAC$1$ and $2$
+
+It's the __complete__ version of RBAC, that includes all the features from RBAC$1$ and 2.
 
 ## Attribute-based Access Control (ABAC)
 
-In this model of access control, we can define __attributes__ on both resources and subjects, and based on these, give or not access to a object for a subject.
+In the ABAC model, we define __attributes__ on subjects and objects.
 
-Its the most __flexible__ and __expressive__ model of access control.
+Based on rules and these attributes it decides whether to give or not a subject access to an object.
 
-System that use this model are capable of enforcing all the other models of access control.
+It's the most __flexible__ and __expressive__ model of access control.
 
-ABAC implements __policies__ to govern allowable behavior. A policy is a set of rules and relationships (between subject and object).
-These policies are based on the privileges of subjects and how objects are to be __protected__ under which environment conditions.
+Systems that use this model are able to simulate all the other models of access control.
 
-Systems that use ABAC controls access to its objects by evaluating __access control policies__ against the attributes of entities, operations, and the __environment__ relevant for a request.
+ABAC needs access control __policies__ to define its behavior.
+
+### ABAC policies
+
+A policy is a set of rules and relationships between subject and object based on their attributes:
+- E.g. New movies can be watched only by premium users.
 
 ![|500](https://i.imgur.com/jHDcZI0.png)
-
-Eg. a movie theater can use ABAC to enforce allowed access to movies based on the subject's age and the object's rating (R, PG-13, G).
 
 # Malware
 
