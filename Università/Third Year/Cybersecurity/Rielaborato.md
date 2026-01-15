@@ -48,12 +48,14 @@ Also they seem to perceive little benefits until a security break occurs.
 
 __Confidentiality__ is the concept of:
 - Putting restrictions on information access and disclosure to ensure it is not made available to unauthorized individuals.
-This is done in order to protect personal privacy and proprietary information.
+- Putting access restrictions in order to __protect personal privacy and proprietary information__.
 
 __Integrity__ is the concept of:
-- Maintaining the accuracy and trustworthiness of data.
-- Ensuring information nonrepudiation and authenticity.
+- Maintaining the __accuracy and trustworthiness of data__.
+- Ensuring information nonrepudiation and __authenticity__.
+
 This is done by protecting the data from unauthorized modification or destruction.
+
 This ensure that the data is:
 - complete.
 - reliable.
@@ -67,7 +69,7 @@ __Availability__ is the concept of:
 
 __Authenticity__ is the concept of:
 - Some information having the property of being __genuine__ and able to be __verified and trusted__.
-- Being confident that a transmission, message or sender is valid.
+- Being confident that a transmission, message or sender is __valid__.
 	- This means verifying that users are who they say they are and that each input arriving came from a trusted source.
 
 __Accountability__ is the concept of:
@@ -83,7 +85,8 @@ This supports:
 
 It's the concept that describes the __avoidance__ of unauthorized disclosure of information.
 
-Meaning that a system to be confidential, needs to prevent unauthorized access to information.
+Meaning that a system to be confidential needs to:
+- __Prevent unauthorized access to information__.
 
 It contains two other related concepts:
 - __Data confidentiality__, which assures that private or confidential information is __not__ made available or disclosed to unauthorized people. (It's the same thing)
@@ -118,7 +121,7 @@ So it's the process of __verifying a user__.
 
 ### Authorization
 
-__Authorization__ is used to determine if a person or system is allowed access to resources, based on an access control policy.
+__Authorization__ is used to determine if a person or system is __allowed__ access to resources, based on an access control policy.
 
 So it's the process of __determining what an authenticated user is allowed to access__.
 
@@ -139,7 +142,7 @@ It contains two related concepts:
 
 Tools used for checking the integrity of information are:
 - __Backups__.
-- __Checksums__, are functions that given a file, computes a distinct numerical value.
+- __Checksums__, are functions that given a file, computes a distinct numerical value. (hash value)
 - __Data correcting codes__, are methods for storing data in a way that small changes can be easily detected and automatically corrected.
 
 # Availability
@@ -196,13 +199,13 @@ Tools used to provide anonymity are:
 A vulnerability is a __weakness__ in an information system, system security procedures, controls, or implementation that could be __exploited__ or triggered by a threat agent (an attacker).
 
 There are various categories of vulnerabilities:
+- Leak.
 - Corruption.
-- Leaks.
 - Unavailable/very slow.
 
-The corruption of data will cause a loss of __integrity__.
-
 A leak of information will cause a loss of __confidentiality__.
+
+The corruption of data will cause a loss of __integrity__.
 
 When information are unavailable or very slow to access, this will lead to a loss of __availability__.
 
@@ -392,9 +395,9 @@ The sender always needs to verify that received messages are authentic:
 - That the contents have not been modified.
 - It's sent from the authentic source.
 
-Encrypting the sent message provides some __confidentiality__, but it does not provide __authenticity__.
+Encrypting the sent message provides some __confidentiality__, but it does not provide __authentication__.
 
-To provide authenticity we use __authentication tags__, a piece of data that is related to the message but not reversible to recover the original message.
+To provide authentication we use __authentication tags__, a piece of data that is related to the message but not reversible to recover the original message.
 
 So now we need algorithms that:
 - Encrypts plaintext.
@@ -411,7 +414,7 @@ Given a message:
 
 If the codes match:
 - Then the message has not been modified, because the code is related to the message, so if an attacker modifies the message, then the newly calculated code should be different.
-- Then the receiver knows that the sender is verified, because no one else knows the secret key. 
+- Then the receiver knows that the sender is verified, because no one else knows the secret key.
 
 Obviously a MAC algorithm needs to be __irreversible__.
 
