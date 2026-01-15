@@ -1799,7 +1799,7 @@ It consisted in:
 - Server replies with a status message "401 Unauthorized" binded together with a specific authentication header, which contains information on the authentication method.
 - The browser gets the client's credentials and include them in the authorization header.
 
-The credentials are encoded in `base64` or __hashed__, and sent to the server.
+The credentials are encoded in "base64" or __hashed__, and sent to the server.
 
 ## Monitoring and manipulating HTTP
 
@@ -2096,7 +2096,6 @@ __Product cipher__ works by:
 An encryption is computationally secure if:
 - Cost of breaking cipher is greater than the value of information.
 - Time required to break cipher is greater than the expiration date of the information.
-
 
 ## Block Ciphers
 
@@ -2519,7 +2518,7 @@ When implemented inside a __firewall or router__:
 
 ### IPsec in Transport mode
 
-Protects only the payload.
+Protects only up to the payload.
 
 Used for host-to-host communication.
 
