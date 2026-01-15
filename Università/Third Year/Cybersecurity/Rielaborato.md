@@ -2587,9 +2587,9 @@ The concept for Tor is:
 - And only the last router knows the destination.
 
 $3$ Tor relays are used for each connection:
-- The __entry__ relay.
-- The middle relay.
-- The __exit__ relay.
+- The __entry__ relay knows only the sender's location.
+- The middle relay knows nothing.
+- The __exit__ relay knows only the website.
 
 ### Tor + HTTPS
 
