@@ -977,218 +977,253 @@ A policy is a set of rules and relationships between subject and object based on
 
 # Malware
 
-A malware is a program that is inserted into a system, with the intent of __compromising__ the confidentiality, integrity, or availability of the system's data, application or operating system. (Otherwise to annoy or disrupt the system's user)
+A malware is a program that is inserted into a system, with the intent of __compromising__ the confidentiality, integrity, or availability of the victim's data, applications or operating system. 
 
-Malwares can be classified based on their properties like:
-- How it spreads to reach the desired targets.
-- What actions or payloads it performs once a target is reached.
+Malwares are differentiated based on:
+- How it __spreads__ to reach the target.
+- Which actions or payloads it __performs__ once a target is reached.
+
+A malware can __propagate__ by:
+- __Infecting__ existing data that is then spread to other systems.
+- __Exploiting__ software vulnerabilities.
+- __Social engineering__, convincing users to disable security mechanisms to __install__ malware.
+
+
+A malware's __payload__ defines what it is supposed to do once inside the target's system:
+- __Corruption__ of the system or of its data.
+- __Theft of service__ (computational power), controlling the system as part of a botnet.
+- __Theft of information__ using keyloggers.
+- __Stealthing and hiding__ its presence from the system.
 
 ## Types of Malware
 
-So we can have:
-- __Viruses__, malware that need a __host__ program to function.
-	- Viruses can and will replicate themselves.
-- __Worms__, __trojans__ and __bots__, are malwares that are independent, so self-contained programs.
-	- Worms can and will replicate themselves.
-	- Trojans do not replicate themselves.
-	- Bots do not replicate themselves.
+A __virus__ is a malware that need a host program in order to work.
+- Can replicate.
 
-## Propagation Mechanisms
-
-Malwares can propagate by:
-- Infecting already existing content that is then sent to other systems to spread.
-- Exploiting software vulnerabilities using worms or drive-by-downloads to allow the malware to replicate.
-	- Drive-by-download is an attack that uses code on a compromised website that exploits a browser vulnerability to attack when the site is viewed.
-- Social engineering attacks that successfully convince users to install trojans or to respond to phishing attacks.
-
-## Payloads of Malware
-
-All malware possess some __payload__, these define what a malware is supposed to do. These actions performed by malware once inside a target system can be:
-- __Corruption__ of the system or of its data.
-- Turn the system into a zombie __agent__ of attack as part of a __botnet__.
-- __Theft__ of sensible information by __keylogging__ the system. (Capturing keystrokes)
-Also, generally all types of malware will try to __hide__ itself and its presence on the system.
+__Worms__, __trojans__ and __bots__ are malwares that are complete programs. (Independent)
+- Worms can replicate.
+- Trojans cannot replicate.
+- Bots cannot replicate.
 
 ## Attack Kits
 
 Initially malware development and deployment required high technical skills.
-General tools used for development are called __attack kits__. These are software that provide assist in creating malware.
 
-## Attack Sources
+__Tools__ used to develop malwares are called __attack kits__.
 
-Initially attackers developed malwares only to demonstrate their technical competence.
+An attack kit is a piece of __software__ that gives assistance in creating malwares.
 
-Now instead attackers are:
-- Politically motivated attackers.
-- Criminals.
-- Organized crime.
-- Organizations that sell their services to __companies__ and even __nations__.
+## Attack Sources (Who are the attackers)
+
+Initially attackers developed malwares to demonstrate their __technical skills__.
+
+Nowadays an attacker can be:
+- Government agency.
+- Criminal.
+- Member of organized crime.
+- An organizations that sell their services.
 - National government agencies.
 
 ## Advanced Persisten Threats (APTs)
 
-These threats applies persistent application of a wide variety of intrucion technologies and malware to selected targets, like political figures or businesses.
+These threats will use various malware technologies in a persistent way to attack a special selected target. (e.g. Politician or administrator of an organization)
+
 Typically these are sponsored by governments and by criminal organizations.
 
-They differ from other types of malware and attacks by their __careful__ target selection and __stealthy__ intrusion efforts over __extended periods__ (Persistent).
+An APT is different from other types of malware because:
+- It is careful about its targets.
+- It works in a stealthy way.
+- It works for long periods. (persistent)
 
-Eg. Stuxnet was an APT.
+__Stuxnet__ is one of the most known APT, specifically it's a worm:
+- It targeted industrial control systems.
 
-Generally these used techniques that varies from:
+To perform an attack, an APT uses:
 - Social engineering.
 - Spear-phishing emails.
-- Drive-by-downloads from websites likely used from the target.
+- Drive-by-downloads from websites that are likely to be used from the target.
 
 ## Virus
 
 A virus is a software that __infects__ programs:
-- It modifies them to include a __copy__ of the virus, so it replicates itself.
-- It can easily spread through network environments.
+- It __modifies__ them to include a __copy__ of the virus, so it can replicate.
+- Easily spreadable through networks.
 
-When a virus is attached to an executable program, all the permissions granted to the program is also possessed by the virus.
+When a virus is attached to an executable program, all the permissions granted to the program are also granted to the virus.
 
 ### Virus Components
 
-Viruses are made of $3$ components:
-- The __infection vector__, is the mean by which a virus propagates in the system, enabling it to replicate.
-- The __trigger__, an event or condition that determines when the __payload__ is activated, known also as a __logic bomb__.
-- The __payload__, that is what the virus does, besides spreading.
+A virus is made of $3$ components:
+- The __infection mechanism__, is the mean by which it propagates in a target system.
+- The __trigger__, is an event that decides when the __payload__ is activated. (Logic bomb)
+- The __payload__, is what the virus does besides spreading.
 
 ### Virus Phases
 
-During its lifetime, a virus generally goes through $4$ phases:
-- __Dormant phase__, where the virus is idle, and will eventually be awaken by some event.
-	- Not all viruses have this stage.
-- __Triggering phase__, where the virus is activated to perform his function.
-- __Propagation phase__, where the virus places copies of itself into other programs or into certain system's area on the disk.
-	- The clone may __not__ be identical to the original version.
-- __Execution phase__, where the virus actually performs the damaging functions.
+During its lifetime, a virus goes through $4$ phases:
+- __Dormant__ phase, virus is __idle__, and will be activated by some event. (Some don't have this phase)
+- __Triggering__ phase, virus is activated, __preparing__ to perform his function.
+- __Propagation__ phase, virus places a copy of itself into other programs or into system areas on the disk. (The copies can be different from the original)
+- __Execution__ phase, virus actually __performs__ the damaging actions.
 
-### Macro and Scripting Viruses
+### Macro and Scripting Viruses (Document virus)
 
-These are viruses that attaches themself to documents, making them:
+These are viruses that binds themself to documents, making them:
 - Platform independent.
 - Easily spreadable.
 - Much easier to write (for the attacker).
-- Because they don't infect system programs, older file systems cannot prevent their spread, also since users are expected to open them (documents) to be able to modify them.
+- Because they don't infect system programs, older file systems cannot prevent their spread.
+- Users are expected to open these documents.
 
 ### Virus Classification
 
-Viruses can be classfied by their:
-- Target.
-	- Boot sector infector, infects low level parts of the system. (Eg. master boot record)
-	- File infector, infects executables.
-	- Macro virus, infects files with macro or scripting code interpretable by applications.
-	- Multipartite virus, infects files in multiple ways.
-- Concealment strategy.
-	- Encrypted virus, where a portion of the virus encrypts the remainder of itself.
-	- Stealth virus, designed explicitly to hide itself from the system's antivirus.
-	- Polymorphic virus, so it can mutate itself with every infection.
-	- Metamorphic virus, so it can mutate and rewrite itself completely every time and may even change behavior and appearance.
+#### Classification by target
+
+Targets:
+- __Boot sector__ infector, infects low level parts of the system. (Eg. master boot record)
+- __File__ infector, infects executables.
+- __Macro__ virus, infects files with macro or scripting code interpretable by applications.
+- __Multipartite__ virus, infects files in multiple ways.
+
+#### Classification by concealment strategy
+
+Strategies:
+- __Encrypted__ virus, a portion of the virus encrypts the remainder of itself.
+- __Stealth__ virus, specifically written to hide from the system's antivirus.
+- __Polymorphic__ virus, it mutates with every infection.
+- __Metamorphic__ virus, it can mutate and rewrite itself completely and may even change behavior and appearance.
 
 ## Worms
 
-Worms are programs that actively seek out more machines to infect generally through system vulnerabilities or by communicating with the network attached to the infected system.
-Each of these infected machine serves as an automated launching pad for attacks on other machines.
+Worms are programs that actively seeks out more machines to infect.
 
-Worms don't need a host to attach to, they are fully functional programs.
+A worm exploits __software vulnerabilities__ present inside a program.
 
-One of the earliest significant worm infection is the __Morris worm__.
+Each infected machine serves as an automated launching pad for attacks on other machines.
 
-__WannaCry__ was a ransomware attack that propagated itself by scanning local and remote networks, attempting to exploit a vulnerability in the file sharing service. Once inside a system, it would encrypt files, to then demand a ransom payment in order to recover them.
+A worm is a fully functional program, it does not need a __host__.
+
+One of the earliest significant worm infection is the __Morris worm__:
+- It tried to crack password.
+
+### Characteristics of worms
+
+- Polymorphic.
+- Metamorphic.
+- Multiplatform.
+- Multi-exploit.
+- Ultrafast spreading.
 
 ### Mobile Phone Worms
 
-Worms that infect mobile phones use __bluetooth wireless connections__ or multimedia messaging service (MMS) to communicate.
+Worms that infects mobile phones exploit __bluetooth wireless connections__ or multimedia messaging service (MMS).
 
-These specific worms designed for mobile phones can:
-- Completely disable the phone.
+These worms designed for mobile phones can:
+- Disable the phone.
 - Delete data on the phone.
-- Force the device to send costly messages.
+- Force the phone to send costly messages.
 
-The vast majority of mobile phone malware is caused by the use of __trojan apps__.
+Although mobile phone worms are possible, the majority of mobile phone malwares come from __trojan apps__.
 
 ## Drive-By-Download
 
-This is a common technique that exploits browser and plugin vulnerabilities.
-So when the user views a webpage controlled by the attacker, it contains code that exploits the bug to download and install malware on the system without the user's knowledge or consent.
+It's a technique that exploits __browser__ and its __plugins__ as vulnerabilities.
 
-## Watering-Hole Attack
+When a target views a __webpage__ controlled by the attacker:
+- The webpage contains malicious code that exploits the browser's vulnerabilities.
+- The code downloads and installs malware __without__ the user knowing.
 
-This is a variant of drive-by-download that is used in highly targeted attacks.
+### Watering-Hole Attack
 
-The attacker __researches__ their victims to identify websites that they are likely to visit, and then it scans these sites to identify those that have vulnerabilities that allows the attacker to infect the victim.
+Variant of drive-by-download that is used in highly __targeted__ attacks.
+
+The attacker __researches__ the target to identify websites that they are likely to visit.
+
+It scans these sites to identify those that have vulnerabilities that allows the attacker to infect the victim.
 
 ## Malvertising
 
-This technique uses __advertisements__ on websites to infect their visitors.
+This technique uses __advertisements__ (ADs) on websites to infect their visitors.
 
 ## Clickjacking
 
-This technique is also known as a __user-interface__ redress attack.
+This technique __tricks__ the target into thinking that he is typing access information to perform login.
 
-It tricks the user into thinking that he is typing sensible information like passwords or banking data when using those services (Eg. when purchasing something), but in reality he is typing it into an invisible frame controlled by the attacker that is place on top if the actual website.
+In reality there is an __invisible frame__ controlled by the attacker where all the typed characters are.
 
 Attackers can also register keystrokes and clicks.
 
 ## Social engineering for Malware Propagation
 
-This technique tricks users to __assist__ in the compromise of their own system.
+Social engineering is used to trick a target into assisting the compromisation of their own system.
 
 Generally this is done by:
-- Spamming the target using phishing emails.
-- The user downloads programs or utilities that contains harmful hidden code. (Trojan)
+- Spamming the target using phishing email.
+- Target downloads programs or utilities that contains harmful hidden code. (Trojan)
 
 ## Ransomware
 
-When a ransomware is installed on infected systems, it __encrypts__ a large number of files, to then demand a ransom payment using untraceable currencies like Bitcoin.
+When a ransomware is installed on an infected system:
+- It __encrypts__ a large number of files.
+- Then it demand a ransom payment using __untraceable__ currencies. (e.g. Bitcoin)
 
-Tactics such as:
-- Threatening to publish sensitive and personal information
-- Permanently destroy the encryption key after a period of time
-are used to increase the pressure on the victim to __pay up__.
+ __Tactics__ used to speed up the target's payment:
+- __Threatening__ to publish the target's data.
+- __Destroying__ the encryption key after a period of time.
 
-## Botnets
+### WannaCry
+
+__WannaCry__ was a ransomware attack that propagated itself by scanning local and remote networks, attempting to exploit a vulnerability in the file sharing service. Once inside a system, it would encrypt files, to then demand a ransom payment in order to recover them.
+
+## Payload: Botnet
 
 This type of attack uses collection of bots capable of acting in a __coordinated manner__.
 
-These can be used in:
+It has many use cases:
 - Distributed denial of service attacks (DDoS).
 - Spamming.
 - Sniffing traffic.
 - Keylogging.
 - Spreading new malware.
-- Attacking IRC chat networks.
+- Attacking chat networks.
 - Manipulating online polls or games.
 
 Bots are different from worms because:
 - Worms propagates and activates themself.
-- Bots are initially controlled from some __central facility__.
+- Bots are __initially controlled__ from some __central facility__.
 
-## Keyloggers and Spyware (Information Theft)
+## Payload: Information Theft
 
-A __keylogger__ captures keystrokes to allow the attacker to monitor sensitive information.
+### Keyloggers and Spyware
 
-Keyloggers generally use some type of filtering to only return information close to keywords like `login` or `password`.
+A __keylogger__ captures keystrokes so the attacker knows sensitive typed information.
 
-A __spyware__ is a type of software that collects information from a computer and transmits it to another system by monitoring browser information, network traffic, and more generally the system.
+Keyloggers use some type of __filtering__ to only return information close to keywords like "login" and "password".
 
-## Phishing (Information Theft)
+A __spyware__ is a software that collects information from a computer and transmits it to another system.
 
-This technique exploits __social engineering__ to leverage the user's __trust__ by masquerading as communication medium from a trusted souce.
+### Phishing
+
+Phishing exploits __social engineering__ to gain the user's __trust__ by:
+- Masquerading as a middle-man from a trusted souce.
 
 Typically the attacker:
 - Sends spam emails that contains URL to fake websites.
 - Suggests that urgent action is required by the user to authenticate their account.
 
-A more advanced method is __spear-phishing__:
-- Where the targets are carefully researched by the attacker and the emails are specifically crafted (custom-made) in order to deceive and convince them of its authenticity.
+A more specific technique is __spear-phishing__:
+- Where the targets are carefully researched by the attacker and the emails are custom-made in order to deceive and convince them of its authenticity.
 
-## Backdoors (also called trapdoors) (Stealthing) 
+## Stealthing: Backdoor
 
-A backdoor is a __secret entry point__ into a program that allows someone who is aware of the backdoor to gain access without going through the normal security access procedure.
+A backdoor is a __secret entry point__ into a program.
 
-The backdoor is __code__ that recognizes some special sequence of input or is triggered by being run from a certain user ID or by an unlikely sequence of events.
+It allows for who is aware of the backdoor to:
+- Gain access without going through the normal security access procedure.
+
+A backdoor gets activated when some __lines of code__:
+- Recognizes some special sequence of inputs
+- Or is activated by an unlikely sequence of events.
 
 ### Normal use of Backdoors
 
@@ -1196,15 +1231,21 @@ The normal use of backdoors are for __maintenance__.
 
 A __maintenance hook__ is a backdoor used by programmers to debug and test programs.
 
-## Rootkit (Stealthing)
+## Stealthing: Rootkit
 
-A rootkit is a set of programs installed on a system to maintain __hidden access__ to that system with __root privileges__, while hiding evidence of its presence to the greatest extent possible.
+A rootkit is a set of hidden programs installed on a system to:
+- Maintain __hidden access__ to that system with __root privileges__.
+- While __hiding its presence__ to the greatest extent possible.
 
 It does this by subverting the mechanisms that monitor and report on the process, files and registries of a computer.
 
+Basically the system:
+- Instead of using the genuine system programs and functions.
+- It uses a set of the same programs and functions, but modified so that it doesn't check the attacker.
+
 ## Malware Countermeasure Approaches
 
-The __prevention__ of malware threats are the ideal solution for it.
+The ideal solution is __prevention__ of malware threats.
 
 Users can do this by:
 - Improving their awareness to threats.
@@ -1219,21 +1260,29 @@ If prevention fails, technical mechanisms like __anti-virus__ softwares can be u
 
 ### Generations of Anti-Virus Software
 
-- First generation: Simple scanners that required a malware signature to identify it, so its limited to the detection of __already known__ malwares.
+- First generation: __Simple scanners__ that required a malware signature to identify it, so its limited to the detection of __already known__ malwares.
 
-- Second generation: Heuristic scanners that uses heuristic __rules__ to search for probable malware instances.
+- Second generation: __Heuristic scanners__ that uses heuristic __rules__ to search for __probable__ malwares.
 
-- Third generation: Activity traps, so programs that reside in the memory that identify malware by its __actions__ rather tha its structure in an infected program.
+- Third generation: __Activity traps__, are programs that reside in the memory that identifies malware by its __actions__ rather than its __structure__.
 
-- Fourth generation: Full-featured protection, so packages consisting of a __variety__ of anti-virus techniques that does scanning, sets up activity traps and have access control capabilities.
+- Fourth generation: __Full-featured__ protection, so packages consisting of a variety of anti-virus techniques that does scanning, sets up activity traps and have access control capabilities.
 
 ### Sandbox Analysis
 
-Another technique for detecting malware is by running potentially malicous programs in an __emulated__ sandbox or on a __virtual machine__ (VM).
+Running potentially malicious programs in an __emulated__ sandbox or on a __virtual machine__ (VM).
 
-This allows the code to execute in a __controlled__ environment where its behavior can be closely monitored without threatening the security of the real system.
+This allows the code to execute in a __controlled__ environment where its behavior can be closely __monitored__ without threatening the security of the real system.
 
-The most difficult design issue with this technique is to determine how __long__ to run each malware before it activates.
+The most difficult design issue with this technique is to determine __how long to run__ each malware before it activates.
+
+### Host-Based Behavior-Blocking Software
+
+Software that check a program's behavior while it is running.
+
+It __blocks instantly__ malicious actions so it is better than __detecting__ them.
+
+The bad part is that the malicious code must __run at least one time__ before it gets eliminated.
 
 # Database Security
 
