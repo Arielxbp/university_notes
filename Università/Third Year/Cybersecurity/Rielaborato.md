@@ -1108,10 +1108,10 @@ One of the earliest significant worm infection is the __Morris worm__:
 
 ### Characteristics of worms
 
-- Polymorphic.
-- Metamorphic.
-- Multiplatform.
-- Multi-exploit.
+- Polymorphic. (Mutates with every infection)
+- Metamorphic. (Mutate and rewrite completely)
+- Multiplatform. (System independent)
+- Multi-exploit. (Uses various vulnerabilities)
 - Ultrafast spreading.
 
 ### Mobile Phone Worms
@@ -1586,22 +1586,30 @@ This attack is preventable by making the global data non-executable.
 
 # DoS
 
-__Availability__ is one of the fundamental security services. It relates to a system being __accessible__ and usable on demand by authorized users.
+__Availability__ is one of the fundamental security services that describes:
+- A system being __accessible__ and usable on demand by authorized users.
 
 A denial-of-service attack is:
 - An action that prevents the authorized use of networks, systems, or applications by __exhausting resources__ such as CPU, memory, bandwidth and disk space.
 
 So this type of attack attempts to exhaust some critical resource associated with the targeted service.
-- E.g. flooding a web server with many requests in a small period of time, making the server __unable__ to respond to __valid__ requests from users in an acceptable time. (Application resources)
-- E.g. overloading or crashing the network handling software. (System resources)
+
+Categories of attacked resources:
+- Network bandwidth.
+- System resources, are network handling softwares.
+- Application resources.
 
 ## Classic DoS Attack
 
 A classic DoS attack is done by using the __ping__ command to flood a target server:
 
-The aim of this attack is to overwhelm the capacity of the network connection to the target organization. In this way packets of transmitted data are discarted as capacity decreases.
+The aim of this attack is to overwhelm the capacity of the network connection to a target organization.
 
-Given that the source of the attack is __clearly identified__, defense mechanisms against it are fairly simple to implement. Unless the attacker is using a __spoofed address__.
+In this way packets of transmitted data are discarted as capacity decreases.
+
+Given that the source of the attack is __clearly identified__, defense mechanisms against it are fairly simple to implement.
+
+Unless the attacker is using a __spoofed address__.
 
 ## Source Address Spoofing
 
@@ -1612,7 +1620,9 @@ To do that they use __forged__ source addresses, usually via the raw socket inte
 This makes attacking systems harder to identify.
 
 Security researchers, in order to develop defences against spoofing, are advertising routes to unused IP addresses to monitor attack traffic.
+
 Because those are unused addresses, no real packets should arrive their way, so the only packets that do arrive are remains of spoofed DoS attacks.
+
 This is called __backscatter traffic__.
 
 ## SYN Spoofing
@@ -1620,32 +1630,33 @@ This is called __backscatter traffic__.
 A similar attack to the DoS attack is the SYN spoofing attack.
 
 The attacker exploits the TCP $3$-way-handshake that is used to establish a secure connection from client to server:
-- By sending from spoofed addresses many SYN packets to a target server
-- This will cause the server to send back to each of those fake addresses a SYN-ACK packet
-- But because those addresses are mostly unused or busy, they wont reply.
-- Meanwhile the server for each of those requests it maintains in his table an entry of known TCP connections, and it will resend a SYN-ACK packet a few times before closing the connection.
-- So if this table is fully occupied by non-existent connections, real incoming TCP requests will be denied during the period of time before the closing of the fake connections.
+- Spoofed addresses sends many SYN packets to a target server.
+- Server will send back to each fake address a SYN-ACK packet.
+- Those addresses are mostly unused or busy, they won't reply.
+- Server for each of those requests it __maintains in his table an entry__ of known TCP connections, and it will resend a SYN-ACK packet a few times before closing the connection.
+- If this __table is fully occupied__ by non-existent connections, __real incoming__ TCP requests will __be denied__ during the period of time before the closing of the fake connections.
 
 ## Flooding Attacks
 
-Another category of attacks are flooding attacks, these are classified based on the network protocol used.
+Flooding attacks are classified based on the network protocol used.
 
-These have the same intent to overload the network capacity on some __link__ to a server.
+These have the intent to overload the network capacity on some __link__ (router) to a server.
 
-Attackers can use many types of network packets do perform this attack:
-- ICMP flood. (These are pings to the target server)
-- UDP flood.
-- TCP SYN flood.
+An attacker can use __many types of network packets__ do perform this attack:
+- __ICMP__ flood. (Pings to target server)
+- __UDP__ flood. (UDP packets to target server)
+- __TCP SYN__ flood.
 
-### Distributed Denial of Service Attacks (DDoS)
+## Distributed Denial of Service Attacks (DDoS)
 
-A DDoS is a type of the classic DoS attack, but distributed, that is using __multiple systems__ to generate the attack.
+A DDoS is a variant of the DoS attack that is distributed:
+- It uses __multiple systems__ to generate the attack.
 
-The attacker uses a flaw in the operating system or in a common application to gain access and installs the malicious program on it, making them a __zombie__.
+The attacker exploits a flaw in the operating system or in a common application to gain access (worms) and installs the malicious program on it, making them a __zombie__.
 
 Large collections of such systems under the control of one attacker can be obtained, forming a __botnet__.
 
-#### Mirai
+### Mirai (DDoS attack)
 
 Mirai is a 2016 malware that launched a DDoS attack on the website of a well-known security expert.
 
@@ -1653,13 +1664,17 @@ The owners of Mirai released the malicious code on the Internet, and quickly oth
 
 A lot of these replicated Mirai are believed to be behind most of the massive DDoS attacks.
 
-#### Rent a DDoS botnet
+### Renting a DDoS botnet
 
-In many cases, attackers can launch DDoS attacks by using publicly available tools or by paying a small fee to hire a DDoS-as-a-service botnet from the dark web.
+An attacker can launch DDoS attacks by:
+- Using publicly available tools.
+- Or by paying a small fee to hire a DDoS-as-a-service botnet.
 
-### SIP invite scenario
+### SIP invite scenario (Dos attack)
 
 SIP is a text-based protocol.
+
+There are servers that provide SIP services.
 
 A SIP request will trigger in the server a moderate amount of consumed resources.
 
@@ -1667,19 +1682,23 @@ So the attacker will continuously send invites in order to deplete the server's 
 
 ## Hypertext Transfer Protocol Based Attacks (HTTP Attacks)
 
-There are two types of HTTP based attacks:
-- HTTP flood
-- Slowloris - R.U.D.Y. (Are you dead yet)
+Two types of HTTP based attacks:
+- __HTTP flood__.
+- __Slowloris__ - R.U.D.Y. (Are you dead yet)
 
 ### HTTP Flood
 
-This type of attack bombards web servers with HTTP requests coming from many bots by using stress test tools like __LOIC__ and __HOIC__.
+This type of attack bombards web servers with __HTTP requests__ coming from many bots by using stress test tools like __LOIC__ and __HOIC__.
 
-A variant of the HTTP flood attack is the recursive one, where the bot starts from a given HTTP link and it follows all the links on the provided website in a recursive way. This is called __spidering__.
+A variant of the HTTP flood attack is the __recursive one__, where the bot starts from a given HTTP link and it follows all the links on the provided website in a recursive way.
+
+This is called __spidering__.
 
 ### Slowloris - R.U.D.Y
 
-Slowloris is a type of HTTP bassed attack that exploits the common server technique of using multiple threads to support multiple requests to the same server application.
+__TLDR__: Attempts to monopolize by sending HTTP requests that never complete.
+
+Slowloris is a type of HTTP based attack that exploits the common server technique of using multiple threads to support multiple requests to the same server application.
 
 It attempts to monopolize all of the available request handling threads on the Web
 server by sending HTTP requests that never complete.
@@ -1690,55 +1709,63 @@ Existing intrusion detection and prevention solutions that relies on __signature
 
 ## Reflection Attacks
 
-A reflection attack goal is to generate enough volumes of packets to __flood__ the link to the target system by using an intermediary (server) without alerting it.
+A reflection attack goal is to generate enough volumes of packets to flood the link to the target system by using a middle-man (another system).
 
-The attacker sends packets to a know service on the intermediary with a spoofed source address of the actual target system.
+### How it works
 
-When the intermediary responds, it will send the response to the target, but this will be reflected by the intermediary.
+1) Attacker uses a spoofed source address of his target.
+2) Attacker sends packets to a service provided by another system.
+3) System sends the response to the target.
+4) Target will respond to the arrived response.
+5) Loop.
 
 A basic defense against these type of attacks is to block spoofed-sourced packets.
 
 ## DNS Amplification Attacks
 
-A DNS amplification attack exploits the DNS behavior to convert a small request to a much larger response (amplification). These requests are then sent to the target, flooding them.
+A DNS amplification attack exploits the DNS behavior to __convert a small request to a much larger response__ (amplification).
+
+These requests are then sent to the target, flooding them.
 
 A basic defense against these type of attack is to prevent the use of spoofed source addresses.
 
 ## Memcached DDoS attack
 
-Memcached is a high-performance caching mechanism for dynamic websites that allows to speed up the delivery of web contents.
+Memcached is a high-performance __caching mechanism__ for dynamic websites that allows to speed up the delivery of web contents.
 
-The idea is to make a request that stores a large amount of data to then send a spoofed request to make such data to be delivered to the target via UDP.
+The idea:
+- Make a request that stores a large amount of data.
+- Send a spoofed request to make such data to be delivered to the target via UDP.
 
 ## DoS Attack Defences
 
-DoS attacks cannot be prevented entirely, because high traffic volumes may be actually legitimate.
-- E.g. high publicity about a specific website.
-- E.g. activity on a very popular website.
+DoS attacks cannot be prevented entirely, because high traffic volumes __can be legitimate__:
+- E.g. __high publicity__ about a specific website.
+- E.g. activity on a __very popular__ website.
 
 To defend against DDoS attacks:
-- One can prevent the attack preemptively before it.
-- One can detect the attack during it and filter it.
-- One can source traceback and identify the attack during it and after.
-- One can react after the attack has been done.
+- One can prevent the attack preemptively before it. (__Preemptive__)
+- One can detect the attack during it and filter it. (__Detect and fix when happening__)
+- One can source traceback and identify the attack during it and after. (__Traceback and identify__)
+- One can react after the attack has been done. (__React after__)
 
-### DoS Attack Prevention
+### Preventing DoS attacks
 
 To prevent DoS attacks we can:
-- __Block__ spoofed source addresses, prefferably on routers as close to the source as possible.
+- __Block__ spoofed source addresses.
 - __Filter__ to ensure that the path back to the claimed source address is the one being used by the current packet.
 - Use __modified__ TCP connection handling code.
 	- By cryptographically encoding critical information in a cookie that is sent as the server's initial sequence number, so if the client responds with an ACK packet containing the incremented sequence number then the server will know that the client is legitimate.
 - __Block__ suspicious services and combinations.
-- Use __mirrored__ and __replicated__ servers when high-performance and reliability is required.
+- Use __mirrored__ and __replicated__ servers to provide services.
 
-### Responding to DoS Attacks
+### Responding to DoS attacks
 
-Generally the organization that owns a service should contact the ISP to impose:
-- Filtering upstream.
-- Antispoofing.
-- Directed broadcast.
-- Rate limiting filters.
+Organization that owns a service should contact the ISP to provide:
+- __Filtering__ upstream.
+- __Antispoofing__.
+- __Directed broadcast__.
+- __Rate limiting filters__.
 
 An alternative can be the ISP tracing packet flow back to the source to stop them, but this can be quite difficult and time consuming.
 
@@ -1748,10 +1775,12 @@ When displaying online resources, servers and clients use __scripting__ language
 
 Client side scripting can be done by:
 - Javascript, VBscript, ActiveX, Ajax.
+
 These languages tell the browser the instructions to execute according to the user behavior.
 
 Server side scripting can be done by:
 - Javascript, PHP, ASP.NET, Java, Adobe ColdFusion, Perl, Ruby, Go, Python.
+
 These languages build the answer based on the context:
 - User identity.
 - The actual request.
@@ -1760,7 +1789,7 @@ These languages build the answer based on the context:
 
 ##  HTTP Authentication
 
-It's an authentication mechanism that is rarely used nowadays.
+It's an authentication mechanism that is rarely used now.
 
 It consisted in:
 - Client browser starts a request without sending any client-side credentials.
@@ -1771,12 +1800,14 @@ The credentials are encoded in `base64` or __hashed__, and sent to the server.
 
 ## Monitoring and manipulating HTTP
 
-THe payload is encapsulated in TCP packets as __cleartext__, this makes the communication __easy__ to monitor and __manipulate__.
+The payload is encapsulated in TCP packets as __cleartext__.
 
-We can monitor a communication by using:
-- Sniffing tools, like Wireshark.
+In this way communication is easy to __monitor__ and __manipulate__.
 
-We can manipulate a communication by using:
+__Sniffing tools__ are used to monitor a communication:
+- Wireshark.
+
+Manipulation of a communicatio by using:
 - Traditional browser and extensions.
 - Proxies.
 - Advanced softwares like netcat, curl, ...
@@ -1786,202 +1817,516 @@ __HTTPS__ in this regard is not secure at all, we can just use:
 - Proxies.
 to monitor/manipulate payloads sent with HTTPS protocol.
 
-### Proxy HTTP
+## Proxy HTTP
 
-It's used by attackers to find exploits by doing traffic shaping or/and mangling.
+It's used by attackers to find exploits by doing __traffic shaping__ or/and __mangling__.
 
 ## HTTP Sessions
 
-Because the HTTP protocol is __stateless__, every request is independent from the previous ones.
+HTTP protocol is __stateless__:
+- Every request is __independent__ from the previous ones.
 
-The problem is that modern dynamic web applications require the ability to maintain some kind of sessions.
+Modern dynamic web applications need the ability to maintain some kind of __sessions__.
 
-The solution is the use of __sessions__. By maintaining sessions:
-- The server can avoid asking log-ins for every requested page.
-- Store user preferences.
-- Keep track of past actions of the user. (E.g. a shopping card, favorites)
-- ...
+The solution is the use of __sessions__.
+
+By maintaining sessions:
+- Server can __avoid asking log-ins__ for every requested page.
+- Store __user preferences__.
+- Keep track of __past actions__ of the user. (E.g. a shopping card, favorites)
 
 These sessions are implemented by web applications themselves and are __transmitted__ between the client and the server.
 
-The transmission is done by:
-- HTTP payload, like `<INPUT TYPE="hidden" NAME="sessionid" VALUE="6767">`
-- URL, as a query like `http://website.com/page.php?sessionid=6767`
-- Header HTTP. (E.g. with cookies)
-
-The most common way to implement sessions are by using cookies.
+The transmission of a session can be done using:
+- __HTTP payload__. (e.g. `<INPUT TYPE="hidden" NAME="sessionid" VALUE="6767">`)
+- URL, as __a query__. (e.g. `http://website.com/page.php?sessionid=6767`)
+- Header HTTP: __cookies__.
 
 ## Cookies
 
-Cookies are files of data created by the server and __memorized__ by the client.
+Cookies are files of data:
+- Created by the server.
+- And stored by the client.
 
-These are transmitted between the two using HTTP header.
+Cookies are transmitted between client and server using __HTTP header__.
 
-A cookie can contains data like:
-- expiration date of himself.
-- The path for which it is valid.
-- The domain on which it is valid.
-- A `secure` flag that states whether the cookie must be transmitted on a secure channel only.
-- A `httpOnly` flag that states if no API is allowed to access `document.cookie`.
+A cookie contains data like:
+- Expiration date.
+- Path for which it's valid.
+- Domain for which it's valid.
+- A "secure" flag that indicate if it must be transmitted on a secure channel only.
+- A "httpOnly" flag that states if no API is allowed to access the cookie.
 
 A cookie creates a session:
-- The session data is stored on the server.
-- The server sends a session ID to the client through a cookie.
-- For each client request, it sends back the obtained ID to the server.
-- So the server uses these IDs to retrieve information.
+- Session data is stored on the server.
+- Server sends a session ID to the client using a cookie.
+- Each client request sends back the obtained ID to the server.
+- Server uses these IDs to retrieve information.
 
-### Cookies: Security
+### Security of cookie sessions
 
-Because cookies are used for critical elements like authentication, and can bypass authentication schemas (defenses), they can be targeted by attackers.
+Cookies are used for critical elements like authentication.
 
-So cookies should be considered valid for only a __small__ amount of time.
+Cookies __can bypass authentication__ defenses, so are targeted by attackers.
+
+Cookies should be __valid__ only for a __small amount of time__.
+
+### Session hijacking (Attack)
+
+1) Attacker eavesdrop a trasmission of cookie.
+2) Attacker uses eavesdropped information to access.
+
+### Session fixation (Attack)
+
+1) Attacker sends a request to a server.
+2) Server sends a session ID using a cookie.
+3) Attacker sends the session ID to the target.
+4) Target will use received session ID for future requests.
 
 ## Content Isolation
 
-Most browser's security mechanism rely on the possibility of __isolating__ documents depending on the resource's origin.
-
-Meaning that:
+Most browsers security mechanism rely on:
+- __Isolating__ documents depending on its origin.
+- Pages of different sources should not be allowed to interact.
 - Content coming from website $A$ can only read and modify content coming from $A$, and __cannot access__ content coming from website $B$.
 
-In this way a malicious website cannot run scripts that access data and functionalities of other websites visited by the victim.
+In this way malicious websites cannot run scripts that access data and functionalities of other websites visited by the victim.
 
-The 
+## Same Origin Policy
 
+Prerequisite for different window tabs to interact with each other is:
+- If and only if the __protocol__, __domain name__ and __port__ are the same.
 
+### Same Origin Policy implication
 
+- A website __cannot read or modify__ cookies or other DOM elements of another website.
+- Modification of other window tab should need __security checks__.
+- A website __can request a resource__ from another website, but it __cannot process it__.
 
-# Symmetric Encryption
+### Same Origin Policy limits
 
-The main purpose of cryptography is to __alter__ a message so that only the intended recipients can alter it back to then read the original message.
+- Cannot isolate pages of different users of a same service.
+- Different domains cannot easily interact.
 
-Other purposes of cryptography are:
-- Preserving confidentiality.
-- Authenticating sender and receiver of messages.
-- Facilitate the message integrity.
-- To ensure that the sender will not be able to deny the act of sending his message (non-repudiation).
+To fix the difficult interaction:
+- Both domain can set their TLD address to the same.
+- E.g. "play.google.com" and "mobile.google.com" both use "google.com".
+
+## Web Attacks
+
+### Client side attacks
+
+#### Cross-Site Scripting (XSS)
+
+The target is the user's application.
+
+It's caused by a lack of __input sanitization__.
+
+By modifying the original webpage injecting HTML and Javascript code.
+
+There are $3$ types of XSS:
+- __Reflected__.
+	1) Server's webpage is vulnerable to XSS.
+	2) The exploit is inside the URL.
+	3) Any client that visits the webpage also is attacked.
+- __Stored__.
+	1) Attacker sends to the server the code to inject.
+	2) Server stores received code in the database.
+	3) Any client that visits the webpage of that server will receive the injected code.
+- __DOM-based__.
+	1) Similar to the reflected one.
+
+An XSS attack can:
+- __Capture information__.
+- __Show false information__.
+- __Inject false form fields__.
+- ...
+
+#### Cross-Site Request Forgery (also On-Site)
+
+__TLDR__: Have a target to execute some actions, using his credentials like session cookie.
+
+__TLDR__: Tricking a logged-in user into unknowingly sending a malicious request to a trusted website.
+
+Can be:
+- __Reflected__ type.
+- __Stored__ type.
+
+How it works:
+1) User logs-in a webpage service.
+2) Website authenticates the user and gives him the session cookie.
+3) User accesses the malicious webpage.
+4) Malicious webpage __forges a hidden request__ for the service's webpage. (e.g. Bank transfer)
+5) Hidden request uses the valid session cookie so the service is ok with it.
+
+To countermeasure CSRF attacks:
+- No request can take an action for someone if it does not have that __person's token__.
+
+# Cryptography - Symmetric Encryption
+
+The main use of cryptography is to __alter__ a message so that only the intended receiver can alter it back to then read the original message.
+
+Other purposes are:
+- Preserving __confidentiality__.
+- __Authenticating__ sender and receiver. (Authentication)
+- Facilitate the message __integrity__.
+- __Non-repudiation__, sender will not be able to deny the act of sending a message.
+
+## Advantages of Symmetric cryptography
+
+- Easy to use.
+- Efficient.
+- Relatively short keys.
+- Many applications of use.
+- Easily combine multiple ciphering.
+
+## Limitations of Symmetric cryptography
+
+- Users __need to share the same secret key__.
+- Intercept the key during its transmission.
+- Number of keys required increases rapidly as users increase.
+- __Cannot provide authentication__.
 
 ## Symmetric Cryptosystem
 
-The main idea is that we assume the communication channel is __insecure__ and can be eavesdropped.
+Always assume that the communication channel is __not secure__ and can be __eavesdropped__.
 
-So the sender and the receiver will use:
-- A secret key $K$.
-- An encryption function $E_{k}(P)$.
-- A decryption function $D_{k}(C)$.
-- The actual message, as a plaintext.
+The plaintext typically has the __same length__ as the ciphertext.
 
-The sender before sending the message, will encrypt the plaintext with the key by using the encryption function. The result is a __ciphertext__ that has the same length as the plaintext.
+Encryption and decryption function are __bijections__:
+- One is the reverse of the other.
 
-The receiver receives the ciphered text, and will use the decryption function to decrypt the ciphertext. He has the same key used by the sender to encrypt the message, and will use it inside the decrypt function.
+Both functions needs to be __efficient__.
 
-### Efficiency
+### Symmetric cryptosystem: Brute force Attack
 
-Both functions $E_{k}$ and $D_{k}$ should have __efficient__ algorithms.
+A brute-force attack tries all possible secret keys to decrypt a ciphertext.
 
-### Consistency
+An attacker needs to know the __structure__ of the plaintext.
 
-All messages encrypted by using the encryption functions __need__ to be the same original message after passing them to the decryption function.$$D_{k}(E_{k}(P))=P$$
+To defend against brute-force attacks:
+- Every secret key should be __long enough__ to make the computing computationally very slow or impossible.
 
-## Brute force Attack
-
-For the attacker to perform a brute force attack, he is required to have some knowledge about the structure of the plaintext that he is trying to decrypt.
-
-The attacker will try all the possible keys for the decryption and will try to determine if the obtained result is a likely plaintext.
-
-### Countermeasure
-
-Every key should be a sufficiently long random value to make exhaustive search attacks almost impossible.
-
-## Types of attacks
-
-An attacker may have:
-- A collection of ciphertext.
-- A collection of plaintext/ciphertext pairs.
-- A collection of plaintext/ciphertext pairs for plaintexts selected by the attacker.
-- A collection of plaintext/ciphertext pairs for ciphertexts selected by the attacker.
-
-## Symmetric Key Cryptography
+## Symmetric Key Cryptography (How to make ciphertext)
 
 This type of cryptography uses:
-- Substitution, where each character in the text is __replaced__ by another character of the same or different alphabet.
-- Transposition, where the __order__, but not the value of the characters in the text is changed.
+- __Substitution__, each character in the text is __replaced__ by another character of the same alphabet. (Or another alphabet)
+- __Transposition__, the __order__ of the characters in the text is changed.
 
-### Caesar cipher (Substitution)
+## Substitution Ciphers
 
-The Caesar cipher is a simple substitution cipher that works by:
+### Caesar cipher
+
+Caesar cipher is a substitution type cipher.
+
+It works by:
 - Replacing each character in the plain text with the character $3$ positions forward in the alphabet.
 - And if the end of the alphabet is reached, start over in the alphabet.
 
-Alternatives can be instead of using the next $3$ positions,  any other number. This is considered then the key to decrypt a ciphered text done by a Caesar cipher.
+The __key__ of the cipher is:
+- The number of positions to change forward.
+- Default is $3$.
 
-## Weakness and Improvement
+### Weakness and Improvement for Cyclic subsitution (permutation)
 
-With cyclic permutation, it is easy to find the key as there are only $N$ possibilities to try, where $N$ is the number of characters in the alphabet.
+It is easy to find the key when using cyclic permutations:
+- Alphabet has $N$ characters.
+- Then the key has $N$ possible values.
 
-So an improvement over it can be by using __random permutation__ of the alphabet, where we map every letter of the alphabet with another but random letter.
+To improve this method we use __random permutations__:
+- Map every character with another random character of the alphabet.
 
-In this way a single alphabet can yield $26!$ combinations.
+In this way a single alphabet can yield $N!$ combinations for the key.
 
-## Frequency Analysis (Cryptanalysis)
+### Poly-Alphabetic Ciphers
 
-By doing a frequency analysis, single alphabet subsitution characters can be analyzed by calculating the frequencies of characters in a ciphertext, and comparing the frequencies of characters in typical texts of the same language.
-
-## Poly-Alphabetic Ciphers
-
-It is still relatively easy to find the key in a random permutation with single alphabet.
-
-So instead we can use a poly-alphabetic substitution cipher:
-- The word will work as key, because it will determine the displacement of designated character that will replace the plaintext character.
+Poly-alphabetic substitution cipher:
+- The word is the key.
+- It determines the displacement of a designated character that will replace the plaintext character.
 
 In this way, the same character in the plaintext may be represented by a different designated character.
 
-### Cyclic permutation (Example of poly-alphabetic cipher)
-
-We assign $2$ random letters as the key for $2$ coding.
-
-It works by:
-- Replacing the plaintext letter with a mapped letter from the first coding or the second coding based on the position, even or odd, of the plaintext letter.
-
-(___insert example image here___)
+__TLDR__: Some characteristic of the word is used as key for the ciphering.
+- E.g. Odd positioned character are substituded into $X$ while even ones into $Y$.
 
 ### Vigenére Code
 
+All possible cyclic permutations are used.
 
+![|500](https://i.imgur.com/JhW07k2.png)
 
 ### One-time pad
 
+It works by __displacing__ the character for the value of the padded character.
 
+This method is __unbreakable__, because:
+- __Shannon's theorem__, there must be at least as many keys as there are possible messages.
 
-#### Weaknesses
+The key needs to be __as long as the plaintext__.
 
+Keys __cannot be reused__.
 
+## Frequency Analysis (Cryptanalysis)
+
+By doing a __frequency analysis__, single alphabet subsitution characters can be:
+- Analyzed by calculating the frequencies of characters in a ciphertext.
+- And then comparing the frequencies of characters in typical texts of the same language.
 
 ## Transposition Ciphers
 
-This ciphering is done by changing the order of the letters in the message.
+Change the order of the letters in the message.
+
+Types:
+- Permutation.
+- Column transposition.
+- Keyed column transposition, rearranges the columns based on a permutation.
+
+## Feistel network: Product cipher (Ciphering method)
+
+__Product cipher__ works by:
+- Executing two or more simple ciphers in sequence.
+- Final result is cryptographically __stronger__ that any simple cipher used in the process.
+- Used simple ciphers should be both subsitution and permutation types.
+
+## Computationally secure encryption schemes
+
+An encryption is computationally secure if:
+- Cost of breaking cipher is greater than the value of information.
+- Time required to break cipher is greater than the expiration date of the information.
+
 
 ## Block Ciphers
 
+A plaintext is __divided into blocks__ of __fixed length__.
 
+Each block is encrypted by himself.
 
+## Block Cipher modes
+
+A block cipher mode:
+- Describes __the way it encrypts and decrypts__ a sequence of message blocks.
+
+$5$ modes of operation have been defined: (__Important__)
+- __Electronic Code book__, each block uses the same key. (ECB)
+- Cipher Block Chaining, input to cipher is already modified from the XOR with previous ciphered text and next plain text blocks. (CBC)
+- Cipher Feedback. (CFB)
+- Output Feedback. (OFB)
+- Counter, each block of plaintext is XORed with an encrypted counter. (CTR)
 
 ### Binary Cryptography
 
-Most of modern codes tend to use binary cryptography, so encoding messages as only $1$ and $0$.
+Messages are made with bits.
 
-Using a XOR gate and a key we can encrypt the binary message into a ciphertext.
+Uses a __XOR__ gate and a key to encrypt the binary message into a ciphertext.
+
 To decrypt it we just need to use a XOR gate with the same key.
 
 The obtained ciphertext gives an attacker zero information about the plaintext.
 
 ### Substitution Boxes
 
+This method defines a __matrix__ where each __cell__ is the corresponding cipher for that row and column input.
 
+Given a string made of bits:
+- It splits it in $2$ blocks.
+- The first block is the __row__.
+- The second block is the __column__.
+- The identificated cell is the cipher of the input string.
 
-### Actual Block Ciphers used
+![|500](https://i.imgur.com/PK4v3MJ.png)
 
-DES, 3DES and AES are all encryption schemes actually used in practice.
+### Data Encryption Standard (DES)
 
-#### Data Encryption Standard (DES)
+It's a variation of the Feistel network.
 
+2DES is not more secure than single DES:
+- Encrypt plain with $2^{56}$ size keys.
+- Decrypt cypher with $2^{56}$ size keys.
+- Compare to find a match.
+
+So 2DES expected security of $2^{112}$ size keys is not real.
+
+3DES is more secure than single DES:
+- It uses keys of bigger size.
+
+### Advanced Encryption Standard (AES)
+
+Uses $10$ __rounds of invertible transformation__ to compute the result ciphertext.
+
+Each round works by:
+1) __S-box substitution__ step.
+2) __Permutation__ step.
+3) __Matrix multiplication__ step.
+4) __XOR__ step with key.
+
+## Stream Ciphers
+
+In a way, stream ciphers are block ciphers with __block size of length__ $1$.
+
+Requires:
+- __Large keys__ to work.
+- __Long periods without repetition__.
+- __Statistically unpredictable__.
+
+### RC4 (ARCFOUR)
+
+Uses __bytes__ for its operations.
+
+Widely used for SSL/TLS.
+
+# Hash
+
+The objective of a __hash function__ is to:
+- Produce a __fingerprint__ of a data.
+
+The function should be:
+- __Usable for all sizes__ of data.
+- Produce a __fixed-size output__.
+- Relatively __easy to compute for any given input__.
+- Computationally __impossible to find the input of a hash value__.
+- Computationally __impossible to find different inputs with same hash value__.
+
+## How it works (Simple hash function)
+
+A simple hash functions:
+- Uses bit-by-bit __XOR__ of every block.
+- Iterates through all the characters in same position for all blocks.
+- Hash value for position $i$ is computed from XOR of every character in $i$ position of every block.
+
+## Secure Hash Algorithm (SHA)
+
+Uses $256$, $384$, or $512$ bit hash values.
+
+__Block size__ for SHA-$N$ is: $2N$. (Not for 384) (Always use __upper value__ if N has more values)
+
+__Security value__ for a SHA-$N$ is: $N/2$. (Always use __lower value__ if N has more values)
+
+# Message Authentication
+
+## HMAC
+
+It's derived from [[Third Year/Cybersecurity/Rielaborato#MAC (Message Authentication Code)|MAC]].
+
+It uses cryptographic hash code plus MAC.
+
+It's generally faster than MAC.
+
+It's used in:
+- IP security.
+- Transport layer security. (TLS)
+- Secure electronic transaction. (SET)
+
+### HMAC Objectives
+
+- Usage of __available hash functions__.
+- Maintain __performance__ of original hash functions.
+- Easy __replaceability of hash function__ in use.
+
+### HMAC Structure
+
+![|400](https://i.imgur.com/4ZmCV6P.png)
+
+### Security of HMAC
+
+Depends on the cryptographic __strength of the used hash function__.
+
+# Public-key Cryptography (Or Asymmetric Cryptography)
+
+Asymmetric cryptography is used to:
+- __Exchange a secret key__ that is used for __symmetric cryptography__.
+
+![|500](https://i.imgur.com/nQ6ldSR.png)
+
+## Advantages of public-key cryptography
+
+- No need to communicate private keys.
+- Provides __authentication__ of the sender, because only he should have his private key used to encrypt.
+- Provides __confidentiality__ of the sent message, because only the receiver should be able to decryt.
+- Brute-force is computationally impossible.
+
+## Limits of public-key cryptography
+
+- It's __computationally expensive__ to use.
+- __Less efficient__ because it's slow and expensive.
+- __Not everything is encrypted__ because it's slow and expensive.
+- Private-key encrypted messages can be decrypted by anyone.
+- Public keys __can be modified__ by someone.
+
+## Digital Signature
+
+A signature __testifies__ some information.
+- The signature's user __is binded__ to this information.
+
+It provides:
+- Message __integrity__.
+- __Non-repudiation__.
+
+## Digital Certificate
+
+A digital certificate is a __document__ that __certifies__ the relationship between a __public key and its owner__.
+
+This is done with a __digital signature__.
+
+But then we need to __verify__ this signature with another public key.
+
+This public key __needs to be trusted__:
+- Trusted public keys are stored in certificates of __certification autorities__ (CA).
+
+![|700](https://i.imgur.com/bc71AZk.png)
+
+### Certification Authority (CA)
+
+A certification authority is an __organization__ that __issues digital certificates__.
+
+Its function is to:
+- __Receive application__ for keys that wants to be trusted.
+- __Verifies applicant's identity__, checks their trustworthiness.
+- __Store public keys__.
+- __Protect public keys__ from unauthorized modification.
+- __Delete keys__ that are __invalid__ or __expired__.
+
+Certification authorities are __organized in a hierarchy__ called:
+- Public Key Infrastructure. (__PKI__)
+- The standard is __X.509__
+
+To verify a certificate:
+- It needs to verify all the signatures from the bottom to the top.
+
+A certificate is __made of__:
+- Public key with the identity of the key's owner.
+- Signature of a trusted third party.
+
+## RSA (Public key Algorithm)
+
+RSA is based on the knowledge that:
+- Given a product of __two large prime numbers__.
+- Those two prime numbers cannot be easily determined. 
+
+It uses:
+- Exponentiation of integers modulo a large number
+
+![|500](https://i.imgur.com/t6XidL7.png)
+
+### RSA attacks
+
+- __Brute force__, tries all possible private keys.
+- __Math attack__, tries to factor the product of two primes.
+- __Timing attack__.
+- __Chosen ciphertext attack__.
+
+#### Timing attack
+
+A __snooper__ can determine a private key by:
+- Keeping track of how long a computer takes to decipher messages.
+
+To counter this attack:
+- __Constant time__, make sure that all computation take the same time.
+- __Random delays__.
+- __Blinding__, make the computing of what ciphertext bits unknown.
+
+## Other Public key Algorithms
+
+- Digital Signature Standard. (DSS)
+- Elliptic-Curve Cryptography. (ECC)
+- El Gamal.
 
