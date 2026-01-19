@@ -1,61 +1,34 @@
-___
 
+### January
+20 Studio multicore -- Fare quiz software
+21 Studio multicore -- Fare quiz software
+22 Studio multicore -- Fare quiz software
+23 Studio multicore -- Fare quiz software
+24 Studio multicore -- Fare quiz software
+25 Studio multicore -- Fare quiz software
+26 Studio multicore -- Fare quiz software
+27 Studio multicore -- Fare quiz software
+28 Studio multicore -- Fare quiz software
+29 Studio multicore -- Fare quiz software
+30 Studio multicore -- Fare quiz software
+31 Studio multicore -- Fare quiz software
 
-## Automi, Calcolabilità e Complessità (12/01)
-
-- [x] Argomento: Automi - Data: 24/12
-- [ ] Argomento: Calcolabilità - Data: 25/12
-- [ ] Argomento: Calcolabilità - Data: 26/12
-- [ ] Argomento: Calcolabilità - Data: 27/12
-- [ ] Argomento: Complessità - Data: 28/12
-- [ ] Argomento: Complessità - Data: 29/12
-- [ ] Argomento: Complessità - Data: 30/12
-- [ ] Argomento: Ripasso ed esercizi - Data: 9/01
-- [ ] Argomento: Ripasso ed esercizi - Data: 10/01
-- [ ] Argomento: Ripasso ed esercizi - Data: 11/01
-
-
-- [ ] 2 gg ripasso
-- [ ] resto giorni esami passati
-- [ ] + nuovi esercizi possibili tramite esami passati + gemini per generare domande
-- [ ] Esercizi libro
-
-## Ingegneria del software (14/01)
-
-- [x] Argomento: Quiz domande - Data: 31/12
-- [ ] Argomento: Quiz domande - Data: 01/01
-- [ ] Argomento: Quiz domande - Data: 02/01
-- [ ] Argomento: C++ - Data: 03/01
-- [ ] Argomento: C++ - Data: 04/01
-- [ ] Argomento: C++ - Data: 05/01
-- [ ] Argomento: Ripasso quiz domande: Data 12/01
-- [ ] Argomento: Ripasso C++ !!!!!!!!!!!!!!! quiz domande: Data 13/01
-
-## Interazione uomo macchina (15/01)
-
-- [x] Esonero dicembre
-
-## Cybersecurity (16/01)
-
-- [x] Argomento: Ripasso rielaborato - Data: 06/01
-- [ ] Argomento: Ripasso rielaborato - Data: 07/01
-- [ ] Argomento: Ripasso rielaborato - Data: 08/01
-- [ ] Argomento: Ripasso rielaborato - Data: 14/01
-- [ ] Argomento: Ripasso rielaborato - Data: 15/01
-
-## Programmazione per il web (20/01)
-
-- [x] Argomento: Rifinire progetto - Data: 16/01
-- [ ] Argomento: Rifinire progetto - Data: 17/01
-- [ ] Argomento: Rifinire progetto - Data: 18/01
-- [ ] Argomento: Studiare per orale - Data: 19/01
-- [ ] 
-## Programmazione di sistemi multicore (xx/02)
-
-- [x] Argomento: Rifinire progetto - Data: 20/01
-- [ ] Argomento: Rifinire progetto - Data: 21/01
-- [ ] Argomento: Rifinire progetto - Data: 22/01
-- [ ] Argomento: Rifinire progetto - Data: 23/01
-- [ ] Argomento: Rifinire progetto - Data: 24/01
-- [ ] Argomento: Rifinire progetto - Data: 25/01
-- [ ] Argomento: Studiare per orale - Data: 26/01
+### February
+01 Studio multicore -- Fare quiz software
+02 __Multicore__ exam
+03 Studio software
+04 Studio software
+05 Studio software
+06 Studio software
+07 Studio software
+08 Ripasso automi
+09 __Automata__ exam
+10 Studio software
+11 __Interaction human machine__ exam
+12 __Software engineer__ exam
+13 __Cybersecurity__ exam
+14 Studio wasa
+15 Studio wasa
+16 Studio wasa
+17 __Web & software architecture__ exam
+18 __Multicore__ exam
