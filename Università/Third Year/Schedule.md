@@ -32,3 +32,9 @@
 16 Studio wasa
 17 __Web & software architecture__ exam
 18 __Multicore__ exam
+
+```c
+
+cudaError_t err_A = cudaMalloc
+CUDA_CHECK(err_A);
+```
