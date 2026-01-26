@@ -64,6 +64,10 @@ I processi non condividono la memoria quindi per comunicare si fa passaggio di m
 
 # MPI
 
+MPI è una libreria per parallelizzare programmi tramite passaggio di comunicazioni.
+
+Si basa sul modello: Singolo programma e multipli dati.
+
 MPI_Init: serve a dire a MPI di effettuare il setup necessario per MPI.
 
 MPI_Finalize: serve a dire a MPI che il programma ha finito, e che quindi deve pulire tutte le allocazioni di memoria allocate per questo programma.
@@ -144,6 +148,8 @@ ___
 ## Come comunicano i processi MPI tra di loro
 
 MPI_Send e MPI_Recv sono usati per mandare dati tra i processi.
+
+È meglio inviare una sola volta più dati che inviare tante volte piccole porzioni di dati.
 
 ```c
 int MPI_Send( void* msg_buf_p, int msg_size, MPI_Datatype msg_type, int dest, int tag, MPI_Comm comm);
@@ -308,4 +314,114 @@ Questo modello è supportato da OpenMP.
 La maggiorparte delle implementazioni di MPI permettono solamente al processo con rank 0 all'interno di MPI_COMM_WORLD di poter accedere allo standard in (stdin).
 
 Il processo 0 deve necessariamente leggere i dati (tipo scanf) e mandarli a tutti gli altri processi.
+
+___
+
+Quando si manda un messaggio attraverso MPI_Send, quest'ultima finisce nella rete (network), ovvero passa dal NIC (network interface controller).
+
+MPI_Send usa la __modalità di comunicazione standard__, cioè MPI decide basandosi in base alla dimensione del messaggio, se bloccare o meno il processo mittente finché il processo destinatario non colleziona tale messaggio.
+
+MPI_Send non blocca il processo mittente se la dimensione del messaggio è abbastanza piccola, in questo caso MPI_Send si dice localmente bloccante (locally blocking).
+
+Esistono 3 modalità di comunicazione alternative.
+
+La modalità di comunicazione __bufferata__ (buffered), dove le operazioni di invio messaggi sono sempre localmente bloccanti, ovvero sbloccano il processo non appena il messaggio viene copiato in un qualsiasi buffer.
+
+La modalità di comunicazione __sincrona__ (synchronous), dove le operazioni di invio messaggi sbloccano il processo solamente dopo che il destinatario ha iniziato la ricezione del messaggio. Questa operazione di ricezione è __globalmente bloccante__, in questo modo il mittente è sicuro che il destinatario l'ha ricevuto senza dover comunicare altro.
+
+La modalità di comunicazione __pronta__ (ready), dove le operazioni di invio messaggi vanno a buon fine solamente se un'operazione di ricezione corrispondente è già stata inizializzata per quel invio.
+Questa modalità serve a ridurre l'overhead (latenza?) delle operazioni di handshaking (stretta di mano).
+
+___
+
+Invii di messaggi bufferati impattano la performance in modo negativo, perché il processo chiamante viene bloccato, in attesa che la copia del messaggio avvenga.
+
+Invii non bloccanti o immediati, massimizzano la concorrenza in quanto restituiscono immediatamente appena viene inizializzato un trasferimento, __permettendo la sovrapposizione tra comunicazioni e computazioni__.
+
+Sia MPI_Send che MPI_Recv hanno le loro versioni immediate e/o non bloccanti.
+
+Lo svantaggio delle comunicazioni non bloccanti è che il completamento di tali operazioni per entrambi i processi involti deve essere comunicato esplicitamente.
+Il mittente così capisce che può riusare o modificare il buffer del messaggio.
+Il ricevente così capisce che può estrarre il contenuto del messaggio ricevuto.
+
+___
+
+MPI_Wait è una funzione che serve per bloccare un processo che ha un operazione di comunicazione in corso.
+
+MPI_Test è una funzione che serve a controllare se una operazione di comunicazione è stata completata o meno.
+
+___
+
+## Collettive in MPI
+
+```C
+int MPI_Reduce( void* input_data_p, void* output_data_p, int count, MPI_Datatype datatype, MPI_Op operator,                             int dest_process, MPI_Comm comm);
+
+// Esempio di uso
+MPI_Reduce(&local_int, &total_int, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+```
+
+MPI_Reduce è una funzione di riduzione di dati basata sull'operatore MPI dato in input.
+
+Operatori:
+MPI_MAX, massimo.
+MPI_MIN, minimo.
+MPI_SUM, somma.
+MPI_PROD, prodotto.
+MPI_LAND, and logico.
+MPI_BAND, and tra bit.
+MPI_LOR, or logico.
+MPI_BOR, or tra bit.
+MPI_LXOR, or logico esclusivo.
+MPI_BXOR, or tra bit esclusivo.
+MPI_MAXLOC, massimo e la sua posizione.
+MPI_MINLOC, minimo e la sua posizione.
+
+Si possono inoltre creare operatori personalizzati con MPI_Op_create.
+
+Tutti i processi nel comunicatore necessariamente devono chiamare la stessa funzione collettiva.
+
+Inoltre gli argomenti passati in input da ogni processo a una collettiva MPI devono essere compatibili l'uni con gli altri.
+
+Per esempio se un processo passa in input come destinazione della collettiva il rank 0 e un altro processo passa il rank 1 allora la funzione MPI_Reduce va in errore e il programma molto probabilmente crasha o si blocca.
+
+Solamente il processo destinatario della collettiva può usare l'output generato dalla collettiva, ma tutti gli altri processi devono comunque inserire durante la chiamata qualcosa come argomento, tipo NULL.
+
+Le collettive non usano tags.
+
+___
+
+```C
+// MPI Broadcast
+int MPI_Bcast(void* data_p, int count, MPI_Datatype datatype, int source_proc, MPI_Comm comm);
+
+// data_p è sia input che output
+```
+
+Questa funzione invia a tutti i processi del comunicatore dei dati posseduti da un singolo processo.
+
+___
+
+```C
+int MPI_Allreduce(void* input_data_p, void* output_data_p, int count, MPI_Datatytpe datatype,                                                         MPI_Op operator, MPI_Comm comm)
+```
+
+Questa funzione è una fusione tra MPI_Reduce + MPI_Bcast, cioè esegue prima la riduzione e viene a seguire un broadcast del risultato ottenuto dalla riduzione.
+
+___
+
+## Rilevanza degli algoritmi delle collettive
+
+L'algoritmo usato da una funzione collettiva pesa molto sul tempo totale di computazione.
+
+Quindi ogni azienda che fa uso di parallelizzazione usando collettive sta sviluppando la sua propria libreria.
+
+Data una collettiva, come selezionare il miglior algoritmo da usare?
+Automaticamente tramite euristica, manualmente o semplice non assumendo niente.
+
+È un'area di ricerca molto attiva.
+
+___
+
+## Valutazione della performance in MPI
 
