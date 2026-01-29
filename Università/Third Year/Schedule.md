@@ -33,8 +33,10 @@
 17 __Web & software architecture__ exam
 18 __Multicore__ exam
 
-```c
 
-cudaError_t err_A = cudaMalloc
-CUDA_CHECK(err_A);
-```
+- [ ] Capire e usare la libreria di Ionut
+- [ ] Mettere i quiz software in un singolo file
+- [ ] Finire WASA
+- [ ] Chiedere a vari AI come si potrebbe migliorare il kernel cuda
+- [ ] Cominciare a scrivere la relazione di multicore
+- [ ] fare a matita le prove passate di automi + ripasso generale
