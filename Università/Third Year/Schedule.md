@@ -37,6 +37,6 @@
 - [ ] Capire e usare la libreria di Ionut
 - [ ] Mettere i quiz software in un singolo file
 - [ ] Finire WASA
-- [ ] Chiedere a vari AI come si potrebbe migliorare il kernel cuda
-- [ ] Cominciare a scrivere la relazione di multicore
+- [x] Chiedere a vari AI come si potrebbe migliorare il kernel cuda (33%) (Chiedere a gpt e ai studio, poi ritornare da claude)
+- [ ] Cominciare a scrivere la relazione di multicore (10%)
 - [ ] fare a matita le prove passate di automi + ripasso generale
