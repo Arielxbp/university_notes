@@ -34,9 +34,12 @@
 18 __Multicore__ exam
 
 
-- [ ] Capire e usare la libreria di Ionut
-- [ ] Mettere i quiz software in un singolo file
+- [ ] Capire e usare la libreria di Ionut (20%)
+- [ ] Mettere i quiz software in un singolo file (30%)
+
 - [ ] Finire WASA
+
 - [x] Chiedere a vari AI come si potrebbe migliorare il kernel cuda (33%) (Chiedere a gpt e ai studio, poi ritornare da claude)
-- [ ] Cominciare a scrivere la relazione di multicore (10%)
-- [ ] fare a matita le prove passate di automi + ripasso generale
+- [ ] Cominciare a scrivere la relazione di multicore (20%)
+
+- [ ] fare a matita le prove passate di automi + ripasso generale (60%)
