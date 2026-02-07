@@ -537,3 +537,52 @@ Un azienda ha un team di sviluppo in cui il 90% dei membri è junior (cioè con 
 1) Plan driven
 2) Basato sul riuso
 3) Iterativo
+
+## Domande 2025
+
+Quale delle seguenti frasi meglio descrive l'obiettivo del "check di consistenza" che è parte della "requirements validation activity".
+
+1) Assicurarsi che non ci siano requisiti in conflitto con altri requisiti. <
+2) Assicurarsi che per ogni requisito esista un insieme di test che lo possa verificare.
+3) Assicurarsi che i requisiti funzionali descrivano tutte le funzionalità del sistema.
+
+___
+
+Quale delle seguenti frasi meglio descrive l'obiettivo del "validity check" che è parte della "requirements validation activity".
+
+1) Assicurarsi che i requisiti funzionali descrivano tutte le funzionalità del sistema.
+2) Assicurarsi che non ci siano requisiti in conflitto con altri requisiti.
+3) Assicurarsi che un sistema che soddisfa i requisiti risolve il problema del "customer". <
+
+___
+
+Quale delle seguenti frasi meglio descrive l'obiettivo del "check di completezza" che è parte della "requirements validation activity".
+
+1) Assicurarsi che per ogni requisito sia stato implementato nel sistema.
+2) Assicurarsi che i requisiti funzionali descrivano tutte le funzionalità del sistema.
+3) Assicurarsi che i requisisti descrivano tutte le funzionalità e vincoli (e.g., security, performance) del sistema desiderato dal customer. <
+
+___
+
+Quale delle seguenti frasi meglio descrive il criterio di "requirements verifiability" che è parte della "requirements validation activity".
+
+1) Per ciascun requisito, dovremmo essere in grado di scrivere un insieme di test che può dimostrare che il sistema sviluppato soddisfa il requisito considerato. <
+2) Per ciascuna coppia di componenti, dovremmo essere in grado di scrivere un insieme di test che può dimostrare che l'interazione tra le componenti soddisfa tutti i requisiti di interfaccia.
+3) Per ciascuna componente del sistema, dovremmo essere in grado di scrivere un insieme di test che può dimostrare che essa soddisfa tutti i requisiti.
+
+___
+
+L'attività di _unit testing_ di una funzione è stata suddivisa nei seguenti task:
+
+|Task identifier|Task description|
+|---|---|
+|TDEF|Definition of test cases|
+|TORC|Definition of test oracle|
+|TEXE|Esecuzione dei casi di test|
+|TVAL|Valutazione dei casi di test|
+
+Quale dei seguenti insiemi di vincoli di precedenza (dove A < B significa che A precede B) deve necessariamente valere, considerata la descrizione data dei tasks?
+
+1) TEXE < TVAL, TDEF < TEXE, TORC < TVAL. <
+2) TVAL < TEXE, TORC < TDEF, TORC < TVAL.
+3) TEXE < TORC, TVAL < TEXE, TVAL < TORC.
