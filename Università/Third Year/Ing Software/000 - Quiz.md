@@ -586,3 +586,7 @@ Quale dei seguenti insiemi di vincoli di precedenza (dove A < B significa che A 
 1) TEXE < TVAL, TDEF < TEXE, TORC < TVAL. <
 2) TVAL < TEXE, TORC < TDEF, TORC < TVAL.
 3) TEXE < TORC, TVAL < TEXE, TVAL < TORC.
+
+4) TVAL < TEXE, TEXE < TDEF, TVAL < TORC.
+5) TVAL < TEXE, TORC < TDEF, TVAL < TORC.
+
