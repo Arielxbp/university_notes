@@ -589,4 +589,98 @@ Quale dei seguenti insiemi di vincoli di precedenza (dove A < B significa che A 
 
 4) TVAL < TEXE, TEXE < TDEF, TVAL < TORC.
 5) TVAL < TEXE, TORC < TDEF, TVAL < TORC.
-6) TVAL < TEXE, TEXE < TDEF, TVAL < TORC <
+
+___
+
+Una azienda vende software utilizzando un contratto di Service Level Agreement (SLA) per cui l'utente paga 1000 Eur al mese di licenza e l'azienda garantisce che il software sia "up and running". Questo vuol dire che failures del software generano un costo (quello del repair). Sia C = 10000 Eur il costo del repair di una failure e R = P*C il valore atteso (rischio) del costo dovuto alle failures (dove P è la probabilità di una software failure). Ovviamente affinché il business sia profittevole deve essere che R sia al più 1000 Eur. Qual'e' il valore massimo di P che garantisce la validità del modello di business di cui sopra ?
+
+1) P=1/10000
+2) P = 1/1000
+3) P = 1/10 <
+
+_Basta fare_ P=R/C ovvero 1000/10000 = 1/10
+___
+
+La formula per calcolare il costo di iterazioni è
+
+Quanti stati minimi per finire \* (1 + probabilità di ripetizione di questa fase) \* costo di questa fase
+
+cioè: 3\*(1 + p)\*A
+
+se lo sviluppo consiste in 3 fasi di costo uguale e stessa probabilità di ripetersi
+
+
+___
+
+Quale dei seguenti è un requisito non funzionale?
+
+1) L'output del sistema è sempre una matrice simmetrica.
+2) Il tempo di esecuzione del sistema è inferiore al minuto. <
+3) L'output del sistema è sempre una potenza di 2.
+
+___
+
+Quale dei seguenti è un requisito non funzionale?
+
+1) L'output del sistema è sempre una matrice invertibile.
+2) L'utilizzo della RAM è sempre inferiore ai 4GBytes. <
+3) L'output del sistema è sempre un vettore ordinato.
+
+_Quindi_ se c'è scritto _output_ allora è funzionale (forse)
+___
+
+Per testare un sistema si vuole costruire un generatore che ogni T secondi invia un valore v a sistema da testare. 
+
+Per ogni invio, il valore T è un valore intero scelto uniformemente a random nell'interallo \[20, 30] mentre il valore v è un valore scelto aggiungendo, uniformemete a random, il valore -1 o +1 al valore precedente di v. Il valore iniziale di v è 0.  
+
+Quale dei seguenti programmi meglio definisce il generator di cui sopra?
+
+```c
+main{
+
+srand(time(NULL));
+
+v = 0;  
+
+while (1)  {
+
+send _value_to_system_under_testing(v);  
+
+T = 20 + rand()%11; <------------------------------------- 11 e non 10
+
+sleep(T);
+
+v = v -1 + 2*rand()%2;  <-------------------- v = v ..... e non v = ...........
+
+}  // while  
+
+}  // main()
+```
+
+___
+
+Per testare un sistema si vuole costruire un generatore che ogni T secondi invia un valore v a sistema da testare. 
+
+Per ogni invio, il valore T è un valore intero scelto uniformemente a random nell'interallo \[1, 10] mentre il valore v è un valore intero scelto uniformemente  a random nel'intervallo [0, 1].
+
+Quale dei seguenti programmi meglio definisce il generator di cui sopra?
+
+```c
+main{
+
+srand(time(NULL));
+
+while (1)  {
+
+v = rand()%2;
+
+send _value_to_system_under_testing(v);  
+
+T = 1 + rand()%10; <-------------------------------- 1 + rand e non solo rand
+
+sleep(T);  
+
+}  // while  
+
+}  // main()
+```
