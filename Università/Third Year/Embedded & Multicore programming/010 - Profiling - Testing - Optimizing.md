@@ -19,7 +19,9 @@ V4:
 V5:
 - Remove layer_copy in global memory in favor of shared memory shared_layer.
 
+## How to cluster
 
+salloc -n 1 —gpus-per-task=1
 
 ## Profiling methodology
 

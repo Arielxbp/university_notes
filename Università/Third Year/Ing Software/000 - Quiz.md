@@ -589,4 +589,4 @@ Quale dei seguenti insiemi di vincoli di precedenza (dove A < B significa che A 
 
 4) TVAL < TEXE, TEXE < TDEF, TVAL < TORC.
 5) TVAL < TEXE, TORC < TDEF, TVAL < TORC.
-
+6) TVAL < TEXE, TEXE < TDEF, TVAL < TORC <
