@@ -23,6 +23,12 @@ V5:
 
 salloc -n 1 —gpus-per-task=1
 
+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
+
+salloc --gpus=1 --nodes=1 --gpus-per-task=1 --cpus-per-task=1 --time=00:15:00 --qos=students_limit
+
+srun -N 1 -n 1 ./energy_storms_cuda 20000 test_files/test_02_a30k_p20k_w1 test_files/test_02_a30k_p20k_w2 test_files/test_02_a30k_p20k_w3 test_files/test_02_a30k_p20k_w4 test_files/test_02_a30k_p20k_w5 test_files/test_02_a30k_p20k_w6
+
 ## Profiling methodology
 
 Profiling methodology:
