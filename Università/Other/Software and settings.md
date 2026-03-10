@@ -18,11 +18,11 @@ asd
 
 ## Git
 
-asd
+- No settings to transfer
 
 ## Go (Golang)
 
-asd
+- No settings to transfer
 
 ## Google Drive
 
@@ -30,7 +30,7 @@ asd
 
 ## JDK 17 and 21
 
-asd
+- No settings to transfer
 
 ## League
 
@@ -38,7 +38,7 @@ asd
 
 ## Microsoft Visual C++ Redistributable
 
-asd
+- No settings to transfer
 
 ## Visual Code
 
@@ -46,7 +46,7 @@ asd
 
 ## Microsoft Windows Desktop Runtime
 
-asd
+- No settings to transfer
 
 ## MOTIV Mix
 
@@ -58,7 +58,7 @@ asd
 
 ## NanaZip
 
-asd
+- No settings to transfer
 
 ## NVIDIA App
 
@@ -66,7 +66,7 @@ asd
 
 ## Nvidia Cuda
 
-asd
+- No settings to transfer
 
 ## OBS
 
@@ -82,7 +82,7 @@ asd
 
 ## PawnIO (for FanControl)
 
-asd
+- No settings to transfer
 
 ## PowerToys
 
@@ -90,11 +90,11 @@ asd
 
 ## Python
 
-asd
+- No settings to transfer
 
 ## Riot client
 
-asd
+- No settings to transfer
 
 ## Samsung magician
 
@@ -106,7 +106,7 @@ asd
 
 ## Steam
 
-asd
+- Remember access for arielxpb and arielx2468
 
 ## SuperDisplay
 
@@ -114,27 +114,27 @@ asd
 
 ## VLC
 
-asd
+- Transfer the theme
 
 ## Windows SDK (?)
 
-asd
+- No settings to transfer i think (?)
 
 ## KDE Connect
 
-asd
+- No settings to transfer
 
 ## TranslucentTB
 
-asd
+- Transfer the settings
 
 ## EarTrumpet
 
-asd
+- Idk
 
 ## ALAS
 
-asd
+- Portable -> Move directory to transfer
 
 # PC price
 
