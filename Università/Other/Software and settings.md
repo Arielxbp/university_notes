@@ -10,11 +10,11 @@ X: capacity: 2 700 037 058 560 bytes ~ 2.45TB ~ 2514.61GB
 
 ## Floorp
 
-asd
+- Done
 
 ## Discord / Vesktop
 
-asd
+- Done
 
 ## Git
 
@@ -26,7 +26,7 @@ asd
 
 ## Google Drive
 
-asd
+- Show Google Drive in Explorer
 
 ## JDK 17 and 21
 
@@ -34,7 +34,7 @@ asd
 
 ## League
 
-asd
+- Done
 
 ## Microsoft Visual C++ Redistributable
 
@@ -42,7 +42,18 @@ asd
 
 ## Visual Code
 
-asd
+- Extensions:
+	- C++
+	- Lua
+	- Python
+	- OpenAPI
+	- Remote SSH
+	- YAML
+	- Github copilot
+	- Cmake
+	- vscode-pdf
+
+![|200](https://i.imgur.com/oFbXoZq.png)
 
 ## Microsoft Windows Desktop Runtime
 
@@ -50,11 +61,31 @@ asd
 
 ## MOTIV Mix
 
-asd
+- Monitor mix 94%
+- Mic gain +36dB
+- EQ flat
+- Limiter off
+- Compressor off
 
-## MuMuPlayer
+## MuMuPlayer 12 global version 5.6.1.1733
 
-asd
+- Performance:
+	- Vulkan
+	- Medium Performance settings
+	- GPU memory usage auto tuning
+	- Forced use of discrete graphic card on
+	- Smart memory optimization off
+- Display
+	- Tablet 1280x720 DPI 240
+	- max fps 60
+	- counter on
+	- Vsync on
+- Model
+	-  Preset
+	- samsung
+	- galaxy a52s 5g
+	- SM-A528B
+	- Adreno TM 640
 
 ## NanaZip
 
@@ -62,7 +93,7 @@ asd
 
 ## NVIDIA App
 
-asd
+- Done
 
 ## Nvidia Cuda
 
@@ -70,15 +101,15 @@ asd
 
 ## OBS
 
-asd
+- No settings to transfer
 
 ## Obsidian
 
-asd
+- Added git extension 
 
 ## osu!
 
-asd
+- 1x raw
 
 ## PawnIO (for FanControl)
 
@@ -86,7 +117,7 @@ asd
 
 ## PowerToys
 
-asd
+![|400](https://i.imgur.com/ZcHCOT8.png)
 
 ## Python
 
@@ -98,11 +129,12 @@ asd
 
 ## Samsung magician
 
-asd
+- 5% over provisioning
+- Power saving mode
 
 ## ShareX
 
-asd
+- Hope i have already done it
 
 ## Steam
 
@@ -110,11 +142,11 @@ asd
 
 ## SuperDisplay
 
-asd
+- No settings to transfer
 
 ## VLC
 
-- Transfer the theme
+- Transfer the theme done
 
 ## Windows SDK (?)
 
@@ -127,10 +159,13 @@ asd
 ## TranslucentTB
 
 - Transfer the settings
+- Change to desktop -> acrylic no show taskbar border
+- Change to task view opened normal -> show border
+- Others are disabled
 
 ## EarTrumpet
 
-- Idk
+- No settings to transfer
 
 ## ALAS
 
