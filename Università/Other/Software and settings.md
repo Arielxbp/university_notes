@@ -12,6 +12,27 @@ X: capacity: 2 700 037 058 560 bytes ~ 2.45TB ~ 2514.61GB
 
 - Done
 
+- Floorp hub
+	- Tab interface
+		- Fluerial
+		- Horizontal style tab
+		- Hide tab bar
+		- Follow firefox behaviour
+		- minimum tab width 76
+		- minimum tab height 30
+		- Enable tab sleep exclusion on
+		- Navigation bar position top
+		- Optimize for tree style tab
+		- Bookmark bar position top
+	- Panel sidebar
+		- Enable sidebar on
+		- Right
+		- Global web panel width 400
+		- Bookmarks, history, downloads, notes
+	- Workspaces enable workspace feature
+	- Enable custom keyboard shortcuts
+	- Enable webapps
+
 ## Discord / Vesktop
 
 - Done
