@@ -183,6 +183,7 @@ X: capacity: 2 700 037 058 560 bytes ~ 2.45TB ~ 2514.61GB
 - Change to desktop -> acrylic no show taskbar border
 - Change to task view opened normal -> show border
 - Others are disabled
+- Turn windows settings transparency on
 
 ## EarTrumpet
 
