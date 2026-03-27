@@ -25,3 +25,23 @@ Ah e anche le spunte
 ___
 
 A me ha chiesto simulare invio di messaggi , come ho implementato l'invio di messaggi e le spunte , come gestiscono gli errori in go , cosa si fa in caso di panic e il polling . Samory è stato molto tranquillo
+
+___
+
+Differenza tra virtual machine e docker, funzione scelta da lui
+
+___
+
+Bo a me ha chiesto che metodi http uso per le reazioni
+
+___
+
+A me ha fatto domande sul come funzionavano delle cose nel progetto ed ha voluto vedere il codice di alcune funzioni
+
+___
+
+a me ha chiesto di partire dal mostrargli il funzionamento di una funzione dal browser e poi mostrargli il codice della funzione dalle api al backend, spiegandogli cosa facevo, facendo domande sui metodi http quando li nominavo, qualche codice di errore, molto tranquillo
+
+___
+
+A me ha chiesto di spiegargli come viene gestito il login, voleva sapere perché quel metodo http e non un altro , mi ha chiesto cosa significa REST, che cosa vado a verificare nel db per fare far l’autenticazione del login e cosa succede se non trovo l’utente, perché verifico un determinato dato e non un altro per vedere se sia presente un utente nel db.. poi mi ha chiesto di mostrargli dove effettuo una certa verifica in una determinata funzionalità che avevo implementato, poi mi ha chiesto docker riga per riga i file che avevo scritto, sia i dockerfile che docker-compose

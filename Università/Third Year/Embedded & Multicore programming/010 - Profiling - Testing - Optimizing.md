@@ -115,12 +115,16 @@ Result: 17197 1654.755371 17223 3274.642578 17229 5727.363281 17222 8155.511230 
 
 ### V5
 
+Result: 17197 1654.755371 17223 3274.642578 17229 5727.363281 17222 8155.511230 15849 11403.597656 15924 14647.188477
 
+
+1) 
 
 
 ___
 
-nvcc -arch=sm_75   -c energy_storms_cuda_core_v4.cu -lm  -o energy_storms_cuda_core.o
-nvcc -arch=sm_75   energy_storms_cuda.cpp energy_storms_cuda_core.o -lm  -o energy_storms_cuda_v4
+nvcc -arch=sm_75 -c energy_storms_cuda_core.cu -lm -o energy_storms_cuda_core.o
 
-./energy_storms_cuda_ 20000 test_files/test_02_a30k_p20k_w1 test_files/test_02_a30k_p20k_w2 test_files/test_02_a30k_p20k_w3 test_files/test_02_a30k_p20k_w4 test_files/test_02_a30k_p20k_w5 test_files/test_02_a30k_p20k_w6
+nvcc -arch=sm_75 energy_storms_cuda.cpp energy_storms_cuda_core.o -lm -o energy_storms_cuda
+
+./energy_storms_cuda 20000 test_files/test_02_a30k_p20k_w1 test_files/test_02_a30k_p20k_w2 test_files/test_02_a30k_p20k_w3 test_files/test_02_a30k_p20k_w4 test_files/test_02_a30k_p20k_w5 test_files/test_02_a30k_p20k_w6
