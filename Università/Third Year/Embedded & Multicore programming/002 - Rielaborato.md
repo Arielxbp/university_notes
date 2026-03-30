@@ -102,6 +102,8 @@ Un comunicatore è un'insieme di processi MPI che possono mandarsi messaggi tra 
 
 La funzione MPI_Init quando eseguita, definisce un comunicatore che include tutti i processi MPI creati quando il programma inizia, chiamato MPI_COMM_WORLD.
 
+MPI inoltre fornisce funzioni che servono a creare nuovi comunicatori, questi possono essere utili al programmatore per implementare funzionalità più complesse.
+
 ### MPI_Comm_size
 
 Serve a sapere il numero di processi MPI all'interno del comunicatore dato alla funzione come argomento.
@@ -110,5 +112,66 @@ Serve a sapere il numero di processi MPI all'interno del comunicatore dato alla 
 
 Serve a sapere il rank del processo MPI chiamante all'interno del comunicatore dato alla funzione come argomento.
 
+## MPI: Comunicazione tramite messaggi
 
+La comunicazione tra i vari processi avviene tramite l'invio e ricezione di messaggi.
+
+L'uso di messaggi comporta un overhead importante, quindi è consigliato inviare una sola volta più dati che inviare tante volte piccole porzioni di dati.
+
+### MPI_Send
+
+```C
+int MPI_Send( void* msg_buf_p, int msg_size, MPI_Datatype msg_type, int dest, int tag, MPI_Comm comm);
+// msg_buf_p è il buffer dove è contenuto il dato da inviare
+// msg_type è il tipo di dato del dato da inviare
+// dest è il rank del processo alla quale mandare il dato
+// tag è usato per differenziare i messaggi inviati da uno stesso processo (serve al destinatario)
+```
+
+### MPI_Recv
+
+```C
+int MPI_Recv( void* msg_buf_p, int buf_size, MPI_Datatype buf_type, int source, int tag, MPI_Comm comm, MPI_Status* status_p);
+// msg_buf_p è il buffer dove si mette il dato ricevuto
+// msg_type è il tipo di dato del dato da ricevere
+// source è il rank del processo dalla quale ricevere un dato
+// tag è usato per differenziare i messaggi inviati da uno stesso processo
+// status_p serve per dare informazioni su una comunicazione 
+```
+
+### MPI: Messaggi non sorpassanti
+
+I messaggi tra due processi necessariamente devono essere __non sorpassanti__:
+- Se un processo invia più messaggi allo stesso processo di destinazione, tali messaggi devono essere disponibili al destinatario nella stessa sequenza in cui sono stati inviati.
+Mentre per i messaggi inviati da processi differenti non si applica tale regola.
+
+### MPI: Ricezione corretta dei messaggi
+
+Un messaggio viene ricevuto __correttamente__ se:
+- Il tipo del dato scelto durante la ricezione corrisponde a quello indicato durante l'invio.
+- E se la dimensione del buffer dove mettere il dato ricevuto è sufficiente.
+
+Un processo può ricevere messaggi anche se:
+- Non conosce la dimensione del dato ricevuto, tramite la funzione MPI_Get_count.
+- Non conosce chi lo manda, tramite MPI_ANY_SOURCE.
+- Non conosce il tag del messaggio, tramite MPI_ANY_TAG.
+
+### MPI_Get_count
+
+```C
+int MPI_Get_count( MPI_Status* status_p, MPI_Datatype type, int* count_p);
+// Dare in input il tipo del dato e lo status del messaggio ricevuto
+// La grandezza del messaggio ricevuto verrà inserito in count_p
+```
+
+### MPI: Problemi con l'invio e la ricezione di messaggi
+
+Il comportamento esatto delle due funzioni è determinato dalla implementazione di MPI usata, quindi non si deve assumere niente sul loro comportamente fuori da ciò che viene definito dallo standard MPI, altrimenti il codice potrebbe essere poco portatile.
+
+MPI_Send potrebbe comportarsi in modo diverso in base alla:
+- Dimensione del buffer.
+- Cutoffs.
+- Blocking.
+
+MPI_Recv blocca sempre l'esecuzione del processo che lo chiama finché non riceve un messaggio che corrisponde agli argomenti indicati alla chiamata.
 
