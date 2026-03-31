@@ -64,13 +64,6 @@ Nei sistemi paralleli che usano una singola unità di controllo per multipli cor
 > Il collo di bottiglia di von Neumann si riferisce alla separazione della CPU dalla memoria.
 > 
 > La velocità di trasmissione dei dati dalla memoria a CPU dipende dalla interconnessione usata.
-> 
-
-# Single-Program Multiple-Data (SPMD)
-
-Nel modello di programmazione SPMD, si compila un __singolo__ programma che viene eseguito da multipli processi.
-
-Tali processi vengono controllati tramite l'uso di blocchi _if-else_ e hanno bisogno di comunicare tramite l'invio e ricezione di messaggi in quanto non condividono la memoria.
 
 # MPI
 
@@ -102,7 +95,14 @@ Un comunicatore è un'insieme di processi MPI che possono mandarsi messaggi tra 
 
 La funzione MPI_Init quando eseguita, definisce un comunicatore che include tutti i processi MPI creati quando il programma inizia, chiamato MPI_COMM_WORLD.
 
+### MPI: Comunicatori custom
+
 MPI inoltre fornisce funzioni che servono a creare nuovi comunicatori, questi possono essere utili al programmatore per implementare funzionalità più complesse.
+
+Supponendo di dover utilizzare $2$ librerie MPI indipendenti:
+- Se si utilizza il comunicatore default (MPI_COMM_WORLD) i messaggi potrebbero collidere.
+- Si potrebbero assegnare dei __tag__ (interi positivi) ai messaggi per distinguerli.
+- Sarebbe meglio creare due nuovi comunicatori, uno per libreria.
 
 ### MPI_Comm_size
 
@@ -118,7 +118,11 @@ La comunicazione tra i vari processi avviene tramite l'invio e ricezione di mess
 
 L'uso di messaggi comporta un overhead importante, quindi è consigliato inviare una sola volta più dati che inviare tante volte piccole porzioni di dati.
 
+![](https://i.imgur.com/fj9ukDA.png)
+
 ### MPI_Send
+
+Serve per inviare un messaggio.
 
 ```C
 int MPI_Send( void* msg_buf_p, int msg_size, MPI_Datatype msg_type, int dest, int tag, MPI_Comm comm);
@@ -129,6 +133,8 @@ int MPI_Send( void* msg_buf_p, int msg_size, MPI_Datatype msg_type, int dest, in
 ```
 
 ### MPI_Recv
+
+Serve per ricevere un messaggio.
 
 ```C
 int MPI_Recv( void* msg_buf_p, int buf_size, MPI_Datatype buf_type, int source, int tag, MPI_Comm comm, MPI_Status* status_p);
@@ -158,6 +164,8 @@ Un processo può ricevere messaggi anche se:
 
 ### MPI_Get_count
 
+Serve per ottenere la dimensione del dato contenuto nel messaggio da ricevere.
+
 ```C
 int MPI_Get_count( MPI_Status* status_p, MPI_Datatype type, int* count_p);
 // Dare in input il tipo del dato e lo status del messaggio ricevuto
@@ -174,4 +182,173 @@ MPI_Send potrebbe comportarsi in modo diverso in base alla:
 - Blocking.
 
 MPI_Recv blocca sempre l'esecuzione del processo che lo chiama finché non riceve un messaggio che corrisponde agli argomenti indicati alla chiamata.
+
+## MPI: Tipi di comunicazione
+
+Esistono vari tipi di comunicazione:
+- Bufferata (Buffered).
+- Sincrona (Synchronous).
+- Ready.
+
+### MPI: Tipo di comunicazione bufferata
+
+Nella modalità di comunicazione bufferata, le operazioni di invio sono __sempre localmente bloccanti__, cioè sbloccano il processo chiamante non appena il messaggio inviato viene copiato in un buffer. Tale buffer è __fornito dall'utente__.
+
+### MPI: Tipo di comunicazione sincrona
+
+Nella modalità di comunicazione sincrona, le operazioni di invio bloccano il processo mittente.
+
+Lo sblocco avviene solo dopo che il processo destinatario comincia l'operazione di ricezione del messaggio.
+
+Tale operazione è una operazione __globalmente bloccante__, cioè il processo mittente __conosce lo stato__ del processo destinatario in quanto il mittente si sblocca quando il destinatario comincia la ricezione del messaggio. Non servono altri messaggi per confermare l'avvenuta ricezione.
+
+### MPI: Tipo di comunicazione ready
+
+Nella modalità di comunicazione ready, le operazioni di invio hanno successo solamente se un'operazione di ricezione __corrispondente__ è __già iniziata__, altrimenti l'invio restituisce un __codice di errore__.
+
+Questa modailità serve a ridurre l'overhead delle operazioni di handshaking.
+
+## MPI: Comunicazione non bloccante
+
+Le operazioni di invio bufferate sono viste negativamente in quanto comportano un calo della performance, causato dal __blocco del processo chiamante__, che deve aspettare che il dato venga copiato nel buffer.
+
+Quindi funzioni non bloccanti o immediate portano a __massimizzare la concorrenza__ in quanto:
+- Sbloccano il processo chiamante immediatamente non appena viene inizializzato un trasferimento di dati.
+
+In questo modo un processo può eseguire altre operazioni mentre il trasferimento viene effettuato.
+
+Per questo sia MPI_Send che MPI_Recv hanno delle versioni non bloccanti e immediate.
+
+Se i processi utilizzano le comunicazioni non bloccanti, questi necessariamente hanno bisogno di eseguire altre comunicazioni usate per conoscere lo stato di completamento della comunicazione iniziale:
+- I processi mittente per poter modificare o riutilizzare il buffer del messaggio.
+- I processi destinatario per poter cominciare ad estrarre il contenuto del messaggio.
+
+Le comunicazioni non bloccanti possono essere unite con ogni tipo di comunicazione:
+- MPI_Isend, MPI_Bsend, MPI_Ssend, ... (Immediate, Buffered, Synchronous)
+
+### MPI: Controllare lo stato di completamento di una comunicazione
+
+Esistono due funzioni principali per controllare lo stato di completamento di una comunicazione:
+- MPI_Wait, bloccante.
+- MPI_Test, non bloccante.
+
+Altre varianti di queste due esistono, come:
+- MPI_Waitall.
+- MPI_Testall.
+- MPI_Waitany.
+- MPI_Testany.
+- ...
+
+#### MPI_Wait
+
+Serve per bloccare un processo che ha un operazione di invio o ricezione in corso.
+
+#### MPI_Test
+
+Serve a controllare se una operazione di invio o ricezione è stata completata o meno.
+
+## MPI: Comunicazioni collettive
+
+
+
+
+# Progettazione (Design) di programmi paralleli (Metodologia di Foster)
+
+La metodologia di Foster descrive i procedimenti da seguire per progettare programmi paralleli.
+
+Fornisce un approccio per scomporre il problema da computare in modo da rendere l'esecuzione parallela efficiente.
+
+Si divide in $4$ fasi:
+- Partizionamento (Partitioning).
+- Comunicazione (Communication), a seguito del partizionamento.
+- Aggregazione (Agglomeration).
+- Mappatura (Mapping)
+
+Il partizionamento serve per dividere la computazione da eseguire e i dati su cui si opera in parti più piccole. L'obiettivo principale è identificare quali operazioni possono essere eseguiti in parallelo.
+
+La comunicazione serve per determinare la comunicazione necessaria da usare per riuscire ad eseguire le operazioni definite durante il partizionamento.
+
+L'aggregazione serve per combinare operazioni legate tra di loro in un'unica operazione più grande (Dipendenza). Per esempio se un'operazione A necessariamente viene prima di B, allora ha senso combinarli. (Per avere meno overhead)
+
+La mappatura serve per assegnare le operazioni definite nei passi precedenti, in modo da minimizzare la comunicazione necessaria e assicurarsi che ogni processo o thread ottenga la stessa quantità di operazioni da eseguire.
+
+# Modelli (Patterns) di progettazione parallela
+
+I modelli di progettazione parallela servono ad organizzare i programmi paralleli, e si differenziano in base a come gestiscono il flusso dell'esecuzione del programma.
+
+Tutti i modelli di progettazione parallela rientrano in $2$ categorie:
+- Globally Parallel, Locally Sequential (GPLS).
+- Globally Sequential, Locally Parallel (GSLP).
+
+![](https://i.imgur.com/iray0k0.png)
+
+## Modello di progettazione parallela: Globalmente parallelo e localmente sequenziale (GPLS)
+
+I programmi che si basano su questo modello sono progettati per eseguire più operazioni contemporaneamente, con ogni singola operazione che esegue le proprie istruzioni in modo sequenziale.
+
+Modelli che rientrano in questa categoria:
+- Single-Program, Multiple-Data (SPMD).
+- Multiple-Program, Multiple-Data (MPMD).
+- Master-Worker.
+- Map-Reduce.
+
+### Single-Program Multiple-Data (SPMD)
+
+Nel modello di programmazione SPMD, si compila un __singolo__ programma contenente __tutta la logica__ dell'applicazione che viene eseguito da multipli processi.
+
+Tali processi vengono controllati tramite l'uso di blocchi _if-else_ e hanno bisogno di comunicare tramite l'invio e ricezione di messaggi in quanto non condividono la memoria.
+
+Questo modello __fallisce__ quando:
+- I requisiti di memoria sono troppo alti per ogni nodo.
+- Oppure quando sono coinvolte piattaforme eterogenee. (?)
+
+### Multiple-Program Multiple-Data (MPMD)
+
+È simile a SPMD, ma esegue l'avvio di multipli programmi diversi che lavorano insieme.
+
+### Master-Worker
+
+In questo modello i processi si differenziano in Masters e Workers.
+
+I Masters sono responsabili di:
+- Distribuire parti di lavoro da far eseguire ai workers.
+- Collezionare i risultati ottenuti dai workers.
+- Eseguire operazioni di I/O per conto dei workers.
+- Interagire con l'utente.
+
+Il vantaggio di questo modello è che il carico di lavoro viene bilanciato __implicitamente__, anche se il processo Master può diventare un punto di __bottleneck__.
+
+Tale collo di bottiglia è riducibile tramite l'uso di una __gerarchia__ di Masters.
+
+### Map-Reduce
+
+È una variante del modello Master-Worker.
+
+I Masters gestiscono le operazioni da eseguire mentre i workers possono eseguono due tipi di operazioni:
+- Map, cioè applicare una funzione a sezioni di un dato per generare risultati parziali.
+- Reduce, cioè collezionare e combinare i risultati parziali per ottenere il risultato finale.
+
+## Modello di progettazione parallela: Globalmente sequenziale e localmente parallelo (GSLP)
+
+I programmi che si basano su questo modello sono progettati per eseguire un singolo processo inizialmente, e da questo si __generano altri processi__ per eseguire alcune parti in modo parallelo quando richiesto.
+
+Modelli che rientrano in questa categoria:
+- Fork/Join.
+- Loop parallelism.
+
+### Fork/Join
+
+In questo modello l'esecuzione inizia con un singolo thread radice, per poi generare tramite __fork__ thread figli che vanno ad eseguire le operazione assegnate.
+
+Il thread padre __non__ può continuare la sua esecuzione finché tutti i figli non finiscono le loro operazioni e ritornano al padre tramite __join__.
+
+Questo è il modello usato da OpenMP e Pthread.
+
+### Loop parallelism
+
+Questo modello viene utilizzato per effettuare __migrazione__ di software __legacy__ o sequenziali.
+
+Si concentra sullo scomporre i cicli tramite __manipolazione della variabile di controllo del ciclo__, in modo che thread diversi eseguano iterazioni del ciclo diverse.
+
+Da notare però che __non__ tutti i cicli sono supportati, in quanto devono avere una forma molto specifica e __prevedibile__.
 
