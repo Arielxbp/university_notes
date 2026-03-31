@@ -112,6 +112,12 @@ Serve a sapere il numero di processi MPI all'interno del comunicatore dato alla 
 
 Serve a sapere il rank del processo MPI chiamante all'interno del comunicatore dato alla funzione come argomento.
 
+## MPI: Input al programma
+
+La maggiorparte delle implementazioni di MPI permette solamente al processo $0$ del comunicatore MPI_COMM_WORLD di accedere allo _stdin_.
+
+Quindi il processo $0$ necessariamente deve leggere i dati e mandarli agli altri processi.
+
 ## MPI: Comunicazione tramite messaggi
 
 La comunicazione tra i vari processi avviene tramite l'invio e ricezione di messaggi.
