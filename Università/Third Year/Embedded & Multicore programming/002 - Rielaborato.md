@@ -255,8 +255,144 @@ Serve a controllare se una operazione di invio o ricezione è stata completata o
 
 ## MPI: Comunicazioni collettive
 
+Le comunicazioni collettive sono operazioni che coordinano il __trasferimento__ o la sicronizzazione di dati tra un __insieme di processi__ all'interno di uno specifico comunicatore.
 
+Per poter avviare una funzione collettiva, __tutti__ i processi all'interno di uno specifico comunicatore devono chiamare la __stessa__ funzione collettiva.
 
+Siccome queste funzioni sono collettive, non richiedono come argomento un __tag__.
+
+Il risultato della funzione collettiva può essere usato solamente dal processo indicato come destinatario della collettiva. Tutti gli altri processi inseriranno _NULL_ come argomento del buffer di output.
+
+Inoltre, gli argomenti passati in input da ogni processo alla funzione collettiva devono essere __compatibili__.
+
+Per esempio:
+- Un processo passa in input come destinazione della collettiva il processo con rank $0$ e un altro processo passa il processo con rank $1$, allora la funzione MPI_Reduce va in errore e il programma molto probabilmente crasha o si blocca.
+
+### MPI_Reduce
+
+È una funzione di __riduzione__ di dati basata sull'__operatore MPI__ dato come argomento.
+
+```C
+int MPI_Reduce( void* input_data_p, void* output_data_p, int count, MPI_Datatype datatype, MPI_Op operator, int dest_process, MPI_Comm comm);
+
+// Esempio di uso
+MPI_Reduce(&local_int, &total_int, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+```
+
+![|500](https://i.imgur.com/G4e8bqA.png)
+
+### MPI_Bcast
+
+È una funzione di __broadcasting__ che invia a tutti i processi all'interno del comunicatore di appartenenza i dati indicati dal processo chiamante.
+
+```C
+int MPI_Bcast(void* data_p, int count, MPI_Datatype datatype, int source_proc, MPI_Comm comm);
+
+// data_p è sia input che output
+```
+
+### MPI_Allreduce
+
+È una combinazione di due funzioni collettive:
+- MPI_Reduce e MPI_Bcast.
+
+Cioè viene eseguito prima la riduzione, seguito da un broadcast del risultato ottenuto dalla riduzione.
+
+```C
+int MPI_Allreduce(void* input_data_p, void* output_data_p, int count, MPI_Datatytpe datatype, MPI_Op operator, MPI_Comm comm)
+```
+
+## MPI: Rilevanza degli algoritmi delle funzioni collettive
+
+Data l'importanza delle funzioni collettive, e il loro maggiore impatto sul tempo di esecuzione totale del programma rispetto alle altre operazioni, queste hanno bisogno di essere ottimizzate per poter decidere quale algoritmo usare in base alla situazione attuale, quanti processi sono involti, ...
+
+Per questa ragione esistono varie implementazioni di librerie di funzioni collettive.
+
+## MPI: Valutazione della performance (Profiling)
+
+Durante lo sviluppo del programma parallelo, è possibile controllare il periodo di tempo trascorso tra due punti del codice.
+
+### MPI_Wtime
+
+Serve ad ottenere il numero di secondi trascorsi da qualche tempo prima.
+
+```C
+double MPI_Wtime(void);
+
+// Esempio d'uso
+start = MPI_Wtime();
+...
+finish = MPI_Wtime();
+printf("Elapsed time = %e seconds\n", finish-start);
+```
+
+# Valutazione della performance
+
+## Rumore (Noise during runs)
+
+Per ridurre il rumore che va ad influire sui dati ottenuti durante le misurazioni, è possibile usare delle __barriere__, che se poste all'inizio del programma, vanno ad assicurare più o meno che tutti i processi inizino allo stesso tempo.
+
+Per questo:
+- Più il numero di processi/threads/GPUs aumenta, più è possibile che almeno uno di questi venga influenzato dal rumore.
+
+## Proporzione numero di processi : dimensione del problema
+
+Generalmente:
+- Il tempo di esecuzione aumenta all'aumentare della dimensione del problema.
+- Il tempo di esecuzione diminuisce all'aumentare del numero di processi.
+
+Esiste però un __limite__ alla riduzione del tempo di esecuzione all'aumentare del numero di processi:
+- Se il numero di processi $X$ è abbastanza grande da computare il problema.
+- Usando $Y\gg X$ processi è possibile che non si abbia abbastanza lavoro da suddividere per tutti i processi, in tal caso alcuni processi resterebbero inutilizzati, non portando quindi a __nessuna riduzione del tempo di esecuzione__.
+
+## Riduzione del tempo di esecuzione (Speedup)
+
+Idealmente, quando si esegue un programma con $X$ processi, questo dovrebbe essere $X$ volte più veloce rispetto a quando lo si esegue con $1$ processo.
+
+Dato il tempo seriale $T_{s}(n)$ e il tempo parallelo usando $X$ processi $T_{p}(n,X)$, l'__aumento di velocità__ di esecuzione del programma calcolato usando $$S(n, X)=\frac{T_{s}(n)}{T_{p}(n, X)}$$ idealmente dovrebbe essere uguale a $X$, risultando in un __aumento lineare__.
+
+Inoltre, il tempo parallelo usando $1$ processo, generalmente dovrebbe essere più o veloce uguale __rispetto al tempo sequenziale__.
+
+## Scalabilità del programma parallelo (Scalability)
+
+Dato il tempo parallelo usando $1$ processo $T_{p}(n, 1)$ e il tempo parallelo usando $X$ processi $T_{p}(n, X)$, la __scalabilità__, ovvero quanto il programma parallelo riesce ad utilizzare al meglio più processi per velocizzare la computazione, viene calcolato usando $$S(n, X)=\frac{T_{p}(n, 1)}{T_{p}(n, p)}$$
+
+## Efficienza (Efficiency)
+
+Idealmente l'efficienza di un programma parallelo dovrebbe essere uguale ad $1$.
+
+Se tale valore è minore di $1$, allora il programma __performerà peggio__ all'aumentare della dimensione del problema.
+
+L'efficienza viene calcolata usando $$E(n, X)=\frac{T_{s}(n)}{X\times T_{p}(n, X)}$$
+
+## Strong Scaling e Weak Scaling
+
+Lo __strong scaling__ è calcolabile:
+- Fissando la dimensione del problema, si va ad aumentare il numero di processi.
+- E se l'efficienza rimane alta, allora il programma parallelo è __strong scalable__.
+
+Il __weak scaling__ è calcolabile:
+- Aumentando la dimensione del problema allo __stesso ritmo__ con cui si aumenta il numero di processi.
+- Quindi se si aumenta di un fattore $2$ la dimensione del problema, si aumenta di un fattore $2$ il numero di processi.
+- E se l'efficienza rimane alta, allora il programma parallelo è __weak scalable__.
+
+## Legge di Amdahl
+
+Ogni programma ha delle parti che sono __impossibili da parallelizzare__:
+- Leggere e scrivere sul disco, mandare e ricevere dati dalla rete, ...
+
+La legge di Amdahl enuncia che lo __speedup__ è __limitato__ dalla frazione seriale (__serial fraction__), cioè $$T_{p}(X)=(1-\alpha)\times T_{s}+\alpha\times \frac{T_{s}}{X}$$
+dove $1-\alpha$ è la parte di codice eseguibile solo sequenzialmente.
+
+### Legge di Amdahl: Limitazioni
+
+La frazione seriale potrebbe aumentare quando aumentano il numero di __processori__. (?)
+
+## Legge di Gustafson
+
+Se si considera il __weak scaling__, la frazione parallela (__parallel fraction__) aumenta all'aumentare della dimensione del problema.
+
+Ciò è anche noto come __scaled speedup__, ovvero $$S(n, X)=(1-\alpha)+\alpha\times X$$
 
 # Progettazione (Design) di programmi paralleli (Metodologia di Foster)
 
