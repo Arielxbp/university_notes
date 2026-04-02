@@ -189,6 +189,24 @@ MPI_Send potrebbe comportarsi in modo diverso in base alla:
 
 MPI_Recv blocca sempre l'esecuzione del processo che lo chiama finché non riceve un messaggio che corrisponde agli argomenti indicati alla chiamata.
 
+## MPI: Comunicazione tra più processi contemporaneamente
+
+Quando due o più processi hanno bisogno di scambiarsi dati a vicenda, questi hanno bisogno di effettuare ognuno un'invio e una ricezione, e l'__ordine__ con cui le due operazioni vengono effettuate è importante:
+- Se entrambi effettuano una ricezione, allora andranno a bloccare la loro esecuzione in attesa di un messaggio, finendo in __deadlock__.
+- Se entrambi effettuano un'invio, è possibile comunque finire in __deadlock__ se la dimensione del dato inviato è grande.
+
+Per evitare queste situazioni, è consigliato usare la funzione MPI_Sendrecv.
+
+### MPI_Sendrecv
+
+Serve per inviare e ricevere simultaneamente un messaggio.
+
+```C
+int MPI_Sendrecv(void* send_buf_p, int send_buf_size, MPI_Datatype send_buf_type, int dest, int send_tag,
+				 void* recv_buf_p, int recv_buf_size, MPI_Datatype recv_buf_type, int source, int recv_tag,
+				 MPI_Comm communicator, MPI_Status* status_p);
+```
+
 ## MPI: Tipi di comunicazione
 
 Esistono vari tipi di comunicazione:
@@ -302,11 +320,77 @@ Cioè viene eseguito prima la riduzione, seguito da un broadcast del risultato o
 int MPI_Allreduce(void* input_data_p, void* output_data_p, int count, MPI_Datatytpe datatype, MPI_Op operator, MPI_Comm comm)
 ```
 
+### MPI_Scatter
+
+Serve per __distribuire__ un vettore che viene letto dal processo con rank $0$ a tutti gli altri processi, tale operazione manda a ognun processo solamente la __partizione__ sulla quale deve operare.
+
+```C
+int MPI_Scatter(void* send_buf_p, int send_count, MPI_Datatype send_type, void* recv_buf_p, int recv_count, MPI_Datatype recv_type, int src_proc, MPI_Comm comm);
+
+// send_count indica il numero di elementi da mandare a ogni processo
+// e non indica il numero totale di elementi del vettore
+
+// recv_buf_p = MPI_IN_PLACE -> la partizione assegnata al processo
+// chiamante non viene copiata e poi reincollata in un altro buffer
+// ma rimane nel buffer iniziale
+```
+
+Per mandare numeri differenti di elementi a ogni processo esiste la variante MPI_Scatterv.
+
+### MPI_Gather
+
+Serve per __raccogliere tutte__ le partizioni del vettore presenti nei vari processi, e inviare il tutto nel buffer del processo con rank $0$.
+
+```C
+int MPI_Gather(void* send_buf_p, int send_count, MPI_Datatype send_type, void*, recv_buf_p, int recv_count, MPI_Datatype recv_type, int dest_proc, MPI_Comm comm);
+
+// send_count indica il numero di elementi da mandare a ogni processo
+// e non indica il numero totale di elementi del vettore
+```
+
+### MPI_Allgather
+
+È una combinazione di due funzioni:
+- MPI_Gather e MPI_Bcast.
+
+Cioè viene eseguito prima la raccolta dei dati, seguito da un broadcast del vettore ottenuto dalla raccolta.
+
+```C
+int MPI_Allgather(void* send_buf_p, int send_count, MPI_Datatype send_type, void* recv_buf_p, int recv_count, MPI_Datatype recv_type, MPI_Comm comm);
+
+// send_count e recv_count indicano il numero di elementi mandati da ogni processo
+```
+
+### MPI_Alltoall
+
+Serve ad inviare una partizione del proprio vettore a tutti gli altri processi che chiamano la funzione.
+
+![](https://i.imgur.com/M3hxpbd.png)
+
 ## MPI: Rilevanza degli algoritmi delle funzioni collettive
 
 Data l'importanza delle funzioni collettive, e il loro maggiore impatto sul tempo di esecuzione totale del programma rispetto alle altre operazioni, queste hanno bisogno di essere ottimizzate per poter decidere quale algoritmo usare in base alla situazione attuale, quanti processi sono involti, ...
 
 Per questa ragione esistono varie implementazioni di librerie di funzioni collettive.
+
+## MPI: Tipi di dato derivati
+
+In MPI, **derived datatypes** allow developers to create custom communication structures for complex data that goes beyond basic, predefined types (like standard integers or floats). They solve the problem of needing to send or receive collections of mixed or non-contiguous data items (such as a C `struct`) over the network without requiring manual buffer management.
+
+Here is a breakdown of how they work and why they are useful:
+
+- **Mapping Memory Layout:** A derived datatype is formally defined by specifying a **sequence of basic MPI data types along with their specific memory displacements** (their relative locations or offsets in memory).
+- **Automatic Packing on Send:** Instead of forcing the programmer to write manual code to pack different variables into a single, contiguous buffer before sending, you can simply pass the derived datatype to your send function. Because the send function understands the types and exact memory locations of all the items, **it automatically collects the scattered items directly from memory** and packages them for transmission.
+- **Automatic Unpacking on Receive:** Similarly, when the destination process receives the message, the receive function uses the derived datatype to **automatically distribute the incoming data items directly into their correct, corresponding memory locations**.
+
+**How They Are Created** MPI provides several specialized functions to build these custom datatypes depending on how your data is laid out:
+
+- **`MPI_Type_create_struct`**: Builds a derived datatype consisting of individual elements that have different basic types (perfect for standard C `structs`).
+- **`MPI_Type_contiguous`**: Builds a datatype for a series of contiguous elements.
+- **`MPI_Type_vector`**: Builds a datatype for elements of the same type that are repeated and separated by a regular interval or "stride".
+- **`MPI_Type_create_subarray`**: Used to select and communicate multidimensional subarrays.
+
+When creating these types—especially structs—it is highly recommended to use `MPI_Get_address` to find the exact memory displacements of the items. This ensures the derived datatype correctly accounts for any invisible memory padding the compiler might introduce, which can vary between 32-bit and 64-bit platforms. Once the datatype is built, you must call **`MPI_Type_commit`** to allow the MPI library to optimize its internal representation before you can use it in a communication function.
 
 ## MPI: Valutazione della performance (Profiling)
 
@@ -325,6 +409,27 @@ start = MPI_Wtime();
 finish = MPI_Wtime();
 printf("Elapsed time = %e seconds\n", finish-start);
 ```
+
+## MPI: Threading
+
+I processi MPI possono usare __threads__ per velocizzare ancora di più un programma.
+
+Per poter usare threads, bisogna chiamare MPI_Init_thread al posto di MPI_Init, indicando necessariamente il livello di threading richiesto e il livello di threading supportato dal sistema.
+
+### MPI: Livello di threading
+
+In MPI esistono $4$ livelli di threading:
+1) MPI_THREAD_SINGLE.
+	- Nessun rank può usare threads.
+2) MPI_THREAD_FUNNELED.
+	- Ogni rank può usare threads, ma solo il __thread principale__ può chiamare funzioni MPI.
+	- Ideale per parallelizzazione __fork/join__ come in **`#pragma omp parallel`** dove tutte le chiamate MPI sono fuori dai blocchi OpenMP.
+3) MPI_THREAD_SERIALIZED.
+	- Ogni rank può usare threads, ma solamente un thread alla volta può chiamare funzioni MPI.
+	- Un thread deve quindi assicurarsi di essere l'unico al momento a chiamare una funzione MPI, realizzabile tramite l'uso di __mutex__.
+4) MPI_THREAD_MULTIPLE.
+	- Ogni rank può usare threads, e non ci sono limitazioni.
+	- La libreria MPI deve assicurarsi che gli accessi ai dati sono sicuri per tutti i threads.
 
 # Valutazione della performance
 
@@ -493,4 +598,107 @@ Questo modello viene utilizzato per effettuare __migrazione__ di software __lega
 Si concentra sullo scomporre i cicli tramite __manipolazione della variabile di controllo del ciclo__, in modo che thread diversi eseguano iterazioni del ciclo diverse.
 
 Da notare però che __non__ tutti i cicli sono supportati, in quanto devono avere una forma molto specifica e __prevedibile__.
+
+# OpenMP (Open MultiProcessing)
+
+OpenMP è una libreria usata per parallelizzare programmi in sistemi a memoria condivisa, e tali programmi seguono il modello Globally-Sequential Locally-Parallel (GSLP), in particolare tramite __fork/join__.
+
+Tale sistema è visto come un'insieme di core o CPU, le quali hanno tutti accesso ad una memoria principale __condivisa__.
+
+OpenMP si affida a delle __direttive del compilatore__ per segnalare i blocchi di codice che il compilatore proverà a parallelizzare.
+
+## OpenMP: Gestire il numero di thread da usare
+
+Esistono $3$ livelli di controllo del numero di thread da usare all'interno di un processo:
+- __Universale__, definendo il numero di threads tramite una __variabile d'ambiente__.
+- Livello del __programma__, definendo il numero di threads chiamando la funzione **`omp_set_num_threads`** al di fuori dai blocchi di codice segnati dalle direttive OpenMP.
+- Livello del __pragma__, definendo il numero di thread nella stessa riga della direttiva pragma OpenMP usando la clausola **`num_threads`**.
+
+La __precedenza__ viene data prima al numero di thread indicato più specificatamente, ovvero:
+- __Più importante__: livello del pragma.
+- __In mezzo__: livello del programma.
+- __Meno importante__: Universale.
+
+### OpenMP: Team
+
+In OpenMP, l'insieme del thread originale più i nuovi threads generati che eseguono un blocco di codice parallelo viene definito come __team__.
+
+(Similmente ai comunicatori in MPI)
+
+### OpenMP: omp_get_num_threads (funzione)
+
+Serve ad ottenere il numero di threads attivi in un blocco di codice parallelo.
+
+Se la funzione viene chiamata in una regione sequenziale, restituisce $1$.
+
+### OpenMP: omp_get_thread_num (funzione)
+
+Serve ad ottenere il rank (id) del thread chiamante.
+
+## OpenMP: Pragmas
+
+OpenMP si affida come detto alle delle direttive del compilatore, in particolare usa **`#pragma`** per indicare al compilatore dei comportamenti specifici.
+
+### OpenMP: pragma omp parallel (direttiva)
+
+È la direttiva di parallelizzazione più semplice.
+
+Il numero di threads che eseguono il blocco di codice delimitato viene __determinato dal sistema a tempo di esecuzione__.
+
+```C
+# pragma omp parallel num_threads(thread_count)
+{
+	function();
+}
+
+// int my_rank = omp_get_thread_num(); // Rank del thread chiamante
+// int thread_count = omp_get_num_threads(); // Numero totale di threads
+```
+
+Dopo l'esecuzione di un blocco di codice parallelo, una __barriera implicita__ bloccherà i vari thread.
+
+#### OpenMP: pragma omp end parallel (direttiva)
+
+Serve per indicare la fine di un blocco di codice parallelo.
+
+### OpenMP: pragma omp critical (clausola)
+
+Serve per indicare un __blocco di codice__ che può essere eseguito da un solo thread alla volta.
+
+```C
+# pragma omp critical
+{
+	global_result += my_result;
+}
+```
+
+### OpenMP: pragma omp atomic (clausola)
+
+Serve per indicare che un'__operazione sulla memoria__ deve essere effettuata in modo __atomico__, ovvero senza interferenze da altri thread.
+
+La clausola **`atomic`** è più __efficiente__ e __veloce__ di **`critical`** in quanto deve proteggere solamente un'operazione invece che un blocco di operazioni.
+
+La variabile viene protetta in lettura, scrittura e modifica, ma la parte destra dell'operazione viene __comunque eseguito in parallelo__.
+
+```C
+# pragma omp atomic
+	global_result += function();
+
+// global_result è protetto
+// function() viene comunque eseguito da tutti i thread 
+```
+
+
+## OpenMP: Scope delle variabili
+
+In OpenMP, per scope di una variabile si intende l'insieme dei threads che possono accedere a tale variabile all'interno di un blocco di codice parallelo.
+
+Una variabile che può essere acceduta da tutti i thread di un team:
+- Ha scope __condivisa__ (shared).
+
+Una variabile che può essere acceduta solamente da un singolo thread:
+- Ha scope __privata__ (private).
+
+Di default ogni variabile __dichiarata al di fuori__ di un qualsiasi blocco OpenMP:
+- Ha scope condivisa.
 
