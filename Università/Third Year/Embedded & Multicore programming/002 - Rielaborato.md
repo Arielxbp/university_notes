@@ -639,7 +639,7 @@ Serve ad ottenere il rank (id) del thread chiamante.
 
 OpenMP si affida come detto alle delle direttive del compilatore, in particolare usa **`#pragma`** per indicare al compilatore dei comportamenti specifici.
 
-### OpenMP: pragma omp parallel (direttiva)
+## OpenMP: pragma omp parallel (direttiva)
 
 È la direttiva di parallelizzazione più semplice.
 
@@ -657,11 +657,11 @@ Il numero di threads che eseguono il blocco di codice delimitato viene __determi
 
 Dopo l'esecuzione di un blocco di codice parallelo, una __barriera implicita__ bloccherà i vari thread.
 
-#### OpenMP: pragma omp end parallel (direttiva)
+### OpenMP: pragma omp end parallel (direttiva)
 
 Serve per indicare la fine di un blocco di codice parallelo.
 
-### OpenMP: pragma omp critical (clausola)
+## OpenMP: sezioni critiche tramite clausola critical (clausola)
 
 Serve per indicare un __blocco di codice__ che può essere eseguito da un solo thread alla volta.
 
@@ -672,7 +672,42 @@ Serve per indicare un __blocco di codice__ che può essere eseguito da un solo t
 }
 ```
 
-### OpenMP: pragma omp atomic (clausola)
+### OpenMP: sezioni critiche denominate
+
+OpenMP fornisce l'opzione di __aggiungere un nome__ alle direttive **`critical`**.
+
+È possibile eseguire direttive **`critical`** con __nomi diversi simultaneamente__, quindi più di un thread alla volta può eseguire lo stesso blocco di codice critico.
+
+Per poter fare ciò, serve definire queste direttive a __tempo di compilazione__.
+
+```C
+# pragma omp critical(name)
+{
+	// critical section
+}
+```
+
+## OpenMP: Locks
+
+OpenMP fornisce una sua implementazione delle chiavi (locks).
+
+```C
+omp_lock_t writelock; // dichiarazione 
+omp_init_lock(&writelock); // inizializzazione
+
+# pragma omp parallel for
+{
+	for (i = 0; i < x; i++) {
+		...
+		omp_set_lock(&writelock); // ottieni la chiave
+		... // Codice eseguibile solo da un thread alla volta
+		omp_unset_lock(&writelock); // restituisci la chiave
+		...
+	}
+}
+```
+
+## OpenMP: pragma omp atomic (clausola)
 
 Serve per indicare che un'__operazione sulla memoria__ deve essere effettuata in modo __atomico__, ovvero senza interferenze da altri thread.
 
@@ -688,6 +723,44 @@ La variabile viene protetta in lettura, scrittura e modifica, ma la parte destra
 // function() viene comunque eseguito da tutti i thread 
 ```
 
+## OpenMP: Cosa usare tra sezioni critiche, operazioni atomiche e locks
+
+Generalmente le direttive atomiche in teoria sono il metodo più veloce per ottenere la __mutua esclusione__, tuttavia in base all'implementazione OpenMP scelta:
+- Le direttive atomiche potrebbero applicare la mutua esclusione attraverso __tutte__ le direttive atomiche __presenti nell'intero programma__.
+- Quindi anche operazioni atomiche che __non__ si influenzano minimamente potrebbero essere mutualmente escluse.
+- (Tutto ciò varia in base all'implementazione scelta di OpenMP)
+
+L'uso delle chiavi (locks) invece è consigliato da usare per situazioni dove serve la mutua esclusione per una __struttura dati__ piuttosto che per un blocco di codice.
+
+È __pericoloso__ annidare (nest) costrutti usati per implementare la mutua esclusione.
+
+Infine, è __sconsigliato__ e anche __pericoloso__ mischiare costrutti differenti per implementare la mutua esclusione, in quanto non c'è una __garanzia__ su chi viene eseguito prima (__fairness__).
+
+## OpenMP: pragma omp parallel reduction (clausola)
+
+In OpenMP, una riduzione serve a computare un dato, ottenuto applicando lo stesso operatore di riduzione ad una sequenza di operandi.
+
+__Tutti i risultati intermedi__ ottenuti applicando l'operatore durante l'operazione di riduzione sono salvati in una stessa variabile.
+
+Un'operatore di riduzione è un'operazione binaria:
+- Addizione o sottrazione **`+, -`**.
+- Moltiplicazione o potenza **`*, ^`**.
+- And o Or **`&&, ||`**.
+- Bitwise And o Or **`&, |`**.
+
+Ogni thread al suo interno ha una copia privata della variabile indicata dalla clausola **`reduction( operatore : variable)`**, e tale variabile viene inizializzata al __valore d'identità__ dell'operatore usato.
+
+Alla fine del blocco di codice parallelo, avviene la riduzione, che va ad accumulare i valori computati all'interno del blocco insieme al valore presente fuori dal blocco.
+
+```C
+int var;
+# pragma omp parallel num_threads(thread_count) reduction(* : global_result)
+{
+	var += function(); // Qui global_result è inizializzato a 1 (valore d'identità per moltiplicazioni)
+}
+
+// var = var * var_di_thread_1 * ... * var_di_thread_thread_count
+```
 
 ## OpenMP: Scope delle variabili
 
@@ -701,4 +774,100 @@ Una variabile che può essere acceduta solamente da un singolo thread:
 
 Di default ogni variabile __dichiarata al di fuori__ di un qualsiasi blocco OpenMP:
 - Ha scope condivisa.
+
+## OpenMP: Specificare lo scope delle variabili all'interno di un blocco (clausola)
+
+È possibile usare la clausola **`default`** per manualmente specificare lo scope di ogni variabile che viene usata in un blocco di codice parallelo.
+
+Lo scope predefinito delle variabili __dichiarate al di fuori__ dei blocchi di codice parallelo è **`shared`**.
+
+La clausola **`shared`** bisogna esplicitamente indicarla quando **`default(none)`** viene specificato.
+
+### OpenMP: private (clausola)
+
+La clausola **`private`** se indicata, va a creare __una copia separata__ di una variabile __per ogni__ thread nel team. Queste copie __non__ sono inizializzate, quindi all'interno del blocco di codice parallelo __non hanno un valore assegnato__.
+
+```C
+int shared_var = 10;
+# pragma omp parallel default(none) shared(shared_var) private(private_var)
+{
+	int private_var = 1; // Serve inizializzare private_var
+	private_var += shared_var;
+}
+```
+
+### OpenMP: firstprivate (clausola)
+
+La clausola **`firstprivate`** è una versione della clausola **`private`** più avanzata, in quanto la variabile indicata dalla clausola viene __automaticamente inizializzata__ all'interno di ogni thread del team con il valore che ha la stessa variabile ma fuori dal blocco di codice parallelo.
+
+```C
+int private_var = 1;
+# pragma omp parallel firstprivate(private_var)
+{
+	// Non serve inizializzare private_var
+	private_var += 10; // 1 + 10
+}
+```
+
+### OpenMP: lastprivate (clausola)
+
+La clausola **`lastprivate`** è una versione della clausola **`private`** più avanzata, in quanto la variabile indicata dalla clausola viene __automaticamente trasferita fuori__ alla fine della computazione del blocco di codice parallelo dall'ultimo thread che lo esegue.
+
+Inoltre è possibile usare **`firstprivate`** e **`lastprivate`** insieme.
+
+```C
+int private_var = 1;
+# pragma omp parallel firstprivate(private_var) lastprivate(private_var)
+{
+	private_var += 10; // 1 + 10
+}
+printf(private_var); // 11
+```
+
+### OpenMP: threadprivate e copyin (clausole)
+
+**Persistent Global Variables (`threadprivate` and `copyin`)** Sometimes, a thread needs a private variable that doesn't just disappear when a single parallel loop ends, but rather lives on to be used in future parallel regions.
+
+- **`threadprivate`**: This directive is used to make **global or static variables** private to each thread. Unlike standard private variables, **the value of a `threadprivate` variable is preserved and persists across multiple different parallel regions** throughout the entire execution of the program. This allows each thread to maintain its own independent state or memory across distinct phases of your computation.
+- **`copyin`**: Because `threadprivate` variables are persistent across the whole program, they do not get automatically initialized when a new parallel region begins. If you want all threads to start a new parallel region with the same baseline value for a `threadprivate` variable, you use the `copyin` clause. It **takes the value currently held by the master thread and copies it into the `threadprivate` variables of all the other threads in the team**.
+
+## OpenMP: pragma omp parallel for (direttiva)
+
+Serve a far eseguire un ciclo **`for`** da un team di threads.
+
+Il blocco di codice segnato da questa direttiva necessariamente __deve essere__ un ciclo **`for`**.
+
+La parallelizzazione del ciclo viene eseguito tramite l'__assegnamento delle iterazioni__ del ciclo tra i vari threads.
+
+Inoltre OpenMP impone la dichiarazione del ciclo in un modo specifico, in quanto serve al sistema per determinare il numero di iterazioni a tempo di esecuzione. 
+
+![](https://i.imgur.com/CltEq3J.png)
+
+### OpenMP: limitazioni sulla forma della dichiarazione del ciclo
+
+La variabile **`index`** deve essere di tipo **`integer`** o puntatore a **`integer`**, o sue versioni più grandi come **`long`**.
+
+Le espressioni **`start`**, **`end`** e **`incr`** devono essere compatibili con **`index`**.
+
+Le espressioni **`start`**, **`end`** e **`incr`** __non__ devono cambiare durante l'esecuzione del ciclo.
+
+Durante l'esecuzione del ciclo, la variabile **`index`** può solamente essere modificata dall'espressione **`incr`** definito nella dichiarazione del ciclo.
+
+__Non__ è possibile inserire **`break`** o **`return`** all'interno del ciclo.
+
+### OpenMP: cicli for annidati e come collassarli tramite clausola collapse (clausola)
+
+Se ci sono cicli **`for`** annidati, spesso è sufficiente parallelizzare solamente il ciclo __più esterno__.
+
+Quando però il ciclo più esterno ha poche iterazioni in proporzione al numero di threads utilizzati, e si prova allora ad parallelizzare il ciclo interno, è possibile che l'efficienza rimanga comunque bassa.
+
+![](https://i.imgur.com/Znu4IsQ.png)
+
+La soluzione è far __collassare__ il tutto in un __singolo ciclo__, ciò si può fare manualmente:
+
+![](https://i.imgur.com/ZsMTF8L.png)
+
+o farlo fare ad OpenMP tramite la clausola **`collapse`**:
+
+![](https://i.imgur.com/Umt6ofM.png)
 
