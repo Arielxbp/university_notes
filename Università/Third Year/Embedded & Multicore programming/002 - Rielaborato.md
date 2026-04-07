@@ -168,6 +168,21 @@ Un processo può ricevere messaggi anche se:
 - Non conosce chi lo manda, tramite MPI_ANY_SOURCE.
 - Non conosce il tag del messaggio, tramite MPI_ANY_TAG.
 
+### MPI: Ottenere il tag o rank di un messaggio ricevuto tramite ANY_SOUCE o ANY_TAG
+
+Serve a __recuperare__ il rank o il tag __mancante__ tramite **`MPI_Status`** quando l'operazione di ricezione (come MPI_Recv) viene utilizzato con **`MPI_ANY_SOURCE`** oppure **`MPI_ANY_TAG`**.
+
+Questo perché usando questi argomenti per un'operazione di ricezione, il processo può ricevere correttamente un messaggio senza conoscere il suo mittente o tag.
+
+Poiché queste informazioni vengono omesse durante la chiamata, MPI inserisce queste informazioni all'interno di **`MPI_Status`** per fornire i dettagli del messaggio.
+
+```C
+MPI_Recv(recv_buf_p, recv_buf_sz, recv_type, MPI_ANY_SOURCE, MPI_ANY_TAG, recv_comm, &status);
+
+int rank_sender = status.MPI_SOURCE;
+int tag = status.MPI_TAG;
+```
+
 ### MPI_Get_count
 
 Serve per ottenere la dimensione del dato contenuto nel messaggio da ricevere.
@@ -220,7 +235,7 @@ Nella modalità di comunicazione bufferata, le operazioni di invio sono __sempre
 
 ### MPI: Tipo di comunicazione sincrona
 
-Nella modalità di comunicazione sincrona, le operazioni di invio bloccano il processo mittente.
+Nella modalità di comunicazione sincrona, le operazioni di invio (MPI_Send) bloccano il processo mittente.
 
 Lo sblocco avviene solo dopo che il processo destinatario comincia l'operazione di ricezione del messaggio.
 
@@ -870,4 +885,263 @@ La soluzione è far __collassare__ il tutto in un __singolo ciclo__, ciò si pu�
 o farlo fare ad OpenMP tramite la clausola **`collapse`**:
 
 ![](https://i.imgur.com/Umt6ofM.png)
+
+# GPU
+
+Le GPU sono progettate per poter effettuare trasferimenti di grandi quantità effettive di dati durante le operazioni in un certo periodo di tempo (rendimento, numero totale di operazioni completate al secondo) (throughput). Per ottenere ciò posseggono molte più unità di calcolo (Arithmetic Logic Unit) rispetto alle CPU.
+
+Inoltre:
+- Le unità di controllo sono più semplici rispetto alle CPU.
+- La cache ha dimensioni ridotte rispetto alle CPU.
+
+Le unità di calcolo sono efficienti, ma presentano una latenza molto alta, perciò richiedono molti thread per tollerare questa latenza.
+
+
+## GPU: Architettura di una GPU che può eseguire CUDA
+
+L'architettura fisica di una GPU CUDA compatibile è organizzata come un _array_ di __Streaming Multiprocessors__ (SM), queste sono le unità funzionali di computazione più grandi all'interno dell'architettura.
+
+Due o più SMs formano un _building block_.
+
+All'interno di ogni _SM_ sono contenuti gli __Streaming processor__ (SP), chiamati anche come __CUDA cores__. Queste sono le unità responsabili delle operazioni aritmetiche tra numeri interi e in virgola mobile.
+
+# CUDA
+
+Compute Unified Device Architecture (CUDA) è un modello di programmazione, che permette di programmare su GPU NVIDIA.
+
+Il modello di esecuzione CUDA involve l'esecuzione concorrente sia del _host_ (CPU) che del _device_ (GPU), dove:
+- Le operazioni di I/O vengono eseguite dal host.
+- Le operazioni di computazione di dati vengono eseguiti dal device.
+
+## CUDA: Organizzazione logica dei thread
+
+I thread in CUDA sono organizzati logicamente in una __struttura a sei dimensioni (al massimo)__:
+- $3$ dimensioni per le griglie (_grid_).
+- $3$ dimensioni per i blocchi (_block_).
+
+Una griglia è composta da blocchi di threads, e attraverso una serie di variabili interne, ogni thread conosce la sua posizione all'interno della struttura.
+
+```C
+dim3 blockDim; // Struttura che contiene i 3 valori delle dimensioni dei blocchi
+
+dim3 gridDim; // Struttura che contiene i 3 valori delle dimensioni delle griglie
+
+uint3 threadIdx; // Struttura che contiene i 3 valori della posizione del thread rispetto al blocco
+
+uint3 blockIdx; // Struttura che contiene i 3 valori della posizione del blocco rispetto alla griglia
+
+```
+
+La dimensione di un blocco non può superare $1024$ threads. (Attualmente)
+
+![](https://i.imgur.com/sDf0VGx.png)
+
+### CUDA: Capacità di calcolo (SM version)
+
+La dimensione dei blocchi e delle griglie è determinato dalla __capacità__, che determina anche di cosa è capace ogni generazione di GPU NVIDIA.
+
+Tale capacità viene identificata attraverso un numero (version number), o chiamato _SM version_, che identifica le caratterstiche (_features_) supportate dall'hardware della GPU.
+
+### CUDA: Come ottenere la posizione di un thread
+
+Dato un thread situato all'interno di una griglia di blocchi, per ottenere la sua posizione globale:
+
+```C
+int block_position = blockIdx.x; // Posizione del blocco contenente il thread da ottenere rispetto a tutti i blocchi nella griglia
+
+int block_dimension = blockDim.x; // Dimensione fissa per ogni blocco
+
+int thread_position = threadIdx.x; // Posizione del thread nel suo blocco rispetto a tutti gli altri thread nel suo blocco
+
+int global_thread_position_x = block_position * block_dimension + thread_position
+```
+
+### CUDA: Thread scheduling
+
+In una GPU, ogni thread viene eseguito su un _SP_.
+
+Un insieme di CUDA cores nella stessa SM __condividono l'unita di controllo__, ovvero questi threads eseguono simultaneamente tutti la stessa istruzione.
+
+## CUDA: Warps
+
+Dato un blocco di threads, questi sono eseguiti in gruppi chiamati __warps__:
+- I threads vengono divisi in warps in base al loro **`threadId`**.
+
+In ogni ciclo di clock, all'interno di un warp, __tutti i thread__ del warp eseguono la stessa istruzione assegnata.
+
+È possibile avere multipli __warp scheduler__ presenti su un _SM_, in modo tale che multipli warps possano essere eseguiti allo stesso tempo.
+
+### CUDA: Divergenza dei thread di un warp (Warp Divergence)
+
+Siccome tutti i thread all'interno di un warp eseguono la stessa istruzione secondo il modello SIMD ([[002 - Rielaborato#Sistemi paralleli Con singola unità di controllo (SIMD)|Single-Instruction Multiple-Data]]), quando si presenta una divergenza di esecuzione causata per esempio da una condizione **`if/else`**, l'hardware va a serializzare i differenti rami di esecuzione:
+- I thread che soddisfano la condizione vanno ad eseguire completamente un ramo.
+- I thread che __non__ soddisfano la condizione vengono __bloccati__.
+- Quando i thread che soddisfano la condizione __finiscono__ l'esecuzione del loro ramo, gli altri thread che non soddisfano la condizione vanno ad eseguire il loro ramo, e viceversa i rimanenti thread vengono bloccati.
+- L'esecuzione sequenziale continua per ogni ramo divergente, finche non si ricongiungono tutti i rami, e a quel punto, tutti i thread riprendono ad eseguire le stesse istruzioni in modo sincronizzato.
+
+Nel caso peggiore, può essere che ogni thread all'interno del warp esegua singolarmente un ramo in modo sequenziale, __diminuendo il throughput__ del warp fino a un $\frac{1}{32}$ (se 32 threads per warp).
+
+### CUDA: Context Switching
+
+Generalmente un _SM_ possiede più warp residenti di quanti ne può eseguire in modo concorrente, e data la possibilità di poter scambiare tra warps in esecuzione e quelli residenti in modo fluido (seamlessly), quando un'istruzione da eseguire su un warp ha bisogno di attendere dei risultati computati da un'altra operazione già iniziata, tale warp viene scambiato e non verrà scelto per l'esecuzione finché non otterrà tutti i dati necessari.
+
+Questo meccanismo di scambio del contesto dei warp serve per __nascondere la latenza__ delle operazioni sulle GPU.
+
+Questa caratteristica di poter __tollerare__ operazioni con latenze alte __è la ragione principale__ per cui le GPU __non__ hanno bisogno di dedicare tanto spazio per __memoria cache__ e __meccanismi di predizione dei rami__ rispetto alle CPU.
+
+## CUDA: Come scrivere un programma CUDA
+
+Per poter usare la GPU con CUDA, bisogna definire una funzione (_kernel_) dove al suo interno bisogna __specificare l'organizzazione dei thread__ in blocchi e griglie.
+
+```C
+int x, y, z;
+dim3 block(x, y, z);
+dim3 grid(x, y, z);
+kernel_function<<<grid, block>>>();
+```
+
+### CUDA: Decoratori delle funzioni
+
+Durante la definizione di una qualsiasi funzione, serve inserire un decoratore. Ciò serve per specificare quale risorsa tra CPU e o GPU potrà eseguire quella funzione:
+- Una funzione **`__global__`** può essere chiamata sia dalla CPU che dalla GPU e può essere eseguita sia dalla CPU che dalla GPU.
+- Una funzione **`__device__`** può essere chiamata solo dall'interno di una funzione _kernel_, ovvero dalla GPU, e può essere eseguita solamente dalla GPU.
+- Una funzione **`__host__`** può essere eseguita solamente dalla CPU, e generalmente viene omesso.
+	- Viene specificato solo se usato insieme a **`__device__`** per indicare che tale funzione può essere eseguito su entrambi.
+
+## CUDA: Accesso alla memoria e come gestirla
+
+Dato una zona di memoria allocata nella DRAM e dei dati al loro interno, questi __non__ sono visibili dalla GPU e viceversa.
+
+```C
+int* data = new int[N]; // Array nella DRAM
+
+kernel_function<<<grid, block>>>(data, N); // Non funziona
+```
+
+Serve quindi esplicitamente __copiare__ tali dati dall'host alla GPU e viceversa.
+
+Per copiare dati dall'host alla GPU serve prima allocare zone di memoria sulla VRAM della GPU tramite la funzione **`cudaMalloc`**.
+
+```C
+cudaError_t cudaMalloc(void** d_Ptr, size_t size);
+```
+
+Per copiare i dati nella nuova zona di memoria allocata serve usare **`cudaMemcpy`**.
+
+```C
+cudaError_t cudaMemcpy(void* dest, const void* src, size_t size, cudaMemcpyKind direction_of_copy);
+
+// direction_of_copy = cudaMemcpyHostToHost = 0
+// direction_of_copy = cudaMemcpyHostToDevice = 1
+// direction_of_copy = cudaMemcpyDeviceToHost = 2
+// direction_of_copy = cudaMemcpyDeviceToDevice = 3 // Per configurazioni con multiple GPU
+// direction_of_copy = cudaMemcpyDefault = 4 // Usato quando la RAM è unificata (CPU e GPU condividono la RAM)
+```
+
+E infine per liberare la zona di memoria a fine programma con **`cudaFree`**.
+
+```C
+cudaError_t cudaFree(void* d_Ptr);
+```
+
+## CUDA: Esempio kernel somma di due vettori
+
+```C
+
+__global__ void add_vector_kernel(float* d_A, float* d_B, float* d_C, int n) {
+	int i = blockDim.x * blockIdx.x + threadIdx.x;
+	
+	// Solo se il numero del thread è contenuto nella dimensione dei vettore
+	// Altrimenti il thread andrebbe fuori dal vettore
+	if (i < n) {
+		d_C[i] = d_A[i] + d_B[i];
+	}
+}
+
+void add_vector(float* h_A, float* h_B, float* h_C, int vector_elements) {
+	int size = vector_elements * sizeof(float);
+	float* d_A;
+	float* d_B;
+	float* d_C;
+	
+	cudaMalloc((void**) &d_A, size);
+	cudaMalloc((void**) &d_B, size);
+	cudaMalloc((void**) &d_C, size);
+	
+	cudaMemcpy(d_A, h_A, size, cudaMemcpyHostToDevice);
+	cudaMemcpy(d_B, h_B, size, cudaMemcpyHostToDevice);
+	
+	// kernel invocation
+	add_vector_kernel<<<ceil(vector_elements/256.0), 256>>>(d_A, d_B, d_C, vector_elements);
+	// La dimensione della griglia è uguale al numero di blocchi necessari per coprire il numero di elementi dei vettori
+	// Ogni blocco è composto da 256 threads
+	// Ogni thread esegue una singola addizione tra gli elementi allo stesso index nei due vettori
+	
+	cudaMemcpy(h_C, d_C, size, cudaMemcpyDeviceToHost);
+	
+	cudaFree(d_A);
+	cudaFree(d_B);
+	cudaFree(d_C);
+}
+```
+
+## CUDA: Tipi di memoria
+
+![](https://i.imgur.com/io06piY.png)
+
+All'interno delle GPU sono presenti vari tipi di memoria, alcune sono all'interno delle SM mentre altre sono all'esterno delle SM:
+- I __registri__ mantengono le variabili locali.
+- La __memoria condivisa__ è una memoria interna (on-chip memory) molto veloce che mantiene dati frequentemente usati. Inoltre viene usato per scambiare dati tra i vari core all'interno di una stessa SM.
+- La __memoria di livello 1 e 2 (cache)__ sono nascoste al programmatore (non gestibili).
+- La __memoria globale__ è la parte principale della memoria esterna (off-chip memory), molto capiente ma relativamente lenta. Questa è l'unica memoria __accessibile dall'host__ tramite funzioni CUDA.
+- La memoria specializzata per __texture e superfici__, gestita da hardware speciali che permettono l'uso di operatori di filtraggio e interpolazione.
+- La __memoria per le variabili costanti__, che permette di eseguire il __broadcasting__ di singoli valori a tutti i thread di un warp. Questa memoria non è più molto usata in quanto le GPU hanno ormai una memoria cache.
+
+### CUDA: Registri (Memoria)
+
+Tutti i thread che risiedono nel core si __dividono__ i suoi registri, che vengono usati per memorizzare le variabili locali usate dai threads.
+
+Il numero di registri che può essere assegnato per thread __varia in base__ alla capacità di calcolo della GPU.
+
+E se il numero di registri necessario al thread __supera__ il limite, le variabili locali in più del thread verranno allocate o nella cache L1 (on-chip) oppure nella memoria globale (off-chip), tale allocazione viene decisa dal compilatore.
+
+### CUDA: Occupancy (Occupazione/Capienza)
+
+Il rapporto tra il numero di warp residenti e il numero massimo possibile di warp residenti viene definito come __occupancy__:$$occupancy=\frac{resident\_warps}{maximum\_warps}$$
+Più questo valore è vicino a $1$, più sono le possibilità per la GPU di nascondere le latenze grazie allo scambio dei thread.
+
+È possibile aumentare l'occupancy riducendo il numero di registri necessari alla funzione kernel, evitando di avere troppe variabili temporanee...
+
+### CUDA: Memoria per le variabili costanti (Memoria)
+
+La memoria per le costanti serve per memorizzare valori costanti, queste sono sono _cached_ e possono essere inviate a tutti i thread di un warp tramite _broadcasting_.
+
+La memoria per le costanti __non__ può essere allocata __dinamicamente__. 
+
+```C
+__constant__ float vector[10];
+
+cudaMemcpyToSymbol(vector, hostData, sizeof(float)*10);
+```
+
+## CUDA: Stima della performance ottenibile (Performance estimation)
+
+Performance estimation is a critical process used to determine whether a program is successfully saturating the computational capabilities of the GPU hardware. Based on the slides and corroborated by multiple other architectural guides, here are the core concepts used to estimate and analyze performance:
+
+**1. FLOP/s (Floating-Point Operations Per Second)** The fundamental metric for measuring computational performance is **FLOP/s**, which indicates the number of floating-point operations the hardware executes per second. When citing this metric, it is essential to specify the data precision being used (such as 16-bit, 32-bit, or 64-bit floating-point), as hardware execution rates vary wildly depending on the precision. Modern top-tier supercomputers can achieve up to 1 ExaFLOP/s ($10^{18}$ FLOP/s).
+
+**2. The Memory Bandwidth Bottleneck** Achieving a GPU's theoretical peak FLOP/s rate is rare because performance is frequently limited by how fast data can be fed from global memory to the execution cores. For example, if a GPU has a global memory bandwidth of 200 GB/s and uses 4-byte operands, it can load a maximum of 50 billion (50G) operands per second ($200 \text{ GB/s} / 4 \text{ bytes} = 50\text{G operands/s}$). If your algorithm performs exactly one floating-point operation (like a simple addition) for each operand it loads, the maximum possible performance is capped at 50 GFLOP/s.
+
+**3. Memory-Bound vs. Compute-Bound** If the GPU in the previous example has a theoretical peak compute capacity of 1,500 GFLOP/s (1.5 TFLOP/s), running at 50 GFLOP/s means the application is utilizing only **3.3%** of the processor's actual capabilities.
+
+- **Memory-Bound:** In this scenario, the application is memory-bound because data movement to and from memory limits the performance, rather than the arithmetic execution units. Simple kernels like vector addition or layer normalization naturally fall into this category.
+- **Compute-Bound:** Conversely, compute-bound kernels perform enough arithmetic operations per byte accessed to fully saturate the GPU's floating-point units (ALUs), such as dense matrix multiplications.
+
+**4. Arithmetic Intensity (Operational Intensity)** To determine how to push a memory-bound application closer to peak performance, developers analyze the **compute-to-global-memory-access ratio**, widely known as **arithmetic intensity**. This ratio represents the number of mathematical operations performed for every byte (or operand) fetched from memory.
+
+Using the 1.5 TFLOP/s GPU example, to reach peak performance while loading 50G operands per second, the algorithm requires an arithmetic intensity of at least **30** ($1.5 \text{ TFLOP/s} / 50\text{G operands/s} = 30$). This means the code must perform 30 math operations on every single operand it fetches from memory, reusing data extensively to avoid bandwidth limits.
+
+**Cross-Verification with Other Sources (The Roofline Model)** Other performance tuning guides confirm these exact principles using a concept known as the **Roofline Model**. The model dictates that an application's performance is mathematically capped by the formula: `performance ≤ min(compute_peak, arithmetic_intensity × bandwidth)`. For instance, on a modern NVIDIA A100 GPU with 19.5 TFLOPS (FP32) peak compute and 1.6 TB/s of bandwidth, a kernel must perform roughly 12 floating-point operations for every single byte loaded just to saturate the compute units.
+
+Understanding and optimizing arithmetic intensity is increasingly critical because the hardware industry is experiencing a trend where computational throughput is growing at a much faster rate than memory bandwidth.
 

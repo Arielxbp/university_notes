@@ -128,3 +128,9 @@ nvcc -arch=sm_75 -c energy_storms_cuda_core.cu -lm -o energy_storms_cuda_core.o
 nvcc -arch=sm_75 energy_storms_cuda.cpp energy_storms_cuda_core.o -lm -o energy_storms_cuda
 
 ./energy_storms_cuda 20000 test_files/test_02_a30k_p20k_w1 test_files/test_02_a30k_p20k_w2 test_files/test_02_a30k_p20k_w3 test_files/test_02_a30k_p20k_w4 test_files/test_02_a30k_p20k_w5 test_files/test_02_a30k_p20k_w6
+
+____
+
+Provare ad usare la memoria per le variabili costanti invece della cache L2 per il vettore delle palle
+
+Usare meno registri nelle funzioni kernel
