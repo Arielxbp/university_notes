@@ -134,3 +134,7 @@ ____
 Provare ad usare la memoria per le variabili costanti invece della cache L2 per il vettore delle palle
 
 Usare meno registri nelle funzioni kernel
+
+caching -> fare modo che l'array dei valori da leggere sia contiguo, cambiando l'ordine dei valori
+
+can use compiler directives (like `__attribute__((aligned(64)))`) to explicitly align variables to cache line boundaries

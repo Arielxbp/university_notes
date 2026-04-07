@@ -886,6 +886,278 @@ o farlo fare ad OpenMP tramite la clausola **`collapse`**:
 
 ![](https://i.imgur.com/Umt6ofM.png)
 
+## OpenMP: Pianificazione dei cicli (Scheduling Loops)
+
+Normalmente in OpenMP, quando si parallelizza un ciclo tramite **`omp parallel for`**, le varie iterazioni del ciclo vengono assegnate ai threads secondo un partizionamento di default che potrebbe __non__ essere l'assegnazione più performante.
+
+È quindi possibile impostare che tipo di assegnamento usare tra:
+- **`static`**.
+- **`dynamic`** o **`guided`**.
+- **`auto`**.
+- **`runtime`**.
+
+```C
+# pragma ... schedule(type, chunksize)
+```
+
+Il **`chunksize`** indica quante iterazioni del ciclo assegnare alla volta a ogni thread.
+
+### OpenMP: Assegnamento statico (Static Loops Scheduling)
+
+In questo tipo di assegnamento, le iterazioni vengono assegnate ai threads __prima__ che il ciclo inizi l'esecuzione.
+
+Viene fatto in modo che ad ogni thread venga assegnato più o meno la stessa quantità di iterazioni.
+
+Ma è possibile vi siano iterazioni che richiedono più lavoro o tempo per finire, quindi può causare __carichi di lavoro non equi__.
+
+```C
+# pragma ... schedule(static, chunksize)
+
+// E.g.
+// Usando schedule(static, 4) con 12 iterazioni e 3 threads:
+// Thread 0 ottiene: 0, 1, 2, 3
+// Thread 1 ottiene: 4, 5, 6, 7
+// Thread 3 ottiene: 8, 9, 10, 11
+
+// E.g.
+// Usando schedule(static, 1) con 12 iterazioni e 3 threads:
+// Thread 0 ottiene: 0, 3, 6, 9
+// Thread 1 ottiene: 1, 4, 7, 10
+// Thread 3 ottiene: 2, 5, 8, 11
+```
+
+### OpenMP: Assegnamento dinamico o guidato (Dynamic/Guided Loops Scheduling)
+
+In questi tipi di assegnamento, le iterazioni vengono assegnate ai threads __mentre__ il ciclo viene eseguito.
+
+#### OpenMP: Assegnamento dinamico
+
+In questo tipo di assegnamento, quando un thread finisce un chunk di iterazioni a lui assegnate, va a __richiedere un nuovo chunk__ di iterazioni tra quelle rimaste.
+
+È una strategia ideale per iterazioni __non bilanciate__, dove i thread che finiscono priima possono semplicemente andare a richiedere più lavoro. Tuttavia queste richieste introducono una latenza.
+
+#### OpenMP: Assegnamento guidato
+
+In questo tipo di assegnamento, quando un thread finisce chunk di iterazioni a lui assegnate, va a richiedere un nuovo chunk di iterazioni.
+
+Rispetto all'assegnamento dinamico, la dimensione dei chunk non è fisso, ma diminuisce man mano che vengono completati.
+
+Quindi i chunk hanno dimensione variabile$$dim\_chunks=\frac{num\_iterations}{num\_threads}$$
+dove **`num_iterations`** diventerà il numero di iterazioni rimanenti dopo che un chunk di iterazioni viene dato.
+
+È una strategia che cerca di avere la bassa latenza dell'assegnamento statico e il bilanciamento del carico di lavoro dell'assegnamento dinamico.
+
+### OpenMP: Assegnamento automatico
+
+Il compilatore e o il sistema determinano il tipo di assegnamento da usare.
+
+### OpenMP: Assegnamento a tempo di esecuzione (Runtime Loops Scheduling)
+
+In questo tipo di assegnamento, l'assegnamento viene determinato a tempo di esecuzione.
+
+Il sistema usa la __variabile d'ambiente__ **`OMP_SCHEDULE`** per determinare a tempo di esecuzione come dovrebbe assegnare le iterazioni del ciclo.
+
+Tale variabile può essere **`static`**, **`dynamic`** o **`guided`**, più il valore del **`chunksize`**.
+
+```C
+$export OMP_SCHEDULE="static,1"
+```
+
+## OpenMP: Direttive per la sincronizzazione
+
+### OpenMP: Master/Single (direttive)
+
+Entrambe le direttive **`master`** e **`single`** __forzano l'esecuzione__ del blocco di codice parallelo su un singolo thread.
+
+La direttiva **`single`** implicitamente inserisce una __barriera__ alla fine del blocco.
+
+La direttiva **`master`** garantisce l'esecuzione del blocco sul thread master.
+
+
+### OpenMP: barrier (direttiva)
+
+Serve per bloccare i thread del team che raggiungono la barriera, e li sblocca solamente quando __tutti__ i thread del team raggiungono tale punto.
+
+### OpenMP: sections/section (direttive)
+
+Servono per poter eseguire sezioni di codice __completamente indipendenti__ in modo concorrente. 
+
+Ogni sezione viene eseguito __una volta__ da __un singolo__ thread, e se ci sono più sezioni che threads, allora alcuni thread eseguiranno più sezioni.
+
+Siccome queste sezioni di codice vengono eseguite in modo concorrente, è necessario che siano completamente indipendenti.
+
+Alla fine del blocco di codice segnato dalla direttiva **`sections`** implicitamente viene inserita una __barriera__. Tale barriera non viene inserita se esplicitamente specificato tramite una clausola **`nowait`**.
+
+```C
+# pragma omp parallel sections
+{
+	#pragma omp section
+	{
+		...
+	}
+	# pragma omp section
+	{
+		...
+	}
+}
+```
+
+### OpenMP: ordered (direttiva)
+
+Serve all'interno di **`omp parallel for`** per __assicurare__ che l'esecuzione di un blocco di codice indicato viene fatto in ordine __sequenziale__.
+
+## OpenMP: Gestione dei thread OpenMP quando generati da processi MPI
+
+MPI assegna ad ogni processo un core, e quando un processo MPI genera un team di threads OpenMP, questi threads vengono __tutti__ eseguiti sullo stesso core sulla quale gira il processo, portando possibilmente ad una velocità ridotta di esecuzione del programma.
+
+Per sistemare questo problema, serve usare il _flag_ **`--bind-to-none`**.
+
+# Dipendenze dei dati (Data Dependencies)
+
+Generalmente OpenMP __non riesce__ a parallelizzare correttamente un ciclo in cui il risultato 
+di uno o più iterazioni dipende da altre iterazioni. Questo in quanto il compilatore OpenMP non controlla se ci sono dipendenze tra le iterazioni di un ciclo parallelizzato tramite la direttiva **`parallel for`**.
+
+Quando almeno due operazioni operano sulla stessa zona di memoria, dove necessariamente uno di queste è un'operazione di __scrittura__, e sono divise in più iterazioni del ciclo, si viene a creare una __dipendenza trasportata dal ciclo__ (Loop-carried dependence).
+
+Esistono vari tipi di dipendenze:
+- Flow dependence (RAW, or Read-After-Write).
+- Anti-Flow dependence (WAR, or Write-After-Read).
+- Output dependence (WAW, or Write-After-Write).
+
+## Flow dependence (Data Dependencies)
+
+Accade quando si legge da una zona di memoria dopo che viene scritto sulla stessa zona di memoria.
+
+```C
+x = 10; // Write x
+y = 2 * x; // Read x
+```
+
+## Anti-Flow dependence (Data Dependencies)
+
+Accade quando si scrive su una zona di memoria dopo che viene letta la stessa zona di memoria.
+
+```C
+y = x + 1; // Read x
+x++; // Write x
+```
+
+## Output dependence (Data Dependencies)
+
+Accade quando si scrive su una zona di memoria dopo che viene scritta sulla stessa zona di memoria.
+
+```C
+x = 10; // Write x
+x = x + 10; // Write x
+```
+
+## Risoluzione di dipendenze dei dati
+
+**Six primary techniques** are used to resolve flow dependencies (Read-After-Write or RAW), alongside specific strategies for handling anti-dependences and output dependencies.
+
+Here is a breakdown of every technique used to fix data dependencies:
+
+### 1. Reduction and Induction Variable Fixes
+
+- **Induction Variables:** An induction variable gets increased or decreased by a constant amount during each loop iteration, which causes a dependency between steps. You can remove this dependency by rewriting the variable as an affine function of the loop index (for example, changing `v = v + step` to calculate directly via `v = start + i * step`), which allows each iteration to calculate its value independently.
+- **Reduction Variables:** When a variable accumulates a total result (like a sum), it creates a dependency. This is fixed by using the OpenMP **`reduction`** clause (e.g., `reduction(+:sum)`). The runtime creates a private, uninitialized copy of the variable for each thread, applies the operations locally, and then atomically combines all private copies into the global shared variable at the end of the region.
+
+### 2. Loop Skewing
+
+Loop skewing involves rearranging the statements within the loop body so that the values consumed during an iteration were generated during that exact same iteration. By manually unrolling the loop to observe the repetition pattern, you can "skew" the loop bounds. For example, if statement 1 relies on the previous iteration's statement 2, you can execute the very first instance of statement 1 outside the loop, shift the loop index, and execute them safely in parallel.
+
+### 3. Fissioning
+
+Fissioning means **breaking a single loop apart into multiple separate loops**: one that contains the problematic sequential dependencies, and another that contains the safe, parallelizable work. This ensures that the parallelizable portion of the work can still be accelerated using OpenMP without being held back by the sequential statements.
+
+### 4. Refactoring (Wavefront Execution)
+
+Refactoring involves rewriting the loops to expose hidden parallelism by analyzing the **Iteration Space Dependency Graph (ISDG)**. If the ISDG shows that dependencies flow strictly down and to the right (like a grid), there are no dependencies between nodes on the same diagonal. You can refactor the code to execute in "waves" along these diagonals, changing the loop variables so the outer loop iterates over the waves, and the inner loop processes the independent diagonal sets in parallel.
+
+### 5. Partial Parallelization
+
+By analyzing the Iteration Space Dependency Graph (ISDG), you may find that while an outer loop carries a dependency, an inner nested loop does not (e.g., there are no dependency edges between nodes on the same row). In these cases, you can partially parallelize the workload by applying the OpenMP directives exclusively to the independent inner loop.
+
+### 6. Algorithm Change
+
+If the code's dependencies cannot be removed through restructuring, **switching the underlying mathematical algorithm** may be the only answer. For example, the standard iterative method for calculating the Fibonacci sequence relies heavily on the previous two iterations; however, switching to Binet's formula allows you to calculate any Fibonacci number completely independently, making it trivially parallelizable.
+
+---
+
+### Fixing Other Dependency Types
+
+- **Removing Anti-Dependences (Write-After-Read / WAR):** This occurs when a loop writes to a variable that a future iteration needs to read. The simplest solution is to **make a copy of the array or variable** before you start modifying it. The threads can then safely read from the unmodified copy while writing to the original array. However, this requires careful consideration of the space and time trade-offs.
+- **Removing Output Dependences (Write-After-Write / WAW):** This occurs when multiple iterations write to the same memory location, and you need to guarantee that the final value stored is from the logically "last" iteration. This is resolved by using the OpenMP **`lastprivate`** clause, which ensures that at the end of the parallel execution, the variable is updated with the value computed in the final sequential iteration of the loop.
+
+# Caching
+
+Esistono due tipi di __località__:
+- Località spaziale, quando si accede ad una zona di memoria vicina.
+- Località temporale, quando si accede ad una zona di memoria frequentemente acceduta.
+
+I dati vengono trasferiti dalla memoria alla cache __in blocchi__ (o righe), cioè quando si trasferisce un valore di un vettore, possibilmente anche i valori nel vettore vicini vengono trasferiti.
+
+## Caching: Consistenza dei dati tra cache e memoria
+
+Quando la CPU scrive dati nella cache, i valori scritti potrebbero essere __inconsistenti__ rispetto ai valori presenti nella memoria principale.
+
+Una cache __write-through__ gestisce questi casi:
+- Aggiornando i dati nella memoria principale nel momento in cui vengono scritti nella cache.
+
+Una cache __write-back__ invece gestisce questi casi:
+- Marcando i dati scritti nella cache come __sporchi__.
+- E aggiornando tali dati sulla memoria principale quando questi vengono rimpiazzati nella cache da nuovi dati.
+
+## Caching: Coerenza dei dati tra varie cache di multipli cores
+
+Dato che i programmatori non hanno un controllo diretto su quando vengono aggiornate le cache, si presenta un problema quando più cores contengono una copia della stessa variabile condivisa.
+
+Per mantenere la coerenza di queste variabili condivise tra multipli core, esistono dei meccanismi hardware progettati appositamente.
+
+### Caching: Coerenza della cache tramite Snooping
+
+In questa architettura, tutti i core __condividono un bus__ di comunicazione comune.
+
+Qualsiasi segnale trasmesso su questo bus può essere notato da tutti i core connessi, e quando un core aggiorna una variabile condivisa nella sua cache locale, trasmette queste informazioni sul bus.
+
+Gli altri core __monitorano continuamente__ questo bus e se un core rileva un aggiornamento per una variabile che attualmente contiene, contrassegna la sua copia locale nella cache come non valida.
+
+Tuttavia, questo approccio è raramente utilizzato perché la trasmissione diventa troppo costosa e non scalabile su architetture con un numero elevato di core.
+
+### Caching: Coerenza della cache tramite Directory
+
+Questo approccio utilizza una struttura dati dedicata chiamata __Directory__ per mantenere traccia dello stato di ogni __linea di cache__.
+
+La directory mantiene un __elenco__ di quali core attualmente possiedono una copia di quella specifica linea.
+
+Quando una variabile viene aggiornata, il sistema consulta la directory e invia esplicitamente __segnali di invalidazione__ solo ai core specifici che effettivamente possiedono una copia di quella variabile.
+
+## Caching: False Sharing
+
+I dati contenuti nella memoria principale vengono copiati nella cache __in righe__, dove ognuna di queste linee può contenere multiple variabili.
+
+Quando un dato (variabile) viene __invalidato__, __tutta la riga__ che contiene tale dato viene invalidata, e di conseguenza ogni lettura di altre variabili sulla stessa riga, anche se corrette, vengono invalidate.
+
+Per risolvere questo problema è possibile:
+- Aggiungere un __padding__ ai dati copiati in modo che variabili indipendenti siano su righe diverse.
+- Usare variabili locali per raggruppare il risultato computato e solamente alla fine scrivere sul dato in cache.
+- Cambiare l'assegnamento dei dati rispetto ai thread usati, assicurando che ad ogni thread venga assegnato una riga di cache non facilmente influenzabile da altri thread.
+
+Effettuando il padding tuttavia causa un'efficienza ridotta della cache e spreca memoria.
+
+# Organizzazione della memoria (Memory Organization)
+
+In multiprocessor computer systems, memory organization typically falls into two primary shared-memory architectures: **Uniform Memory Access (UMA)** and **Non-Uniform Memory Access (NUMA)**. While both models provide a single, shared address space where all memory is directly accessible by any processor, they differ fundamentally in their physical layout and access speeds.
+
+**Uniform Memory Access (UMA)** In a UMA architecture, the time it takes for a processor to access memory is completely independent of which processor is making the request or where the data physically resides. Multiple CPUs share a central pool of global memory equally. Because all processors sit at the same "distance" from the memory, they all experience the exact same latency and bandwidth.
+
+**Non-Uniform Memory Access (NUMA)** As systems scale to higher core counts, UMA becomes a bottleneck. Modern high-performance computing (HPC) nodes typically use NUMA architectures, where the physical memory is divided and distributed among multiple nodes, with each node having its own processors and a directly attached memory pool.
+
+- **Local vs. Remote Access:** While the entire memory space is still transparently accessible to all processors on the system, the access time varies wildly. A processor can access its own **local memory** much faster—with higher bandwidth and lower latency—than it can access **remote memory** (memory that is local to another processor).
+- **The Interconnect Penalty:** Accessing remote memory requires the data request to cross a socket-to-socket interconnect network. If a program forces cores to constantly access remote memory, the overall memory bandwidth is severely degraded and becomes dominated by the limited speed of the inter-socket links.
+
+![](https://i.imgur.com/TcrIaDj.png)
+
 # GPU
 
 Le GPU sono progettate per poter effettuare trasferimenti di grandi quantità effettive di dati durante le operazioni in un certo periodo di tempo (rendimento, numero totale di operazioni completate al secondo) (throughput). Per ottenere ciò posseggono molte più unità di calcolo (Arithmetic Logic Unit) rispetto alle CPU.
