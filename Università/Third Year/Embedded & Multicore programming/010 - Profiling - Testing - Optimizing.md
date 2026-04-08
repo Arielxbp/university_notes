@@ -138,3 +138,6 @@ Usare meno registri nelle funzioni kernel
 caching -> fare modo che l'array dei valori da leggere sia contiguo, cambiando l'ordine dei valori
 
 can use compiler directives (like `__attribute__((aligned(64)))`) to explicitly align variables to cache line boundaries
+
+prima di scrivere il risultato ottenuto, meglio fare un \_\_syncthreads o avere una copia del vettore sulla quale si opera.
+

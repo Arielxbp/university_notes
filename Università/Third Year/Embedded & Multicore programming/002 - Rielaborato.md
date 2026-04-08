@@ -1158,6 +1158,8 @@ In multiprocessor computer systems, memory organization typically falls into two
 
 ![](https://i.imgur.com/TcrIaDj.png)
 
+
+
 # GPU
 
 Le GPU sono progettate per poter effettuare trasferimenti di grandi quantità effettive di dati durante le operazioni in un certo periodo di tempo (rendimento, numero totale di operazioni completate al secondo) (throughput). Per ottenere ciò posseggono molte più unità di calcolo (Arithmetic Logic Unit) rispetto alle CPU.
@@ -1357,44 +1359,12 @@ void add_vector(float* h_A, float* h_B, float* h_C, int vector_elements) {
 }
 ```
 
-## CUDA: Tipi di memoria
-
-![](https://i.imgur.com/io06piY.png)
-
-All'interno delle GPU sono presenti vari tipi di memoria, alcune sono all'interno delle SM mentre altre sono all'esterno delle SM:
-- I __registri__ mantengono le variabili locali.
-- La __memoria condivisa__ è una memoria interna (on-chip memory) molto veloce che mantiene dati frequentemente usati. Inoltre viene usato per scambiare dati tra i vari core all'interno di una stessa SM.
-- La __memoria di livello 1 e 2 (cache)__ sono nascoste al programmatore (non gestibili).
-- La __memoria globale__ è la parte principale della memoria esterna (off-chip memory), molto capiente ma relativamente lenta. Questa è l'unica memoria __accessibile dall'host__ tramite funzioni CUDA.
-- La memoria specializzata per __texture e superfici__, gestita da hardware speciali che permettono l'uso di operatori di filtraggio e interpolazione.
-- La __memoria per le variabili costanti__, che permette di eseguire il __broadcasting__ di singoli valori a tutti i thread di un warp. Questa memoria non è più molto usata in quanto le GPU hanno ormai una memoria cache.
-
-### CUDA: Registri (Memoria)
-
-Tutti i thread che risiedono nel core si __dividono__ i suoi registri, che vengono usati per memorizzare le variabili locali usate dai threads.
-
-Il numero di registri che può essere assegnato per thread __varia in base__ alla capacità di calcolo della GPU.
-
-E se il numero di registri necessario al thread __supera__ il limite, le variabili locali in più del thread verranno allocate o nella cache L1 (on-chip) oppure nella memoria globale (off-chip), tale allocazione viene decisa dal compilatore.
-
-### CUDA: Occupancy (Occupazione/Capienza)
+## CUDA: Occupancy (Occupazione/Capienza)
 
 Il rapporto tra il numero di warp residenti e il numero massimo possibile di warp residenti viene definito come __occupancy__:$$occupancy=\frac{resident\_warps}{maximum\_warps}$$
 Più questo valore è vicino a $1$, più sono le possibilità per la GPU di nascondere le latenze grazie allo scambio dei thread.
 
 È possibile aumentare l'occupancy riducendo il numero di registri necessari alla funzione kernel, evitando di avere troppe variabili temporanee...
-
-### CUDA: Memoria per le variabili costanti (Memoria)
-
-La memoria per le costanti serve per memorizzare valori costanti, queste sono sono _cached_ e possono essere inviate a tutti i thread di un warp tramite _broadcasting_.
-
-La memoria per le costanti __non__ può essere allocata __dinamicamente__. 
-
-```C
-__constant__ float vector[10];
-
-cudaMemcpyToSymbol(vector, hostData, sizeof(float)*10);
-```
 
 ## CUDA: Stima della performance ottenibile (Performance estimation)
 
@@ -1416,4 +1386,71 @@ Using the 1.5 TFLOP/s GPU example, to reach peak performance while loading 50G o
 **Cross-Verification with Other Sources (The Roofline Model)** Other performance tuning guides confirm these exact principles using a concept known as the **Roofline Model**. The model dictates that an application's performance is mathematically capped by the formula: `performance ≤ min(compute_peak, arithmetic_intensity × bandwidth)`. For instance, on a modern NVIDIA A100 GPU with 19.5 TFLOPS (FP32) peak compute and 1.6 TB/s of bandwidth, a kernel must perform roughly 12 floating-point operations for every single byte loaded just to saturate the compute units.
 
 Understanding and optimizing arithmetic intensity is increasingly critical because the hardware industry is experiencing a trend where computational throughput is growing at a much faster rate than memory bandwidth.
+
+## CUDA: Tipi di memoria
+
+![](https://i.imgur.com/io06piY.png)
+
+All'interno delle GPU sono presenti vari tipi di memoria, alcune sono all'interno delle SM mentre altre sono all'esterno delle SM:
+- I __registri__ mantengono le variabili locali.
+- La __memoria condivisa__ è una memoria interna (on-chip memory) molto veloce che mantiene dati frequentemente usati. Inoltre viene usato per scambiare dati tra i vari core all'interno di una stessa SM.
+- La __memoria di livello 1 e 2 (cache)__ sono nascoste al programmatore (non gestibili).
+- La __memoria globale__ è la parte principale della memoria esterna (off-chip memory), molto capiente ma relativamente lenta. Questa è l'unica memoria __accessibile dall'host__ tramite funzioni CUDA.
+- La memoria specializzata per __texture e superfici__, gestita da hardware speciali che permettono l'uso di operatori di filtraggio e interpolazione.
+- La __memoria per le variabili costanti__, che permette di eseguire il __broadcasting__ di singoli valori a tutti i thread di un warp. Questa memoria non è più molto usata in quanto le GPU hanno ormai una memoria cache.
+
+### CUDA: Registri (Registers)
+
+Tutti i thread che risiedono nel core si __dividono__ i suoi registri, che vengono usati per memorizzare le variabili locali usate dai threads.
+
+Il numero di registri che può essere assegnato per thread __varia in base__ alla capacità di calcolo della GPU.
+
+E se il numero di registri necessario al thread __supera__ il limite, le variabili locali in più del thread verranno allocate o nella cache L1 (on-chip) oppure nella memoria globale (off-chip), tale allocazione viene decisa dal compilatore.
+
+### CUDA: Memoria condivisa (Shared Memory)
+
+È una memoria interna (on-chip) alla _SM_ che permette ai core di una stessa _SM_ di __condividere dati__.
+
+È possibile specificare quali dati contenere nella memoria condivisa invece che nella memoria globale usando **`__shared__`**.
+
+Generalmente la memoria condivisa è affiancata alla __cache di livello 1__, tuttavia la prima è gestibile dal programmatore, mentre la seconda è gestita automaticamente dall'hardware.
+
+```C
+__shared__ int vector[10];
+```
+
+#### CUDA: Come prevenire pericoli di RAW, WAR o WAW (Usando \_\_syncthreads)
+
+**`__syncthreads__`** è una __barriera__ usata per prevenire le dipendenze dei dati come RAW, WAR e WAW.
+
+Tutti i threads per poter continuare la loro esecuzione devono prima raggiungere la barriera.
+
+È necessario quando si opera su un vettore __in-place__, ovvero si usano e modificano i dati contenuti all'interno del vettore senza usare una copia.
+
+```C
+... // Computa il risultato ottenuto usando valori del vettore in una variabile locale
+
+__syncthreads(); // Tutti i threads hanno il loro risultato in una variabile locale
+
+... // Scrivi il risultato nel vettore
+```
+
+### CUDA: Memoria per le variabili costanti (Constant Memory)
+
+La memoria per le costanti serve per memorizzare valori costanti, queste sono sono _cached_ e possono essere inviate a tutti i thread di un warp tramite _broadcasting_.
+
+La memoria per le costanti __non__ può essere allocata __dinamicamente__. 
+
+```C
+__constant__ float vector[10];
+
+cudaMemcpyToSymbol(vector, hostData, sizeof(float)*10);
+```
+
+## CUDA: Moltiplicazione di matrici
+
+TBD
+
+## CUDA: Memoria fissata (Pinned Memory)
+
 
