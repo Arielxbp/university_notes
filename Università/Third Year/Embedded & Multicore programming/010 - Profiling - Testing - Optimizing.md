@@ -141,3 +141,4 @@ can use compiler directives (like `__attribute__((aligned(64)))`) to explicitly 
 
 prima di scrivere il risultato ottenuto, meglio fare un \_\_syncthreads o avere una copia del vettore sulla quale si opera.
 
+Controllare ed richiedere che i threads siano allineati e le richieste al vettore dei valori sia allineato quando si richiede la lettura dei dati dal vettore (Coalescing)

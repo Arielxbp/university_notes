@@ -1134,6 +1134,8 @@ Quando una variabile viene aggiornata, il sistema consulta la directory e invia 
 
 ## Caching: False Sharing
 
+(Leggere anche sopra - Coerenza della cache tramite Directory)
+
 I dati contenuti nella memoria principale vengono copiati nella cache __in righe__, dove ognuna di queste linee può contenere multiple variabili.
 
 Quando un dato (variabile) viene __invalidato__, __tutta la riga__ che contiene tale dato viene invalidata, e di conseguenza ogni lettura di altre variabili sulla stessa riga, anche se corrette, vengono invalidate.
@@ -1416,8 +1418,19 @@ E se il numero di registri necessario al thread __supera__ il limite, le variabi
 Generalmente la memoria condivisa è affiancata alla __cache di livello 1__, tuttavia la prima è gestibile dal programmatore, mentre la seconda è gestita automaticamente dall'hardware.
 
 ```C
-__shared__ int vector[10];
+__shared__ int vector[10]; // Esempio
 ```
+
+La memoria condivisa è suddivisa in __banchi__ (banks):
+- Ogni banco può servire __un singolo accesso__ per ciclo.
+
+#### CUDA: Confilitti tra blocchi (bank) della memoria condivisa
+
+Multipli accessi a un singolo banco richiederanno molti cicli.
+
+Quindi i threads all'interno di un warp dovrebbero evitare di accedere allo stesso momento a un banco di memoria condivisa uguale.
+
+Inoltre, se tutti i threads all'interno di un warp accedono alla stessa zona di memoria, l'hardware eseguirà una __lettura in broadcast__, oppure se multipli threads ma non tutti, allora una __lettura in multicast__.
 
 #### CUDA: Come prevenire pericoli di RAW, WAR o WAW (Usando \_\_syncthreads)
 
@@ -1451,6 +1464,98 @@ cudaMemcpyToSymbol(vector, hostData, sizeof(float)*10);
 
 TBD
 
+## Memoria virtuale (Virtual memory)
+
+Poiché la memoria principale è __fisicamente limitata__, il sistema operativo usa il meccanismo della __memoria virtuale__, che associa ad uno stesso indirizzo fisico, multipli indirizzi virtuali.
+
+Questi indirizzi virtuali sono raggruppati in __pagine__ e vengono spostati dentro e fuori dalla memoria fisica.
+
+Gli indirizzi virtuali necessitano di essere __tradotti__ in indirizzi fisici quando si accede ai dati puntati.
+
+Quando la memoria fisica si riempie, è possibile spostare le pagine di memoria virtuale fuori dalla memoria fisica per ottenere dello spazio libero.
+
+## CUDA: Trasferimento di dati usando DMA
+
+Per spostare dati in modo efficiente tra la CPU e la GPU, **`cudaMemcpy`** utilizza dell'hardware speciale chiamato __Direct Memory Access__ (DMA).
+
+Quest'unità è progettata per trasferire grandi quantità di dati tramite l'__interconnessione del sistema__ (PCIe bus solitamente).
+
+Quindi __delegando le operazioni di trasferimento__ dati al DMA, il sistema libera la CPU per eseguire altre operazioni in modo concorrente.
+
+Siccome il DMA utilizza __indirizzi fisici__, si viene a creare un conflitto tra il funzionamento del DMA e il funzionamento della memoria virtuale:
+- Il DMA __traduce gli indirizzi virtuali__ e controlla che tutte le pagine richieste sono fisicamente presenti all'interno della memoria __all'inizio del trasferimento__.
+- Ma esegue questa traduzione __una sola volta__ per tutta la durata del trasferimento per poter avere massima efficienza e banda possibile.
+- Il problema nasce quando il __sistema potrebbe spostare pagine__ di indirizzi virtuali fuori dalla memoria fisica per inserirne altri dentro.
+- Così il DMA leggerebbe dati sbagliati.
+
+Per sistemare questo problema è possibile usare la __memoria fissata__.
+
 ## CUDA: Memoria fissata (Pinned Memory)
 
+La memoria fissata è una zona di memoria che __contiene pagine di indirizzi virtuali__, specificatamente __marcati__ in modo che non possano essere spostati fuori dalla memoria fisica.
 
+Quindi la memoria della CPU che viene utilizzata per operazioni di trasferimento dati dal DMA necessariamente devono essere allocate come memoria fissata.
+
+__Altrimenti__, se i dati da trasferire stanno su una zona di memoria __non fissata__, sarà necessario copiare tali dati su una zona di memoria fissata, e ciò comporta una __latenza aggiuntiva__.
+
+Quindi, **`cudaMemcpy()`** è più veloce se i dati da copiare dall'host al device sono allocati in zone di memoria fissata, siccome non sono necessarie copie extra.
+
+```C
+// Fissare memoria (host) usando funzioni non CUDA
+malloc();
+mlock();
+...
+munlock(); // De-allocazione
+free();
+
+// Fissare memoria (host) usando funzioni CUDA
+cudaMallocHost();
+...
+cudaFreeHost(); // De-allocazione
+```
+
+## CUDA: Memoria globale (Global Memory)
+
+La memoria globale è la parte principale della memoria esterna (off-chip memory), molto capiente ma relativamente lenta. Questa è l'unica memoria __accessibile dall'host__ tramite funzioni CUDA.
+
+### CUDA: Raggruppamento di zone della memoria globale (Global Memory Coalescing)
+
+Quando un thread accede ad una zona di memoria, quello che effettivamente legge sono __una serie di zone consecutive__ di memoria.
+
+Quindi quando tutti i thread in un warp eseguono un'istruzione di lettura da memoria, l'hardware controlla se questi threads stanno cercando di accedere a zone consecutive di memoria, e in tal caso, __raggruppa tutti questi accessi in un singolo accesso__.
+
+### Organizzazione delle strutture dati per migliorare accessi raggruppati
+
+Un array di structs o uno struct di arrays?
+
+L'organizzazione della memoria per un array di structs __non è adatta__ agli accessi di memoria raggruppati.
+
+Mentre usando uno struct contenente gli array, si avrebbero tutti i dati necessari allineati in quanto dentro un array, adatto quindi agli accessi raggruppati.
+
+Inoltre, gli struct potrebbero aver bisogno di __padding__, quindi in un array di struct, è possibile che ogni struct sia paddato, richiedendo quindi più memoria.
+
+![|600](https://i.imgur.com/i42YJne.png)
+
+## CUDA: Disattivare la cache L1
+
+Disattivare la cache L1 può essere molto vantaggioso per le prestazioni quando un kernel CUDA __presenta accessi alla memoria globale non allineati, sparsi o non raggruppabili__.
+
+La ragione principale di questo miglioramento delle prestazioni risiede nella __differenza nelle dimensioni__ delle transazioni (granularità dei dati caricati) quando la GPU preleva i dati dalla memoria:
+- Quando viene utilizzata la cache L1, l'hardware carica i dati dalla memoria in grandi linee di cache da $128$ byte.
+- Quando la cache L1 è disabilitata, le richieste di memoria bypassano L1 e vanno direttamente alla cache L2. La cache L2 opera con una granularità di segmento molto più fine, pari a $32$ byte.
+
+Se i thread in un warp richiedono parole di 4 byte sparse o non allineate, l'hardware __deve caricare più linee__ da 128 byte per soddisfare la richiesta. Questo spreca un'enorme quantità di larghezza di banda del bus di memoria trasferendo dati circostanti che i thread __non utilizzeranno mai__, riducendo drasticamente l'utilizzo del bus.
+
+Poiché i caricamenti senza cache recuperano i dati in blocchi più piccoli da 32 byte, attenuano la penalità derivante da modelli di accesso errati riducendo drasticamente il "recupero eccessivo".
+
+In breve, disabilitare la cache L1 può prevenire un grande spreco di larghezza di banda.
+
+# CUDA + MPI
+
+È possibile muovere dati tra più GPUs in base alla caratteristica della libreria MPI in uso:
+- Se MPI è __GPU-aware__ allora può direttamente accedere ai buffer delle GPUs, permettendo quindi di usare puntatori alla memoria della GPU come argomenti di funzioni MPI.
+- Se MPI __non è__ GPU-aware, allora i dati devono essere esplicitamente trasferiti prima dalla GPU all'host, eseguire la funzione MPI, e poi trasferire dall'host alla GPU.
+
+Con librerie MPI GPU-aware, non c'è bisogno di copiare dati tra la memoria delle GPUs e dell'host. Ciò salva almeno un'operazione di copia dati per inviare e una per ricevere.
+
+È utile anche per GPUs sullo stesso nodo.
