@@ -142,3 +142,72 @@ can use compiler directives (like `__attribute__((aligned(64)))`) to explicitly 
 prima di scrivere il risultato ottenuto, meglio fare un \_\_syncthreads o avere una copia del vettore sulla quale si opera.
 
 Controllare ed richiedere che i threads siano allineati e le richieste al vettore dei valori sia allineato quando si richiede la lettura dei dati dal vettore (Coalescing)
+
+Disabilitare L1 ?? -Xptxas -dlcm=cg __no__
+
+
+
+
+
+
+
+
+
+
+
+___
+Base + 64
+
+Run   1: 0.025478 s
+  Run   2: 0.025426 s
+  Run   3: 0.024997 s
+  Run   4: 0.024579 s
+  Run   5: 0.024568 s
+  Run   6: 0.024584 s
+  Run   7: 0.022222 s
+  Run   8: 0.019789 s
+  Run   9: 0.019797 s
+  Run  10: 0.019804 s
+  Run  11: 0.019795 s
+  Run  12: 0.019683 s
+  Run  13: 0.019512 s
+  Run  14: 0.019433 s
+  Run  15: 0.019448 s
+  Run  16: 0.019443 s
+  Run  17: 0.019437 s
+  Run  18: 0.019461 s
+  Run  19: 0.019449 s
+  Run  20: 0.019462 s
+  Run  21: 0.019446 s
+  Run  22: 0.019440 s
+
+
+___
+Claude a 256
+
+Run   1: 0.023514 s
+  Run   2: 0.022808 s
+  Run   3: 0.022796 s
+  Run   4: 0.022819 s
+  Run   5: 0.022796 s
+  Run   6: 0.018965 s
+  Run   7: 0.018370 s
+  Run   8: 0.018372 s
+  Run   9: 0.018367 s
+  Run  10: 0.018358 s
+  Run  11: 0.018263 s
+  Run  12: 0.018017 s
+  Run  13: 0.018024 s
+  Run  14: 0.018008 s
+  Run  15: 0.018006 s
+  Run  16: 0.018031 s
+  Run  17: 0.018015 s
+  Run  18: 0.018030 s
+  Run  19: 0.018019 s
+  Run  20: 0.018012 s
+
+___
+
+Claude refactor + 64
+
+0.22
