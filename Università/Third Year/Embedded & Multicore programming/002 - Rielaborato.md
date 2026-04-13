@@ -114,7 +114,7 @@ Serve a sapere il rank del processo MPI chiamante all'interno del comunicatore d
 
 ## MPI: Input al programma
 
-La maggiorparte delle implementazioni di MPI permette solamente al processo $0$ del comunicatore MPI_COMM_WORLD di accedere allo _stdin_.
+La maggiorparte delle implementazioni di MPI permette solamente al processo $0$ del comunicatore MPI\_COMM\_WORLD di accedere allo _stdin_.
 
 Quindi il processo $0$ necessariamente deve leggere i dati e mandarli agli altri processi.
 
@@ -263,7 +263,7 @@ Se i processi utilizzano le comunicazioni non bloccanti, questi necessariamente 
 - I processi destinatario per poter cominciare ad estrarre il contenuto del messaggio.
 
 Le comunicazioni non bloccanti possono essere unite con ogni tipo di comunicazione:
-- MPI_Isend, MPI_Bsend, MPI_Ssend, ... (Immediate, Buffered, Synchronous)
+- MPI_Ibsend, MPI_Issend, MPI_Irsend, ... (Buffered, Synchronous, Ready)
 
 ### MPI: Controllare lo stato di completamento di una comunicazione
 
