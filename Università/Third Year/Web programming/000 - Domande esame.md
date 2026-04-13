@@ -150,3 +150,13 @@ Per buildare l'immagine: `docker build -t app .`
 
 Per eseguire l'immagine: `docker run -p 8080:8080 app`
 
+```bash
+sudo docker build -p Dockerfile.backend -t wasatext-backend .
+
+sudo docker build -p Dockerfile.frontend -t wasatext-frontend .
+
+sudo docker run --rm --name wasatext-backend -p 3000:3000 wasatext-backend
+
+sudo docker run --rm --name wasatext-frontend -p 5173:80 wasatext-frontend
+
+```
