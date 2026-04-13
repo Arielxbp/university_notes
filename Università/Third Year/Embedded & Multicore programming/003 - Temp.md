@@ -90,3 +90,27 @@ Time: 0.006054
 Time: 0.006137
 Time: 0.006126
 Result: 85349 2373.485596
+
+
+
+# Occupancy
+
+## 1m particles at 64 blocksize
+Achieved Occupancy %: 85.91
+Active warps per SM: 27.49 of 32
+
+## 500k particles at 64 blocksize
+Achieved Occupancy %: 84.72
+Active warps per SM: 27.11 of 32
+
+## 100k particles at 64 blocksize
+Achieved Occupancy %: 72.34
+Active warps per SM: 23.15 of 32
+
+## 10k particles at 64 blocksize
+Achieved Occupancy %: 22.35
+Active warps per SM: 7.15 of 32
+
+## 1k particles at 64 blocksize
+Achieved Occupancy %: 6.09
+Active warps per SM: 1.95 of 32
