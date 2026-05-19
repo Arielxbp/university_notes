@@ -97,3 +97,11 @@ Quindi:
 - Se $y$ è un autovettore della matrice tridiagonale, l'autovettore DFT $x$ sarà uguale a $Qy$, $$x=Qy$$
 In un risolutore a due fasi, anche la trasformazione inversa viene fatta in due passi. Si trasformano i vettori dalla base tridiagonale alla base a banda, e poi dalla base a banda alla base densa.
 
+## Results
+
+Dopo la riduzione a due fasi, la matrice risultante è tridiagonale, e applicando un algoritmo iterativo come divide et impera o MRRR, si vanno ad azzerare i rimanenti elementi non nulli fuori dalle diagonali.
+
+La matrice finale è completamente diagonale, dunque gli elementi su tale diagonale sono gli autovalori.
+
+Le trasformazioni matematiche effettuate sulla matrice costituiscono una nuova matrice, questa è la matrice degli autovettori corrispondenti.
+
