@@ -7,7 +7,7 @@
 22 IUM
 
 
-Change template ex3 from using a fixed bus of 200 to dynamic initialization of all process 
+
 
 
 ___
@@ -25,3 +25,14 @@ Ristorante 4500 Urgent
 tubi 900 = 180\*5
 
 AVD 064958883 T
+
+- [ ] change youtube revanced to alternative
+- [ ] organize clothes
+- [ ] remove bad osu songs
+- [x] Change template ex3 from using a fixed bus of 200 to dynamic initialization of all process
+- [ ] Isee
+- [ ] update all passwords
+- [ ] bios update
+- [ ] dotfiles
+- [ ] laptop clean install
+- [ ] diploma liceo
