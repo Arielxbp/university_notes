@@ -1,15 +1,5 @@
 
 
-~~11~~ 23 Software
-
-16 Ai lab
-
-22 IUM
-
-
-
-
-
 ___
 
 Ristorante 4500 Urgent
@@ -18,24 +8,33 @@ Ristorante 4500 Urgent
 
 34 50000 Not urgent
 
-3500
-3000
-2900
+meccanico bagni 900 = 180\*5
 
-tubi 900 = 180\*5
+AVD 064958883 T condice migrazione tim
 
-AVD 064958883 T
 
-- [ ] change youtube revanced to alternative
+
+___
+
+## Personal life things
+
+- [ ] Reorder google drive
+- [ ] Reorder all drawers
+- [ ] Search for other useful softwares from cauchy, omarchy, endeavourOS, archcraft, hyprland,...
+- [ ] Reorder the . . . . 
 - [ ] organize clothes
 - [ ] remove bad osu songs
-- [x] Change template ex3 from using a fixed bus of 200 to dynamic initialization of all process
-- [ ] Isee
+
 - [ ] update all passwords
 - [ ] bios update
-- [ ] dotfiles
-- [ ] laptop clean install
+
+
+## University related things
+
+- [ ] Isee
 - [ ] diploma liceo
+- [ ] Send thesis related emails to professors
+- [ ] Redo the storyboard with the suggested changes
 
 ___
 
