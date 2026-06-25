@@ -45,3 +45,4 @@ Scrivere il primo paragrafo su overleaf della tesi
 
 Vedere nella soluzione di aprile come il prof effettua la distanza dei vicini se non ce nessun vicino entro raggio r
 
+generare esercizi simili
