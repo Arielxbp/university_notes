@@ -21,3 +21,7 @@ ___
 - [ ] Scrivere il primo paragrafo su Overleaf della tesi
 - [ ] Vedere nella soluzione di aprile come il prof effettua la distanza dei vicini se non ce nessun vicino entro raggio r (non c'è una soluzione del prof per aprile)
 - [ ] generare esercizi simili
+
+## Internship related tasks
+
+- [ ] Iniziare a scrivere il capitolo della relazione sul "background", in cui descrive gli approcci esistenti (quelli principali allo stato dell'arte) per la diagonalizzazione

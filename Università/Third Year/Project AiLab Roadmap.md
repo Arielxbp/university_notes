@@ -9,3 +9,11 @@ Image -> Detect features  -> Write features to json/yaml
 
 Image to model -> output
 
+___
+
+
+- [ ] Dataset
+- [ ] Feature extractor
+- [ ] StreetCLIP remove last heads
+- [ ] Train feature + corresponding image + corresponding coordinates and country
+- [ ] Compare 
