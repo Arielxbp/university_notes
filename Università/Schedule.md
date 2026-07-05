@@ -2,7 +2,6 @@ ___
 
 ## Personal life things
 
-- [ ] ISEE URGENTE
 - [ ] Reorder google drive
 - [ ] Reorder all drawers
 - [ ] Search for other useful softwares from cauchy, omarchy, endeavourOS, archcraft, hyprland,...
@@ -20,8 +19,6 @@ ___
 - [ ] diploma liceo
 - [ ] Riuscire a fare una diagonalizzazione di matrice forzata tramite ricorsione
 - [ ] Scrivere il primo paragrafo su Overleaf della tesi
-- [ ] Vedere nella soluzione di aprile come il prof effettua la distanza dei vicini se non ce nessun vicino entro raggio r (non c'è una soluzione del prof per aprile)
-- [ ] generare esercizi simili
 
 ## Internship related tasks
 
