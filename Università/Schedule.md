@@ -2,6 +2,7 @@ ___
 
 ## Personal life things
 
+- [ ] ISEE URGENTE
 - [ ] Reorder google drive
 - [ ] Reorder all drawers
 - [ ] Search for other useful softwares from cauchy, omarchy, endeavourOS, archcraft, hyprland,...
