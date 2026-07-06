@@ -105,3 +105,31 @@ La matrice finale è completamente diagonale, dunque gli elementi su tale diagon
 
 Le trasformazioni matematiche effettuate sulla matrice costituiscono una nuova matrice, questa è la matrice degli autovettori corrispondenti.
 
+# Pytorch (Torch)
+
+## torch.tensor
+
+A `torch.Tensor` is a multi-dimensional __matrix__ containing elements of a single data type.
+
+These can be constructed from a `list` or using the constructor `torch.tensor()`:
+```python
+torch.tensor([1, 1], [1, 1])
+```
+
+Keep in mind that `torch.tensor()` __always__ copies data.
+If creating using a numpy array, we can avoid copying data by using `torch.as_tensor()` instead.
+
+## bfloat16 and float32, Automatic Mixed Precision (AMP)
+
+When using `torch.bfloat16`, we are trading precision for an improvement in range, this is particularly useful when underflow and overflow are possible.
+
+While both consume the same amount of bytes, bfloat16 mimics the range of float32 but is less precise.
+
+When training models, to prevent values from dropping to absolute zero, underflow, or spiking to infinity, overflow, typically automatic mixed precision (AMP) must be implemented with an active loss scaler such as `torch.cuda.amp.GradScaler`.
+
+## torch.device
+
+A `torch.device` is an object representing the device on which a `torch.tensor` is or will be allocated.
+
+Most commonly this would be "cpu" or "cuda".
+
