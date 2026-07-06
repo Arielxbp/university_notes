@@ -1,6 +1,6 @@
 ___
 
-## Personal life things
+## Personal Life Things
 
 - [ ] Reorder google drive
 - [ ] Reorder all drawers
@@ -8,18 +8,27 @@ ___
 - [ ] Reorder the . . . . 
 - [ ] organize clothes
 - [ ] remove bad osu songs
-
 - [ ] update all passwords
 - [ ] bios update
 
+## Interesting Projects
 
-## University related things
+Each project should use a gui (or apk if applicable)
+
+- [ ] Machine translated manga panels using deepl api, google translate api or other. Set fonts for each dialogue and ai editing to redraw cleanly translated text backgroung drawing
+- [ ] Note taking application for tablet and desktop 
+- [ ] Bot autoplay uma
+- [ ] Light novel ai translator
+- [ ] Custom archinstall (maybe no gui)
+- [ ] Every filetype converter using ffmpeg
+- [ ] Atac app by decompiling "Viaggia con Atac" apk, reverse engineering using ai
+- [ ] Niri session manager 
+
+## University Related Things
 
 - [ ] Isee
-- [ ] diploma liceo
-- [ ] Riuscire a fare una diagonalizzazione di matrice forzata tramite ricorsione
-- [ ] Scrivere il primo paragrafo su Overleaf della tesi
+- [ ] Diploma liceo
 
-## Internship related tasks
+## Internship Related Tasks
 
-- [ ] Iniziare a scrivere il capitolo della relazione sul "background", in cui descrive gli approcci esistenti (quelli principali allo stato dell'arte) per la diagonalizzazione (Ritrovare convo dove mi sono fatto spiegare tutta quella parte di algebra lineare, tridiag, 2 step diag ...)
+[[Internship ToDo|Moved here]]
