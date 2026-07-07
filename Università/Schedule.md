@@ -29,6 +29,10 @@ Each project should use a gui (or apk if applicable)
 
 - [ ] Isee
 - [ ] Diploma liceo
+- [ ] Refactor Penguin's code to be more human-made
+- [ ] New notebook where there is explained all about the logic used in Penguin
+- [ ] Generate a image architecture for the report
+- [ ] Write a new note (obsidian) where is explained all of Penguin's architectural choises (why l2 normalization, what is ... and so on)
 
 ## Internship Related Tasks
 
