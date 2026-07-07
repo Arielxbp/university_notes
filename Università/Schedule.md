@@ -3,7 +3,8 @@ ___
 ## Personal Life Things
 
 - [ ] Reorder google drive
-- [ ] Reorder all drawers
+- [ ] Reorder all drawers (irl)
+- [ ] Unbloat tablet
 - [ ] Search for other useful softwares from cauchy, omarchy, endeavourOS, archcraft, hyprland,...
 - [ ] Reorder the . . . . 
 - [ ] organize clothes
