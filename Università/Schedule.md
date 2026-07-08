@@ -29,6 +29,9 @@ Each project should use a gui (or apk if applicable)
 
 - [ ] Isee
 - [ ] Diploma liceo
+- [ ] Studiare ailab
+- [ ] Studiare codice
+
 
 ## Internship Related Tasks
 
