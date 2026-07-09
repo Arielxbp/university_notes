@@ -189,7 +189,7 @@ Cosine decay: Once the 500 warmup steps are complete and the learning rate has h
 
 ## Gradient (Gradient flow and gradient accumulation)
 
-Gradients represent the __slope__ or the vector of partial derivates of the model's loss function with respoect to its learnable parameters.
+Gradients represent the __slope__ or the vector of partial derivates of the model's loss function with respect to its learnable parameters.
 Because gradients point in the direction of the steepest increase in loss, optimization algorithms adjust the model's weights in the exact opposite direction to minimize the error and improve predictions.
 
 Gradient flow refers to how effectively these gradients are transmitted backward through the layers of the network during the backpropagation phase.
@@ -222,3 +222,8 @@ The architecture defines the specific sequence of operations, how many layers ex
 The weigths and biases are the actual numerical values the network has optimized during training to make accurate predictions.
 
 To actually run a model, these two must be combined.
+
+# Class notes
+
+Computer vision is that branch of computer science that tries to emulate the hunman sight system.
+
