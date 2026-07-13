@@ -42,4 +42,3 @@ Each project should use a gui (or apk if applicable)
 - [ ] Pagare bollettino per ritiro diploma
 - [ ] Dentista
 - [ ] Foto denti?
-- [ ] 
