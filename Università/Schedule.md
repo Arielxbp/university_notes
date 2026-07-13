@@ -18,7 +18,7 @@ Each project should use a gui (or apk if applicable)
 
 - [ ] Machine translated manga panels using deepl api, google translate api or other. Set fonts for each dialogue and ai editing to redraw cleanly translated text backgroung drawing
 - [ ] Note taking application for tablet and desktop 
-- [ ] Bot autoplay uma
+- [ ] Bot autoplay uma (Machine learning model)
 - [ ] Light novel ai translator
 - [ ] Custom archinstall (maybe no gui)
 - [ ] Every filetype converter using ffmpeg
@@ -29,10 +29,17 @@ Each project should use a gui (or apk if applicable)
 
 - [ ] Isee
 - [ ] Diploma liceo
-- [ ] Studiare ailab
-- [ ] Studiare codice
-
 
 ## Internship Related Tasks
 
 [[Internship ToDo|Moved here]]
+
+## Temp
+
+- [ ] Scrivere inizio tesi
+- [ ] Ripassare state of the art method (notebook, [[Third Year/Thesis/Notes|Notes]] e samsung notes)
+- [ ] Documenti famiglia
+- [ ] Pagare bollettino per ritiro diploma
+- [ ] Dentista
+- [ ] Foto denti?
+- [ ] 
