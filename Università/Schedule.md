@@ -4,7 +4,6 @@ ___
 
 - [ ] Reorder google drive
 - [ ] Reorder all drawers (irl)
-- [ ] Unbloat tablet
 - [ ] Search for other useful softwares from cauchy, omarchy, endeavourOS, archcraft, hyprland,...
 - [ ] Reorder the . . . . 
 - [ ] organize clothes
@@ -23,7 +22,7 @@ Each project should use a gui (or apk if applicable)
 - [ ] Custom archinstall (maybe no gui)
 - [ ] Every filetype converter using ffmpeg
 - [ ] Atac app by decompiling "Viaggia con Atac" apk, reverse engineering using ai
-- [ ] Niri session manager 
+- [x] Niri session manager 
 
 ## University Related Things
 
