@@ -31,12 +31,10 @@ Each project should use a gui (or apk if applicable)
 
 ## Internship Related Tasks
 
-[[Internship ToDo|Moved here]]
+[[000 - Internship ToDo|Moved here]]
 
 ## Temp
 
-- [ ] Scrivere inizio tesi
-- [ ] Ripassare state of the art method (notebook, [[Third Year/Thesis/Notes|Notes]] e samsung notes)
 - [ ] Documenti famiglia
 - [ ] Pagare bollettino per ritiro diploma
 - [ ] Dentista

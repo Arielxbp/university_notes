@@ -4,8 +4,13 @@ This is a progressive journey diary / documentation about Tenstorrent and in par
 
 Introduction/Overview of TT-Lang [here](https://docs.tenstorrent.com/tt-lang/tour/index.html). (Github alternative [here](https://github.com/tenstorrent/tt-lang/blob/main/docs/sphinx/tour/index.md))
 
+# bash exports
 
+```bash
+export TT_METAL_LOGGER_LEVEL=FATAL # Set the logger level to FATAL to reduce log output
 
+export TT_METAL_DPRINT_CORES=0,0 # Set the specific core to capture print statements
+```
 
 # Tenstorrent Card Architecture
 
@@ -55,6 +60,8 @@ There are three kinds of sub-kernels inside an operation:
 Only the compute kernel touches the math engine present in the card.
 
 All the sub-kernels run __concurrently__ on the same node (__check if true__), synchronized through shared buffers.
+
+Do not invoke the sub-kernels explicitly.
 
 ```python
 def kernel(arg : arg_type) -> None:

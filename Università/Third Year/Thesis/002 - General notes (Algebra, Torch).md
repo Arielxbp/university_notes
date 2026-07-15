@@ -83,7 +83,7 @@ Una volta che una matrice è nella sua forma tridiagonale, per trovare i suoi ei
 
 Per risolvere il bottleneck causato dalla limitata quantità di memoria, librerie allo stato dell'arte impiegano due fasi per risolvere il problema.
 
-La prima fase comporta la riduzione della matrice densa in input a una matrice a banda, usando moltiplicazione di tipo __BLAS3__. (non utilizzano memoria credo?)
+La prima fase comporta la riduzione della matrice densa in input in una matrice a banda, usando moltiplicazione di tipo __BLAS3__. (non utilizzano memoria credo?)
 
 La seconda fase comporta la riduzione ulteriore da matrice a banda in una matrice tridiagonale. (La computazione è limitata dalla memoria, ma il bottleneck è diminuito in quanto la matrice presenta solo elementi non nulli all'interno della banda)
 
