@@ -51,6 +51,8 @@ The RISC-V cores in Tensix primarily handle __instruction dispatching__ and __co
 
 So the RISC-V cores do not compute, they instead issue commands to the other units.
 
+\[Insert here the advantages of having this separation of instruction dispatching from the actual computing (refer to notebooklm last prompt)]
+
 ![|600](https://github.com/tenstorrent/tt-metal/raw/main/docs/source/common/images/tenstorrent-tensix-rough-block-diagram.webp)
 
 So the data flow is:
