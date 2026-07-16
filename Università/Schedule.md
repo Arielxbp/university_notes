@@ -11,6 +11,10 @@ ___
 - [ ] update all passwords
 - [ ] bios update
 
+## Aunt Related Things
+
+- [ ] Website for the B&B
+
 ## Interesting Projects
 
 Each project should use a gui (or apk if applicable)

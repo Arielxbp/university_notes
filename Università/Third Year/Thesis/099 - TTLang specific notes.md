@@ -18,6 +18,57 @@ export TT_METAL_DPRINT_CORES=0,0 # Set the specific core to capture print statem
 
 Documentation page about the architecture [here](https://github.com/tenstorrent/tt-metal/blob/main/METALIUM_GUIDE.md).
 
+## Architecture Overview
+
+Tenstorrent chips are a __grid__ of different nodes, where most are compute nodes called a __Tensix core__. Other nodes are for memory, chip management and ethernet.
+
+The overall chip is then called a __Tensix processor__.
+
+The following image shows the grid of a Tenstorrent processor, where:
+- D = DRAM
+- T = Tensix core
+- E = Ethernet
+- A = ARC/Management
+- P = PCIe
+
+![|350](https://github.com/tenstorrent/tt-metal/raw/main/docs/source/common/images/tenstorrent-wormhole-logical-noc-diagram.webp)
+
+## Tensix core
+
+Each Tensix contains $5$ RISC-V CPUs, each with a different function:
+- Data Movement $0$ and Data Movement $1$.
+- Unpack, math and pack.
+
+They also contain $2$ NoC interfaces, a vecotr unit (SFPU), a matrix unit (FPU) and a pack and unpacker, as well as $1.5$ MB of SRAM (called L1 in the architecture) to hold transient data and to facilitate data exchange between local components.
+
+### SRAM (Static RAM)
+
+The SRAM stores data local to the Tensix and feeds the compute engines/peripherals.
+
+### RISC-V cores
+
+The RISC-V cores in Tensix primarily handle __instruction dispatching__ and __control flow__. They issue commands to the NoC/Matrix/Vector/Packer/Unpacker units, which in turn perform the actual computational work, rather than executing the computations directly.
+
+So the RISC-V cores do not compute, they instead issue commands to the other units.
+
+![|600](https://github.com/tenstorrent/tt-metal/raw/main/docs/source/common/images/tenstorrent-tensix-rough-block-diagram.webp)
+
+So the data flow is:
+- NoC $0$ reads data from DRAM (or accept data from other Tensixes).
+- Unpacker unpacks the data into a format that can be processed by the vector/matrix unit.
+- Vector/matrix unit performs the computation.
+- Packer packs the result back into a format for storage.
+- NoC 1 sends the result to DRAM (or other Tensixes).
+
+### Data flow between Tensix with NoCs
+
+The Network-on-Chips (NoCs) present in each Tensix operate in a "quasi-full-duplex" mode, so the two NoCs traverse the chip in __opposite directions__. This bidirectional capability allows both NoCs to __simultaneously__ send and receive data.
+
+The $2D$ torus topology design used for the chip ensures __full connectivity__, enabling any Tensix on the chip to communicate with any other Tensix.
+
+While the opposing directional flow of the two NoCs naturally provides efficient return paths for data, regardless of the originating location.
+
+
 # TT-Lang core concepts
 
 Documentation page for every ttl.function [here](https://docs.tenstorrent.com/tt-lang/specs/TTLangSpecification.html). (Github alternative [here](https://github.com/tenstorrent/tt-lang/blob/main/docs/sphinx/specs/TTLangSpecification.md))
