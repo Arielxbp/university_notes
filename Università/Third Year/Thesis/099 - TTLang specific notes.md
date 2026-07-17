@@ -14,8 +14,6 @@ export TT_METAL_DPRINT_CORES=0,0 # Set the specific core to capture print statem
 
 # Tenstorrent Card Architecture
 
-(insert card architecture showing and explaining how the node/cores work)
-
 Documentation page about the architecture [here](https://github.com/tenstorrent/tt-metal/blob/main/METALIUM_GUIDE.md).
 
 ## Architecture Overview
@@ -41,17 +39,17 @@ Each Tensix contains $5$ RISC-V CPUs, each with a different function:
 
 They also contain $2$ NoC interfaces, a vecotr unit (SFPU), a matrix unit (FPU) and a pack and unpacker, as well as $1.5$ MB of SRAM (called L1 in the architecture) to hold transient data and to facilitate data exchange between local components.
 
-### SRAM (Static RAM)
-
-The SRAM stores data local to the Tensix and feeds the compute engines/peripherals.
-
 ### RISC-V cores
 
 The RISC-V cores in Tensix primarily handle __instruction dispatching__ and __control flow__. They issue commands to the NoC/Matrix/Vector/Packer/Unpacker units, which in turn perform the actual computational work, rather than executing the computations directly.
 
 So the RISC-V cores do not compute, they instead issue commands to the other units.
 
-\[Insert here the advantages of having this separation of instruction dispatching from the actual computing (refer to notebooklm last prompt)]
+This specific design of the cores separates control flow and data movement from the raw computation, providing various advantages:
+- __Uninterrupted Compute Throughput__, by decoupling data movement from computation, the specialized compute units are __never interrupted__ by data handling or control logic.
+- Asynchronous execution, since each RISC-V core operates independently, it enables efficient __producer-consumer__ pipelining. (e.g., DM core $0$ can asynchronously fetch the next batch of data from memory while the math core dispatches compute instructions for the current batch, and the DM core $1$ saves the previous batch's results)
+	- This overlapping hides memory latency without requiring complex hardware schedulers.
+- Predictability and determinism, the Tenstorrent architecture omits hardware-managed cache hierarchies and dynamic thread scheduling. Instead, it preferres executing explicit, statically-scheduled instructions to move data and dispatch compute.
 
 ![|600](https://github.com/tenstorrent/tt-metal/raw/main/docs/source/common/images/tenstorrent-tensix-rough-block-diagram.webp)
 
@@ -70,6 +68,51 @@ The $2D$ torus topology design used for the chip ensures __full connectivity__, 
 
 While the opposing directional flow of the two NoCs naturally provides efficient return paths for data, regardless of the originating location.
 
+For complex operations and data transfers, the RISC-V cores can utilize both NoCs for the same data movement simultaneously, __doubling the effective bandwidth__ at the cost of not being able to overlap reads and writes. It this case, SRAM can be used as a temporary storage for intermediate results within the operation itself.
+ 
+### SRAM (Static RAM) and Circular Buffers
+
+The SRAM stores data local to the Tensix and feeds the compute engines/peripherals.
+
+The three sub-kernels, reader, compute and writer, coordinate their execution using __circular buffers__, which are implemented in SRAM and facilitated by hardware synchronization.
+
+These buffers act as producer-consumer __queues__, enabling safe and efficient data exchange between sub-kernels.
+
+Each sub-kernel interacts with the buffers as follows:
+- Reader kernel: Writes data into the circular buffer and signals when new data is available.
+- Compute kernel: Waits for data to become available in the buffer before processing it. After computation, it writes the results to another buffer and marks them as ready.
+- Writer kernel: Waits for the computed results to appear in the buffer before writing them to the output location.
+
+This mechanism ensures that each sub-kernel only proceeds when the necessary data is ready, preventing race conditions and enabling asynchronous, pipelined execution across the hardware.
+
+Tenstorrent's hybrid approach allows data to reside in either SRAM or DRAM as needed. In traditional architectures, intermediate tensors that exceed cache capacity get evicted to DRAM, or context switches invalidate cache contents, creating performance bottlenecks.
+
+When operations can access data stored locally within the same Tensix, NoC bandwidth requirements are eliminated entirely, further improving performance.
+
+#### SRAM as globally addressable memory
+
+Tenstorrent's architecture treats the $1.5$ MB of local SRAM inside each Tensix core as explicitly globally addressable memory.
+
+Cross-core SRAM communication is handled through the NoCs.
+
+This design enables advanced performance optimizations like __NoC multicasting__, so rather than every core independently reading the same input data from DRAM, a dedicated core can read the data once and __broadcast__ it directly to the SRAM of all the other cores.
+
+## Tiles
+
+Tenstorrent hardware operates natively on $32\times32$ element tiles.
+
+A tile is the basic unit of both data layout and compute:
+- A $32\times32$ grid of elements, all sharing the same data type.
+
+The matrix unit (FPU) treats one tile as __a single operand__, it doesn't do scalar-by-scalar operations, rather it issues one instruction sequence that turns two $32\times32$ tiles into a single $32\times32$ result tile.
+
+So data is processed in $32\times32$ blocks, and Tensix cores perform matrix operations on one or more of these tiles.
+
+### Faces
+
+A tile is __subdivided__ into four $16\times16$ faces, each stored as a __contiguous block in memory__, arranged sequentially to give efficient access patterns for the compute units.
+
+This subdivision is done to benefit the hardware, because it maps cleanly to the fixed-width of the internal registers used by the compute engines. So the reason for using faces is that the matrix engine natively multiplies 16x16 matrices, and tile multiplication is decomposed into multiple face multiplications.
 
 # TT-Lang core concepts
 

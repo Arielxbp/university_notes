@@ -26,7 +26,8 @@ Each project should use a gui (or apk if applicable)
 - [ ] Custom archinstall (maybe no gui)
 - [ ] Every filetype converter using ffmpeg
 - [ ] Atac app by decompiling "Viaggia con Atac" apk, reverse engineering using ai
-- [x] Niri session manager 
+- [x] Niri session manager
+- [ ] Write down exactly which audio software to have on a fresh install (pipewire, alsa, ...)
 
 ## University Related Things
 

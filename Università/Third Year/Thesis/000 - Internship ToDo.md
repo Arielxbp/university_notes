@@ -8,4 +8,4 @@
 
 
 - [ ] Scrivere inizio tesi
-- [ ] Ripassare state of the art method (notebook, [[002 - General notes (Algebra, Torch)|001 - General knowledge needed]] e samsung notes)
+- [x] Ripassare state of the art method (notebook, [[002 - General notes (Algebra, Torch)|001 - General knowledge needed]] e samsung notes)
