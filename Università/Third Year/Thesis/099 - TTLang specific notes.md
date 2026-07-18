@@ -120,6 +120,22 @@ Documentation page for every ttl.function [here](https://docs.tenstorrent.com/tt
 
 Documentation page for every ttnn.function [here](https://docs.tenstorrent.com/tt-metal/latest/ttnn/ttnn/api.html).
 
+## Grids
+
+A grid defines a space of nodes to which a TT-Lang operation is submitted for execution.
+
+A node corresponds to a single Tensix core and is the minimal unit capable of executing a TT-Lang program.
+
+In a single-chip case where node-to-node communication is conducted over Network-on-Chip (NoC), the grid is two dimensional.
+
+The grid argument selects how many nodes (Tensix cores) to run on. `grid=(1, 1)` means a single node.
+
+```python
+@ttl.operation(grid=(1, 1))
+def operation(a: ttnn.Tensor, b: ttnn.Tensor, c: ttnn.Tensor, y: ttnn.Tensor):
+	pass
+```
+
 ## Operations
 
 (Define what an TTL operation is)
@@ -150,8 +166,8 @@ After declaring the operation, the kernel function is typically defined, and ins
 
 There are three kinds of sub-kernels inside an operation:
 - __compute__, which is the arithmetic compute kernel, so it works on matmuls, elementwise math, reductions, broadcasts...
-- __datamovement (read)__, which is one of two types of datamovement kernels that move data between the host DRAM and the device on-chip L1 SRAM memory. In particular this one reads data from the host to the device.
-- __datamovement (write)__, is the other type of datamovement kernel, specifically defined to write data from the device back to the host.
+- __data movement (read)__, which is one of two types of data movement kernels that move data between the host DRAM and the device on-chip L1 SRAM memory. In particular this one reads data from the host to the device.
+- __data movement (write)__, is the other type of data movement kernel, specifically defined to write data from the device back to the host.
 
 Only the compute kernel touches the math engine present in the card.
 
@@ -173,15 +189,11 @@ def kernel(arg : arg_type) -> None:
 	@ttl.datamovement()
 	def write():
 		pass
-		
-	compute()
-	read()
-	write()
 ```
 
 ## Dataflow Buffers (DFBs)
 
-These are L1 __circular buffers__ that pass data between the datacompute (DM) and compute kernels.
+These are L1 __circular buffers__ that pass data between the data movement (DM) and compute kernels.
 
 To declare a buffer, the __shape__ and __block_count__ need to be given.
 
@@ -212,7 +224,7 @@ The granularity is:
 
 The block count is how many blocks the buffer holds. So for example, with `block_count=2` we have double-buffering, meaning that DM can fill one block while compute consumes the other.
 
-## Lock on DFB with reserve / wait
+## Synchronization on DFB with reserve / wait
 
 Synchronization on DFBs are managed through two primitives, __reserve__ and __wait__.
 
@@ -240,7 +252,7 @@ This function initiates an __async transfer__.
 
 It can be between DRAM and L1, or even between nodes via multicast pipes. (__check if true__)
 
-It returns a __transfer handle__, and the program must call `wait()` on it before using the data, otherwise it will cause lock errors.
+It returns a __transfer handle__, and the program __must__ call `wait()` on it before using the data, otherwise it will cause lock errors.
 
 ```python
 transfer_handle = ttl.copy(src, dst)
@@ -296,3 +308,16 @@ TT_METAL_DPRINT_CORES=0,0 python my_script.py
 If printing the full 32x32 tile contents from the DFB, the tile must be __live__, meaning in between wait/pop ir reserve/push
 
 In compute kernels, guard prints with `thread="math"`, `thread="pack"`, or `thread="unpack"` to avoid overlapping output from the three TRISC threads.
+
+
+___
+
+
+- TILE_SIZE = 32 --> the 32 constant is typically used to manually divide the global tensor dimensions (which are measured in individual elements) to convert them into tile coordinates.
+
+- grid = (8, 8) --> parallelize the work across a 8x8 grid (64 Tensix cores), where each node processes an independent spatial slice of the tensor.
+
+- shape = (4, 4) --> setting 4x4 means each block is a 4×4 patch of 32×32 tiles = 128×128 elements.
+Setting a larger shape, such as `shape=(4, 4)`, groups multiple tiles into a single block, meaning each read/compute/write iteration processes a 4x4 patch of tiles at once to reduce synchronization overhead
+
+- block_count = 2 --> dictates the **total number of blocks** the Dataflow Buffer will allocate in the Tensix core's local L1 SRAM, it is almost always set to 2 to enable double-buffering.

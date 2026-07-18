@@ -19,8 +19,8 @@ Notes obtained during the meeting:
 - Tenstorrent architecture introduction.
 
 Assigned next steps:
-- [ ] Try to write simple kernels involving matrices.
-- [ ] Begin to write the thesis introduction section. 
+- [ ] Try to write simple kernels involving matrices. ($50\%$)
+- [ ] Begin to write the thesis introduction section. ($0\%$)
 
 ## Meeting 2
 
