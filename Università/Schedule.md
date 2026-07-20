@@ -40,7 +40,6 @@ Each project should use a gui (or apk if applicable)
 
 ## Temp
 
-- [ ] Documenti famiglia
 - [ ] Pagare bollettino per ritiro diploma
 - [ ] Dentista
 - [ ] Foto denti?
